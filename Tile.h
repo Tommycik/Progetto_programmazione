@@ -11,21 +11,7 @@ enum class TileType{
 };//
 class Tile{
 public:
-void setX(int posX) {
-    Tile::x=posX;
-}
 
-int getX() const{
-    return x;
-}
-
-void setY(int posY) {
-        Tile::y=posY;
-}
-
-int getY() const{
-    return y;
-}
 
     TileType getType() const  {
     return type;
@@ -42,8 +28,6 @@ private:
     bool destructible;
     bool passable;
     TileType type;
-    int x;
-    int y;
 };
 
 

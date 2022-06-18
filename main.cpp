@@ -9,6 +9,8 @@
 #include <time.h>
 //todo aggiungere i vettori nei vari metodi
 // todo completare spawner
+//todo rendere più veloce l'applicazione
+//todo implementare oggetti
 static const int viewHeigth = 300,viewWidth=300;
 static const int width=1080,length=1920;
 enum class GameEvent {
