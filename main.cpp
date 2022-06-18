@@ -96,7 +96,7 @@ private:
 int main() {
 
     Dungeonarea first(200, 200, 20, 20, 1, 40, 200, 50, 50);
-    sf::RenderWindow window(sf::VideoMode(width, length), "try",sf::Style::Fullscreen);//todo metterlo fullscreen adattivo
+    sf::RenderWindow window(sf::VideoMode(width, length), "try",sf::Style::Fullscreen);
     // run the program as long as the window is open
     sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
     player.setFillColor(sf::Color::Red);
@@ -111,8 +111,7 @@ int main() {
     player.setPosition(startX*16,startY*16);
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewWidth));
 view1.setCenter(player.getPosition());
-    //fixme
-    //todo mettere visuale sul personaggio e ingrandire la mapa
+
     isLegalMove(*hero,1,-1,first);
     while (window.isOpen()) {
         TileMap map;
