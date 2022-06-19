@@ -3,9 +3,12 @@
 #include "Dungeonarea.h"
 #include "Mario.h"
 #include "Spawner.h"
+#include <sstream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Template.h"
+#include <string>
+
 #include <ctime>
 //todo aggiungere i vettori nei vari metodi
 // todo completare spawner
@@ -113,6 +116,21 @@ int main() {
     sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, 5.0f));
     sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));
     life.setFillColor(sf::Color::Red);
+    sf::Font myFont;
+    sf::Text Potion;
+    Potion.setFont(myFont);
+
+    Potion.setFillColor(sf::Color::Blue);
+    Potion.setCharacterSize(64);
+    Potion.setScale(sf::Vector2f(0.2,0.2));
+
+
+
+
+    if (!myFont.loadFromFile("../assets/arial.ttf"))
+    {
+        return false;
+    }
     stamina.setFillColor(sf::Color::Yellow);
     life.setOutlineColor(sf::Color::Black);
     life.setOutlineThickness(1);
@@ -120,9 +138,10 @@ int main() {
     stamina.setOutlineThickness(1);
     hero->setposX(startX);
     hero->setposY(startY);
-    player.setPosition(startX*16,startY*16);
+    player.setPosition(int(startX*16),int(startY*16));
 
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewWidth));
+    std::stringstream ss;
 
 view1.setCenter(player.getPosition());
 
@@ -169,10 +188,10 @@ view1.setCenter(player.getPosition());
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
     bool DownKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LShiftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
-    bool SpacebarKeyDown=sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+    bool CureKeyDown=sf::Keyboard::isKeyPressed(sf::Keyboard::B);
     float staminaUsed=0;
     if(LShiftKeyDown)
-        staminaUsed+=0.1;
+        staminaUsed+=0.5;
     if (LeftKeyDown && isLegalMove(*hero,-1,0,first)){
         if(LShiftKeyDown&&hero->getStamina()>0){
             player.move(-32, 0);
@@ -209,10 +228,14 @@ view1.setCenter(player.getPosition());
             player.move(0, -16);
             view1.move(0,-16);
             hero->move(0,-1);}}
-    if(SpacebarKeyDown&& hero->getPotionNum()>0)
+    if(CureKeyDown&& hero->getPotionNum()>0){
         hero->recoverHp(1);
+    }
+
 
     hero->stamUse(staminaUsed);
+
+
 
 
             // draw the map
@@ -223,11 +246,27 @@ view1.setCenter(player.getPosition());
             window.draw(map);
             window.draw(player);
 
-            life.setPosition(player.getPosition().x-280,player.getPosition().y-150);
+
+
+
+
+
+            //Potion.setColor(sf::Color::Red);
+
+
+
+            life.setPosition(player.getPosition().x-260,player.getPosition().y-150);
             stamina.setPosition(life.getPosition().x,life.getPosition().y+7);
+            //stamina.setSize(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));//fixme
+            Potion.setPosition(int(player.getPosition().x-260), int(player.getPosition().y-130));
+            ss << hero->getPotionNum();
+            Potion.setString( ss.str().c_str() );
+
+            ss.str("");
 
             window.draw(life);
             window.draw(stamina);
+            window.draw(Potion);
             window.display();
         }
 
