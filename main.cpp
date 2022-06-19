@@ -107,29 +107,31 @@ int main() {
 
     player.setFillColor(sf::Color::Red);
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(100);
     Mario* hero;
     int startX = 0;
     int startY = 0;
     findFreeMapTile(startX, startY, first);
-    hero = new Mario(100, 1, 0, 0, "prova",30,2);
-    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, 5.0f));
-    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));
+    hero = new Mario(100, 1, 0, 0, "prova",40,2);
+    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, 7.0f));
+    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, 7.0f));
     life.setFillColor(sf::Color::Red);
     sf::Font myFont;
     sf::Text Potion;
     Potion.setFont(myFont);
 
-    Potion.setFillColor(sf::Color::Blue);
-    Potion.setCharacterSize(64);
-    Potion.setScale(sf::Vector2f(0.2,0.2));
+    Potion.setFillColor(sf::Color::White);
+    Potion.setCharacterSize(128);
+    Potion.setScale(sf::Vector2f(0.1,0.1));
+    Potion.setOutlineColor(sf::Color::Black);
+    Potion.setOutlineThickness(1);
 
 
 
 
     if (!myFont.loadFromFile("../assets/arial.ttf"))
     {
-        return false;
+        return -1;
     }
     stamina.setFillColor(sf::Color::Yellow);
     life.setOutlineColor(sf::Color::Black);
@@ -174,6 +176,10 @@ view1.setCenter(player.getPosition());
                     case sf::Event::KeyPressed:
                         if (Happen.key.code == sf::Keyboard::Escape)
                             window.close();
+                        if (Happen.key.code == sf::Keyboard::B){
+                            if(hero->getPotionNum()!=0)
+                            hero->recoverHp(1);}
+
                         break;
                     case sf::Event::Resized:
                         ResizeView(window,view1);
@@ -182,55 +188,59 @@ view1.setCenter(player.getPosition());
                         break;
                 }
             }
-
+            sf::sleep((sf::milliseconds(115)));
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
     bool DownKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LShiftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
-    bool CureKeyDown=sf::Keyboard::isKeyPressed(sf::Keyboard::B);
     float staminaUsed=0;
-    if(LShiftKeyDown)
-        staminaUsed+=0.5;
-    if (LeftKeyDown && isLegalMove(*hero,-1,0,first)){
-        if(LShiftKeyDown&&hero->getStamina()>0){
+
+    if(LShiftKeyDown){
+        if(hero->getStamina()<=0)
+            LShiftKeyDown = false;}
+
+    if (LeftKeyDown &&isLegalMove(*hero,-1,0,first)){
+        if(LShiftKeyDown&& isLegalMove(*hero,-2,0,first)){
             player.move(-32, 0);
             view1.move(-32,0);
-            hero->run(-1,0);}else{
+            staminaUsed=1;
+            hero->run(-1,0);}else {
             player.move(-16, 0);
             view1.move(-16,0);
             hero->move(-1,0);}}
 
-    if (RightKeyDown && isLegalMove(*hero,1,0,first)){
-        if(LShiftKeyDown&&hero->getStamina()>0){
+    if (RightKeyDown&&isLegalMove(*hero,1,0,first) ){
+        if(LShiftKeyDown&& isLegalMove(*hero,2,0,first)){
             player.move(32, 0);
             view1.move(32,0);
-            hero->run(1,0);}else{
+            staminaUsed=1;
+            hero->run(1,0);}else {
             player.move(16, 0);
             view1.move(16,0);
             hero->move(1,0);
         }}
 
-    if (UpKeyDown && isLegalMove(*hero,0,1,first)){
-        if(LShiftKeyDown&&hero->getStamina()>0){
+    if (UpKeyDown&&isLegalMove(*hero,0,1,first) ){
+        if(LShiftKeyDown&& isLegalMove(*hero,0,2,first)){
             player.move(0, 32);
             view1.move(0,32);
+            staminaUsed=1;
             hero->run(0,1);}else{
             player.move(0, 16);
             view1.move(0,16);
             hero->move(0,1);}}
 
-    if (DownKeyDown && isLegalMove(*hero,0,-1,first)){
-        if(LShiftKeyDown&&hero->getStamina()>0){
+    if (DownKeyDown&&isLegalMove(*hero,0,-1,first) ){
+        if(LShiftKeyDown&& isLegalMove(*hero,0,-2,first)){
             player.move(0, -32);
             view1.move(0,-32);
-            hero->run(0,-1);}else{
+            staminaUsed=1;
+            hero->run(0,-1);}else {
             player.move(0, -16);
             view1.move(0,-16);
             hero->move(0,-1);}}
-    if(CureKeyDown&& hero->getPotionNum()>0){
-        hero->recoverHp(1);
-    }
+
 
 
     hero->stamUse(staminaUsed);
@@ -254,11 +264,12 @@ view1.setCenter(player.getPosition());
             //Potion.setColor(sf::Color::Red);
 
 
-
-            life.setPosition(player.getPosition().x-260,player.getPosition().y-150);
-            stamina.setPosition(life.getPosition().x,life.getPosition().y+7);
+            stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, 7.0f));
+            life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, 7.0f));
+            life.setPosition(player.getPosition().x-265,player.getPosition().y-150);
+            stamina.setPosition(life.getPosition().x,life.getPosition().y+8);
             //stamina.setSize(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));//fixme
-            Potion.setPosition(int(player.getPosition().x-260), int(player.getPosition().y-130));
+            Potion.setPosition(int(player.getPosition().x-265), int(player.getPosition().y-137));
             ss << hero->getPotionNum();
             Potion.setString( ss.str().c_str() );
 

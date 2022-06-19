@@ -14,7 +14,7 @@ float Mario::getStamina() const {
 }
 
 void Mario::stamUse(int stamina) {
-    Mario::stamina = stamina;
+    Mario::stamina -= stamina;
 }
 
 int Mario::getMaxHp() const {
