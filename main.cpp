@@ -8,7 +8,6 @@
 #include <SFML/Graphics.hpp>
 #include "Template.h"
 #include <string>
-
 #include <ctime>
 //todo aggiungere i vettori nei vari metodi
 // todo completare spawner
@@ -244,7 +243,7 @@ view1.setCenter(player.getPosition());
 
 
     hero->stamUse(staminaUsed);
-
+hero->recoverStam((0.5));
 
 
 
@@ -266,10 +265,10 @@ view1.setCenter(player.getPosition());
 
             stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, 7.0f));
             life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, 7.0f));
-            life.setPosition(player.getPosition().x-265,player.getPosition().y-150);
+            life.setPosition(player.getPosition().x-266,player.getPosition().y-150);
             stamina.setPosition(life.getPosition().x,life.getPosition().y+8);
             //stamina.setSize(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));//fixme
-            Potion.setPosition(int(player.getPosition().x-265), int(player.getPosition().y-137));
+            Potion.setPosition(int(player.getPosition().x-266), int(player.getPosition().y-137));
             ss << hero->getPotionNum();
             Potion.setString( ss.str().c_str() );
 

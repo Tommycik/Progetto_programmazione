@@ -25,7 +25,7 @@ public:
 
     void setPotionNum(int potionNum);
 
-    void recoverStam(int stamina);//ripresa stam nel tempo
+    void recoverStam(float stamina);//ripresa stam nel tempo
 bool recoverHp(int potionUsed);
 private:
     float stamina;
