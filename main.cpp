@@ -114,6 +114,10 @@ int main() {
     sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));
     life.setFillColor(sf::Color::Red);
     stamina.setFillColor(sf::Color::Yellow);
+    life.setOutlineColor(sf::Color::Black);
+    life.setOutlineThickness(1);
+    stamina.setOutlineColor(sf::Color::Black);
+    stamina.setOutlineThickness(1);
     hero->setposX(startX);
     hero->setposY(startY);
     player.setPosition(startX*16,startY*16);
@@ -170,7 +174,7 @@ view1.setCenter(player.getPosition());
     if(LShiftKeyDown)
         staminaUsed+=0.1;
     if (LeftKeyDown && isLegalMove(*hero,-1,0,first)){
-        if(LShiftKeyDown){
+        if(LShiftKeyDown&&hero->getStamina()>0){
             player.move(-32, 0);
             view1.move(-32,0);
             hero->run(-1,0);}else{
@@ -179,7 +183,7 @@ view1.setCenter(player.getPosition());
             hero->move(-1,0);}}
 
     if (RightKeyDown && isLegalMove(*hero,1,0,first)){
-        if(LShiftKeyDown){
+        if(LShiftKeyDown&&hero->getStamina()>0){
             player.move(32, 0);
             view1.move(32,0);
             hero->run(1,0);}else{
@@ -189,7 +193,7 @@ view1.setCenter(player.getPosition());
         }}
 
     if (UpKeyDown && isLegalMove(*hero,0,1,first)){
-        if(LShiftKeyDown){
+        if(LShiftKeyDown&&hero->getStamina()>0){
             player.move(0, 32);
             view1.move(0,32);
             hero->run(0,1);}else{
@@ -198,7 +202,7 @@ view1.setCenter(player.getPosition());
             hero->move(0,1);}}
 
     if (DownKeyDown && isLegalMove(*hero,0,-1,first)){
-        if(LShiftKeyDown){
+        if(LShiftKeyDown&&hero->getStamina()>0){
             player.move(0, -32);
             view1.move(0,-32);
             hero->run(0,-1);}else{
@@ -218,8 +222,10 @@ view1.setCenter(player.getPosition());
 
             window.draw(map);
             window.draw(player);
+
             life.setPosition(player.getPosition().x-280,player.getPosition().y-150);
-            stamina.setPosition(life.getPosition().x,life.getPosition().y+5);
+            stamina.setPosition(life.getPosition().x,life.getPosition().y+7);
+
             window.draw(life);
             window.draw(stamina);
             window.display();
