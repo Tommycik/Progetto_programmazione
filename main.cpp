@@ -118,7 +118,7 @@ int main() {
     sf::Font myFont;
     sf::Text Potion;
     Potion.setFont(myFont);
-
+    //hero->setHp(50); per testare la cura
     Potion.setFillColor(sf::Color::White);
     Potion.setCharacterSize(128);
     Potion.setScale(sf::Vector2f(0.1,0.1));
@@ -247,7 +247,7 @@ hero->recoverStam((0.5));
 
 
 
-            // draw the map
+
             window.clear();
             view1.setCenter(player.getPosition());
             window.setView(view1);
@@ -260,14 +260,13 @@ hero->recoverStam((0.5));
 
 
 
-            //Potion.setColor(sf::Color::Red);
+
 
 
             stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, 7.0f));
             life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, 7.0f));
             life.setPosition(player.getPosition().x-266,player.getPosition().y-150);
             stamina.setPosition(life.getPosition().x,life.getPosition().y+8);
-            //stamina.setSize(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));//fixme
             Potion.setPosition(int(player.getPosition().x-266), int(player.getPosition().y-137));
             ss << hero->getPotionNum();
             Potion.setString( ss.str().c_str() );

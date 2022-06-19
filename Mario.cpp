@@ -42,8 +42,15 @@ bool Mario::recoverHp(int potionUsed) {
 
 
     if(potionUsed!=0){
-    Mario::hp+=(Mario::maxHp/5);
-        Mario::potionNum-=potionUsed;
+        if(Mario::hp<Mario::maxHp){
+            if(Mario::hp<=Mario::maxHp-Mario::maxHp/5){
+                Mario::hp+=(Mario::maxHp/5);
+            }else{
+                Mario::hp=Mario::maxHp;
+            }
+
+            Mario::potionNum-=potionUsed;}
+
     }else{
          Mario::hp=Mario::getMaxHp();}
     return true;
