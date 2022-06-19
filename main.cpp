@@ -12,22 +12,25 @@
 //todo aggiungere i vettori nei vari metodi
 // todo completare spawner
 //todo rendere più veloce l'applicazione
-//todo implementare oggetti(sfera bianca come figura) e la pssibilità che si muovano
+//todo riusare tilemap trattando i vari vettori come il puntatore della mappa per disegnarli
+//todo e distance ,legal move,e free map tile per gestirli
+//todo implementare oggetti(sfera bianca come figura) e la possibilità che si muovano
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
 //todo implementare metodi world
 //todo implementare audio
-static const int viewHeigth = 300,viewWidth=300;
-static const int width=1080,length=1920;
+static const int viewHeigth = 300, viewWidth = 300;
+static const int width = 1080, length = 1920;
 enum class GameEvent {
     quit, left, up, down, right, fight, magic, noop
 };
-void ResizeView(const sf::RenderWindow& window,sf::View& view){
-float aspectRatio=float(window.getSize().x)/float (window.getSize().y);
-view.setSize(viewHeigth*aspectRatio,viewHeigth);
+
+void ResizeView(const sf::RenderWindow &window, sf::View &view) {
+    float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
+    view.setSize(viewHeigth * aspectRatio, viewHeigth);
 }
-class TileMap : public sf::Drawable, public sf::Transformable
-{
+
+class TileMap : public sf::Drawable, public sf::Transformable {
 public:
 
     bool load(const std::string& tileset, sf::Vector2u tileSize,Dungeonarea &map, unsigned int width, unsigned int height)
@@ -247,7 +250,7 @@ view1.setCenter(player.getPosition());
 
 
     hero->stamUse(staminaUsed);
-hero->recoverStam((0.5));
+    hero->recoverStam((0.5));
 
 
 
