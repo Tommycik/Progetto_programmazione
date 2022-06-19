@@ -6,7 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Template.h"
-#include <time.h>
+#include <ctime>
 //todo aggiungere i vettori nei vari metodi
 // todo completare spawner
 //todo rendere più veloce l'applicazione
@@ -101,17 +101,25 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(width, length), "try",sf::Style::Fullscreen);
     // run the program as long as the window is open
     sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
+
     player.setFillColor(sf::Color::Red);
+
     window.setFramerateLimit(60);
     Mario* hero;
     int startX = 0;
     int startY = 0;
     findFreeMapTile(startX, startY, first);
-    hero = new Mario(100, 1, 0, 0, "prova",20,2);
+    hero = new Mario(100, 1, 0, 0, "prova",30,2);
+    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, 5.0f));
+    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, 5.0f));
+    life.setFillColor(sf::Color::Red);
+    stamina.setFillColor(sf::Color::Yellow);
     hero->setposX(startX);
     hero->setposY(startY);
     player.setPosition(startX*16,startY*16);
+
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewWidth));
+
 view1.setCenter(player.getPosition());
 
     isLegalMove(*hero,1,-1,first);
@@ -125,15 +133,12 @@ view1.setCenter(player.getPosition());
             // handle events
 
 
-            bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-            bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-            bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-            bool DownKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+
 
 
           /*  sf::Clock WinTime;
             float Timer = WinTime.getElapsedTime();*/
-
+            bool pause=false;
 
             sf::Event Happen;
             while (window.pollEvent(Happen))
@@ -155,35 +160,72 @@ view1.setCenter(player.getPosition());
                 }
             }
 
-            if (LeftKeyDown && isLegalMove(*hero,-1,0,first)){
-                player.move(-16, 0);
-view1.move(-16,0);
-            hero->move(-1,0);}
+    bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+    bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+    bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+    bool DownKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+    bool LShiftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+    bool SpacebarKeyDown=sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+    float staminaUsed=0;
+    if(LShiftKeyDown)
+        staminaUsed+=0.1;
+    if (LeftKeyDown && isLegalMove(*hero,-1,0,first)){
+        if(LShiftKeyDown){
+            player.move(-32, 0);
+            view1.move(-32,0);
+            hero->run(-1,0);}else{
+            player.move(-16, 0);
+            view1.move(-16,0);
+            hero->move(-1,0);}}
 
-            if (RightKeyDown && isLegalMove(*hero,1,0,first)){
-                player.move(16, 0);
-                view1.move(16,0);
-            hero->move(1,0);}
+    if (RightKeyDown && isLegalMove(*hero,1,0,first)){
+        if(LShiftKeyDown){
+            player.move(32, 0);
+            view1.move(32,0);
+            hero->run(1,0);}else{
+            player.move(16, 0);
+            view1.move(16,0);
+            hero->move(1,0);
+        }}
 
-            if (UpKeyDown && isLegalMove(*hero,0,1,first)){
-                player.move(0, 16);
-                view1.move(0,16);
-            hero->move(0,1);}
+    if (UpKeyDown && isLegalMove(*hero,0,1,first)){
+        if(LShiftKeyDown){
+            player.move(0, 32);
+            view1.move(0,32);
+            hero->run(0,1);}else{
+            player.move(0, 16);
+            view1.move(0,16);
+            hero->move(0,1);}}
 
-            if (DownKeyDown && isLegalMove(*hero,0,-1,first)){
-                player.move(0, -16);
-                view1.move(0,-16);
-            hero->move(0,-1);}
+    if (DownKeyDown && isLegalMove(*hero,0,-1,first)){
+        if(LShiftKeyDown){
+            player.move(0, -32);
+            view1.move(0,-32);
+            hero->run(0,-1);}else{
+            player.move(0, -16);
+            view1.move(0,-16);
+            hero->move(0,-1);}}
+    if(SpacebarKeyDown&& hero->getPotionNum()>0)
+        hero->recoverHp(1);
+
+    hero->stamUse(staminaUsed);
+
 
             // draw the map
             window.clear();
             view1.setCenter(player.getPosition());
             window.setView(view1);
+
             window.draw(map);
             window.draw(player);
+            life.setPosition(player.getPosition().x-280,player.getPosition().y-150);
+            stamina.setPosition(life.getPosition().x,life.getPosition().y+5);
+            window.draw(life);
+            window.draw(stamina);
             window.display();
         }
 
-        return 0;
+
     }
+    return 0;
 }

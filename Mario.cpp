@@ -9,7 +9,7 @@ Mario::Mario(int hp, int movements, int posX, int posY, std::string name, int st
 stamina(stamina),maxHp(hp),maxStam(stamina),potionNum(potioNum){
 }
 
-int Mario::getStamina() const {
+float Mario::getStamina() const {
     return stamina;
 }
 
@@ -39,10 +39,10 @@ void Mario::recoverStam(int stamina) {
 
 bool Mario::recoverHp(int potionUsed) {
 
-    Mario::potionNum-=potionUsed;
+
     if(potionUsed!=0){
     Mario::hp+=(Mario::maxHp/5);
-
+        Mario::potionNum-=potionUsed;
     }else{
          Mario::hp=Mario::getMaxHp();}
     return true;

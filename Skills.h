@@ -7,8 +7,9 @@
 #include <iostream>
 #include "Object.h"
 //manca l'override di move ed il movimento della skill
-class Skills {
+class Skills:public Object{
 public:
+
     int getUnlocked() const{
         return unlocked;
     }

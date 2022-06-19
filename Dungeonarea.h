@@ -8,7 +8,7 @@
 #include "Tile.h"
 #include "Template.h"
 
-class Dungeonarea {//todo aggiungere metodo distanza con il template
+class Dungeonarea {
 public:
 
     explicit Dungeonarea(int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int mapType,int chanceRoom,int parts,int xMin,int yMin);

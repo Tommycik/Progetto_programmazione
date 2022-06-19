@@ -7,12 +7,13 @@
 #include "Entity.h"
 #include "Object.h"
 
-class Mario : public ::Entity{
+
+class Mario :public Entity{
 
 public:
     Mario();
     explicit Mario(int hp, int movements, int posX, int posY, std::string name, int stamina,int potioNum );
-    int getStamina() const;
+    float getStamina() const;
 
     void stamUse(int stamina);//manca il consumo calcolato
 
@@ -27,7 +28,7 @@ public:
     void recoverStam(int stamina);//ripresa stam nel tempo
 bool recoverHp(int potionUsed);
 private:
-    int stamina;
+    float stamina;
     int maxHp;
     int maxStam;
     int potionNum;
