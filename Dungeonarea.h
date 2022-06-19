@@ -16,8 +16,8 @@ public:
     ~Dungeonarea();
     bool isLegalCell(int x, int y, Dungeonarea &map) ;
 
-    bool findFreeMapTile(int &x, int &y, Dungeonarea &map);
-    bool createDungeon(int xLength,int yLength ,int inobj );//inserire if e clo per creare stanza boss e spawnarvi boss, inserire modo per creare stanze segrete
+
+    bool createDungeon(int xLength,int yLength ,int inobj );//todo inserire if e clo per creare stanza boss e spawnarvi boss, inserire modo per creare stanze segrete
     bool makeCorridor(int x,int y , int length , int direction);
     bool makeRoom(int x, int y, int xlength,int ylenghth,int direction);
     int getWidth() const;

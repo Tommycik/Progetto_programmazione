@@ -106,7 +106,7 @@ int main() {
     Mario* hero;
     int startX = 0;
     int startY = 0;
-    first.findFreeMapTile(startX, startY, first);
+    findFreeMapTile(startX, startY, first);
     hero = new Mario(100, 1, 0, 0, "prova",20,2);
     hero->setposX(startX);
     hero->setposY(startY);

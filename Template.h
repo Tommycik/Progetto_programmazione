@@ -21,6 +21,27 @@ bool isLegalMove(const T &object, int dX, int dY,u  &map) {//todo mancano i vett
     // bool enemyPos = checkEnemyPositions(newX, newY, enemies);
     return (map.isLegalCell(newX, newY, map) );
 }
+template<typename T>//todo aggiungere altri due oggetti
+bool findFreeMapTile(int &x, int &y, T &map/*,const u &Object1,const c &Object2*/) {
+    for (int i = x; i < map.getWidth(); i++) {
+        for (int j = y; j < map.getHeight(); j++) {
+            if (map.getcell(i,j).getType() == TileType::floor) {
+                x = i;
+                y = j;
+                // additional check
+                /*if (gameCharacters) {
+                    for (auto gc : *gameCharacters) {
+                        if (gc->getPosY() == y && gc->getPosX() == x)
+                            return false;
+                    }
+                }*/
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 
 
 

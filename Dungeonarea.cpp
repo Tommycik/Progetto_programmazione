@@ -510,23 +510,6 @@ bool Dungeonarea::isLegalCell(int x, int y,Dungeonarea &map){
 }
 
 
-bool Dungeonarea::findFreeMapTile(int &x, int &y, Dungeonarea &map)  {//manca la parte dei vettori
-    for (int i = x; i < map.getWidth(); i++) {
-        for (int j = y; j < map.getHeight(); j++) {
-            if (map.getcell(i,j).getType() == TileType::floor) {
-                x = i;
-                y = j;
-                // additional check
-                /*if (gameCharacters) {
-                    for (auto gc : *gameCharacters) {
-                        if (gc->getPosY() == y && gc->getPosX() == x)
-                            return false;
-                    }
-                }*/
-                return true;
-            }
-        }
-    }
-    return false;
-}
+
+
 
