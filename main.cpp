@@ -12,7 +12,11 @@
 //todo aggiungere i vettori nei vari metodi
 // todo completare spawner
 //todo rendere più veloce l'applicazione
-//todo implementare oggetti
+//todo implementare oggetti(sfera bianca come figura) e la pssibilità che si muovano
+//todo implementare skills con le varie texture(stessa cosa con nemici e boss)
+//todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
+//todo implementare metodi world
+//todo implementare audio
 static const int viewHeigth = 300,viewWidth=300;
 static const int width=1080,length=1920;
 enum class GameEvent {
