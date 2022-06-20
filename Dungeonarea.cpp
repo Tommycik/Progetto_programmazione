@@ -1,10 +1,9 @@
 //
 // Created by tommy on 16/06/2022.
 //
-#include "Spawner.h"
+
 #include "Dungeonarea.h"
-#include "Tile.h"
-#include <time.h>//todo rimettere save e name
+//todo rimettere save e name
 
 Dungeonarea::Dungeonarea(int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,
                          int mapType, int chanceRoom, int parts, int xMin, int yMin) : xMax(maxLength), yMax(maxHeigth),
@@ -16,6 +15,7 @@ Dungeonarea::Dungeonarea(int maxLength, int maxHeigth, int minRoomWidth, int min
                                                                                        yMin(yMin) {
     tiles = 0;
     Dungeonarea::createDungeon(getRand(xMin, xMax), getRand(yMin, yMax), parts);
+
 }
 
 

@@ -4,9 +4,20 @@
 
 #ifndef MAIN_ITEM_H
 #define MAIN_ITEM_H
+#include "Object.h"
 
+class Item:public Object  {
+public:
+    Item(int movements, int posX, int posY, const std::string &name, int effect);
 
-class Item {
+    bool isTaken() const;
+
+    void setTaken(bool taken);
+
+    int getEffect() const;
+
+    void setEffect(int effect);
+
 private:
     bool taken;
     int effect;

@@ -3,3 +3,9 @@
 //
 
 #include "Boss.h"
+
+Boss::Boss(int hp, int movements, int posX, int posY, const std::string &name, int statIncrease) : Entity(hp, movements,
+                                                                                                          posX, posY,
+                                                                                                          name),
+                                                                                                   statIncrease(
+                                                                                                           statIncrease) {}

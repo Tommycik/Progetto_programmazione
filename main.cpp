@@ -9,8 +9,7 @@
 #include "Template.h"
 #include <string>
 #include <ctime>
-//todo aggiungere i vettori nei vari metodi
-// todo completare spawner
+//todo completare islegalmove
 //todo rendere più veloce l'applicazione
 //todo riusare tilemap trattando i vari vettori come il puntatore della mappa per disegnarli
 //todo e distance ,legal move,e free map tile per gestirli
@@ -19,11 +18,11 @@
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
 //todo implementare metodi world
 //todo implementare audio
-static const int viewHeigth = 300, viewWidth = 300;
-static const int width = 1080, length = 1920;
-enum class GameEvent {
+static const int viewHeigth = 300;
+//static const int width = 1080, length = 1920;
+/*enum class GameEvent {
     quit, left, up, down, right, fight, magic, noop
-};
+};*/
 
 void ResizeView(const sf::RenderWindow &window, sf::View &view) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
@@ -107,7 +106,8 @@ private:
 int main() {
 
     Dungeonarea first(200, 200, 20, 20, 1, 40, 200, 50, 50);
-    sf::RenderWindow window(sf::VideoMode(width, length), "try",sf::Style::Fullscreen);
+    Spawner firstMob(4,6,2,1);
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
     // run the program as long as the window is open
     sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
 
@@ -116,11 +116,14 @@ int main() {
     window.setFramerateLimit(100);
     Mario* hero;
     int startX = 0;
+    int HudXOffset=-265;
+    int HudYOffset =-147;
+    float HudBarsHeigth=7;
     int startY = 0;
-    findFreeMapTile(startX, startY, first);
+    findFreeMapTile(startX, startY, first,&firstMob.getBosses(),&firstMob.getEnemies(),&firstMob.getItems(),&firstMob.getSafezones());//todo controllare il passaggio dei vettori
     hero = new Mario(100, 1, 0, 0, "prova",40,2);
-    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, 7.0f));
-    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, 7.0f));
+    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, HudBarsHeigth));
+    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, HudBarsHeigth));
     life.setFillColor(sf::Color::Red);
     sf::Font myFont;
     sf::Text Potion;
@@ -130,7 +133,8 @@ int main() {
     Potion.setCharacterSize(128);
     Potion.setScale(sf::Vector2f(0.1,0.1));
     Potion.setOutlineColor(sf::Color::Black);
-    Potion.setOutlineThickness(1);
+    float thickness=1;
+    Potion.setOutlineThickness(thickness);
 
 
 
@@ -141,14 +145,14 @@ int main() {
     }
     stamina.setFillColor(sf::Color::Yellow);
     life.setOutlineColor(sf::Color::Black);
-    life.setOutlineThickness(1);
+    life.setOutlineThickness(thickness);
     stamina.setOutlineColor(sf::Color::Black);
-    stamina.setOutlineThickness(1);
+    stamina.setOutlineThickness(thickness);
     hero->setposX(startX);
     hero->setposY(startY);
     player.setPosition(int(startX*16),int(startY*16));
 
-    sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewWidth));
+    sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
     std::stringstream ss;
 
 view1.setCenter(player.getPosition());
@@ -187,21 +191,21 @@ view1.setCenter(player.getPosition());
                             hero->recoverHp(1);}
 
                         break;
-                    case sf::Event::Resized:
+                    /*case sf::Event::Resized:
                         ResizeView(window,view1);
-                        break;
+                        break;*/
                     default:
                         break;
                 }
             }
-            sf::sleep((sf::milliseconds(115)));
+            sf::sleep((sf::milliseconds(120)));
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
     bool DownKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LShiftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
     float staminaUsed=0;
-
+    ResizeView(window,view1);
     if(LShiftKeyDown){
         if(hero->getStamina()<=0)
             LShiftKeyDown = false;}
@@ -270,11 +274,11 @@ view1.setCenter(player.getPosition());
 
 
 
-            stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, 7.0f));
-            life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, 7.0f));
-            life.setPosition(player.getPosition().x-266,player.getPosition().y-150);
+            stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, HudBarsHeigth));
+            life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, HudBarsHeigth));
+            life.setPosition(player.getPosition().x+HudXOffset,player.getPosition().y+HudYOffset);
             stamina.setPosition(life.getPosition().x,life.getPosition().y+8);
-            Potion.setPosition(int(player.getPosition().x-266), int(player.getPosition().y-137));
+            Potion.setPosition(life.getPosition().x, stamina.getPosition().y+8);
             ss << hero->getPotionNum();
             Potion.setString( ss.str().c_str() );
 

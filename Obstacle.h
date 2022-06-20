@@ -4,12 +4,16 @@
 
 #ifndef MAIN_OBSTACLE_H
 #define MAIN_OBSTACLE_H
+#include "Entity.h"
 
-
-class Obstacle {
+class Obstacle: public Entity {
 protected:
-    bool taken;
-    int effect;
+public:
+    Obstacle(int hp, int movements, int posX, int posY, const std::string &name, int fixed);
+
+protected:
+    bool activated;
+    int fixed;
 };
 
 

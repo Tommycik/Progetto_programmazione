@@ -8,6 +8,8 @@
 #include "Tile.h"
 #include "Template.h"
 
+#include <time.h>
+
 class Dungeonarea {
 public:
 

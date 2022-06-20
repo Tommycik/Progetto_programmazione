@@ -9,8 +9,13 @@
 #include "Dungeonarea.h"
 template <typename T, typename U>
 
-int l1Distance(const T &p, const U &q) {
-    int distance = abs(p.getPosX() - q.getPosX()) + abs(p.getPosY() - q.getPosY());
+ int l1Distance(const T &p, const U &q) {
+    int distance = abs(p.getposX() - q.getposX()) + abs(p.getposY() - q.getposY());
+    return distance;
+}
+template <typename T>
+int l2Distance(const T &p, const int &x,const int &y) {
+    int distance = abs(p.getposX() - x) + abs(p.getposY() - y);
     return distance;
 }
 
@@ -21,20 +26,39 @@ bool isLegalMove(const T &object, int dX, int dY,u  &map) {//todo mancano i vett
     // bool enemyPos = checkEnemyPositions(newX, newY, enemies);
     return (map.isLegalCell(newX, newY, map) );
 }
-template<typename T>//todo aggiungere altri due oggetti
-bool findFreeMapTile(int &x, int &y, T &map/*,const u &Object1,const c &Object2*/) {
+template<typename T,typename u,typename c,typename d,typename s>//todo aggiungere altri due oggetti
+bool findFreeMapTile(int &x, int &y, T &map, u* Object1, c* Object2, d* Object3,
+                      s* Object4 ) {
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
             if (map.getcell(i,j).getType() == TileType::floor) {
                 x = i;
                 y = j;
                 // additional check
-                /*if (gameCharacters) {
-                    for (auto gc : *gameCharacters) {
-                        if (gc->getPosY() == y && gc->getPosX() == x)
+                if (Object1) {
+                    for (auto gc : *Object1) {
+                        if (gc->getposY() == y && gc->getposX() == x)
                             return false;
                     }
-                }*/
+                }
+                if (Object2) {
+                    for (auto gc : *Object2) {
+                        if (gc->getposY() == y && gc->getposX() == x)
+                            return false;
+                    }
+                }
+                if (Object3) {
+                    for (auto gc : *Object3) {
+                        if (gc->getposY() == y && gc->getposX() == x)
+                            return false;
+                    }
+                }
+                if (Object4) {
+                    for (auto gc : *Object4) {
+                        if (gc->getposY() == y && gc->getposX() == x)
+                            return false;
+                    }
+                }
                 return true;
             }
         }
