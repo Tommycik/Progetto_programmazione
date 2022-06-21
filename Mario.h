@@ -19,6 +19,10 @@ public:
 
     int getMaxHp() const;
 
+    void setMaxHp(int maxHp);
+
+    void setMaxStam(int maxStam);
+
     int getMaxStam() const;
 
     int getPotionNum() const;

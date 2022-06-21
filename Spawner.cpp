@@ -22,9 +22,9 @@ void Spawner::spawn( const int numObstacle, const int numObject, const int numSa
         if(effect==1) {
             item = new Item(1,1,1,"item",1);
         } else if(effect==2) {
-            item = new Item(1,1,1,"item",1);
+            item = new Item(1,1,1,"item",2);
         }else{
-            item = new Item(1,1,1,"item",1);
+            item = new Item(1,1,1,"item",3);
         }
 
         int flipSearch = 0;

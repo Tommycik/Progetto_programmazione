@@ -30,7 +30,7 @@ int Mario::getPotionNum() const {
 }
 
 void Mario::setPotionNum(int potionNum) {
-    Mario::potionNum = potionNum;
+    Mario::potionNum += potionNum;
 }
 
 void Mario::recoverStam(float stamina) {
@@ -54,6 +54,14 @@ bool Mario::recoverHp(int potionUsed) {
     }else{
          Mario::hp=Mario::getMaxHp();}
     return true;
+}
+
+void Mario::setMaxHp(int maxHp) {
+    Mario::maxHp += maxHp;
+}
+
+void Mario::setMaxStam(int maxStam) {
+    Mario::maxStam += maxStam;
 }
 
 
