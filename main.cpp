@@ -484,9 +484,11 @@ state=0;
                         if (Happen.key.code == sf::Keyboard::B){
                             if(hero->getPotionNum()!=0)
                             hero->recoverHp(1);}
+                        break;
+                    case sf::Event::KeyReleased:
                         if (Happen.key.code == sf::Keyboard::R){
                             for(auto gc:items){
-                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1){
+                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&!(gc->isTaken())){
                                     bool take=sf::Keyboard::isKeyPressed(sf::Keyboard::R);
 
                                         switch (gc->getEffect()) {
@@ -503,6 +505,7 @@ state=0;
                                                 break;
                                         }
                                         gc->setTaken(true);
+
 
                                 }
                             }}
