@@ -2,7 +2,6 @@
 #include "Tile.h"
 #include "Dungeonarea.h"
 #include "Mario.h"
-//#include "Spawner.h"
 #include <sstream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -13,13 +12,12 @@
 #include "Boss.h"
 #include <string>
 #include "Animation.h"
-#include "Teleport.h"
 #include <ctime>
 //todo texture per stamina e vita e metodi per raccogliere pozioni,sistemare i template in modo che
 //todo e che si ignori nemici e boss morti e oggetti raccolti
 //todo disegnare i vari oggetti e altri vettori
 //todo rendere più veloce l'applicazione
-//todo numero hp con cambio colore
+
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
 //todo implementare metodi world
@@ -29,7 +27,7 @@ static const int viewHeigth = 300;
 std::vector<Obstacle*> enemies;
 std::vector<Item*> items;
 std::vector<Object*> safezones;
-std::vector<Teleport*> teleports;
+std::vector<Object*> teleports;
 std::vector<Boss*> bosses;
 //static const int width = 1080, length = 1920;
 /*enum class GameEvent {
@@ -95,7 +93,7 @@ std::vector<Boss*> bosses;
         bool port;
         for(int i=0; i<numBoss; i++) {
             Boss* boss;
-            Teleport* teleport;
+            Object* teleport;
             int effect=itemTypeDice.roll(1);
             if(effect==1) {
                 boss = new Boss(2,1,2,3,"boss",1);
@@ -135,7 +133,7 @@ std::vector<Boss*> bosses;
             }
             boss->setposX(bossPositionX);
             boss->setposY(bossPositionY);
-            teleport=new Teleport(bossPositionX,bossPositionY);
+            teleport=new Object(0,bossPositionX,bossPositionY,"teleport");
             bosses.push_back(boss);
             teleports.push_back(teleport);
         }
@@ -320,13 +318,13 @@ bool loadTexture(const std::string& tileset){
         m_vertices.resize( numItem* 4);
         for (auto gc : *item) {
             if(!(gc->isTaken())) {
-
-                int tileNumber =12;
+                int i = 0;
+                int tileNumber = 7;
                 if (gc->getEffect() == 2) {
                     tileNumber = 3;
 
                 } else if (gc->getEffect() == 3) {
-                    tileNumber = 7;
+                    tileNumber = 6;
 
                 }
                 // find its position in the tileset texture
@@ -348,92 +346,12 @@ bool loadTexture(const std::string& tileset){
                 m_vertices[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
                 m_vertices[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
                 m_vertices[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-
+                i++;
                 window->draw(m_vertices, &m_tileset);
             }}
         // populate the vertex array, with one quad per tile
 
                 // get the current tile number
-
-        return true;
-    }
-    bool loadTeleport ( sf::Vector2u tileSize,std::vector<Teleport*>* teleport,int numTeleport,sf::RenderWindow *window)
-    {
-        // load the tileset texture
-
-
-
-        // resize the vertex array to fit the level size
-        m_vertices.setPrimitiveType(sf::Quads);
-        m_vertices.resize( numTeleport* 4);
-        for (auto gc : *teleport) {
-            if(gc->isActivated()) {
-
-                int tileNumber =13*11;
-
-                // find its position in the tileset texture
-                int tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
-                int tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
-
-                // get a pointer to the current tile's quad
-
-
-                // define its 4 corners
-                m_vertices[0].position = sf::Vector2f(gc->getposX() * tileSize.x, gc->getposY() * tileSize.y);
-                m_vertices[1].position = sf::Vector2f((gc->getposX() + 1) * tileSize.x, gc->getposY() * tileSize.y);
-                m_vertices[2].position = sf::Vector2f((gc->getposX() + 1) * tileSize.x,
-                                                      (gc->getposY() + 1) * tileSize.y);
-                m_vertices[3].position = sf::Vector2f(gc->getposX() * tileSize.x, (gc->getposY() + 1) * tileSize.y);
-
-                // define its 4 texture coordinates
-                m_vertices[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-                m_vertices[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-                m_vertices[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-                m_vertices[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-
-                window->draw(m_vertices, &m_tileset);
-            }}
-        // populate the vertex array, with one quad per tile
-
-        // get the current tile number
-
-        return true;
-    }
-   bool loadSafezone ( sf::Vector2u tileSize,std::vector<Object*>* safePlace,int numSafe,sf::RenderWindow *window)
-    {
-
-        m_vertices.setPrimitiveType(sf::Quads);
-        m_vertices.resize( numSafe* 4);
-        for (auto gc : *safePlace) {
-            if(true) {
-
-                int tileNumber =42*3;
-
-                // find its position in the tileset texture
-                int tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
-                int tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
-
-                // get a pointer to the current tile's quad
-
-
-                // define its 4 corners
-                m_vertices[0].position = sf::Vector2f(gc->getposX() * tileSize.x, gc->getposY() * tileSize.y);
-                m_vertices[1].position = sf::Vector2f((gc->getposX() + 1) * tileSize.x, gc->getposY() * tileSize.y);
-                m_vertices[2].position = sf::Vector2f((gc->getposX() + 1) * tileSize.x,
-                                                      (gc->getposY() + 1) * tileSize.y);
-                m_vertices[3].position = sf::Vector2f(gc->getposX() * tileSize.x, (gc->getposY() + 1) * tileSize.y);
-
-                // define its 4 texture coordinates
-                m_vertices[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-                m_vertices[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-                m_vertices[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-                m_vertices[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-
-                window->draw(m_vertices,&m_tileset);
-            }}
-        // populate the vertex array, with one quad per tile
-
-        // get the current tile number
 
         return true;
     }
@@ -456,41 +374,25 @@ private:
 };
 
 int main() {
-    int monsterNumber=10;
-    int objectNumber=7;
-    int safezoneNumber=3;
-    int bossNumber=2;
+    int monsterNumber;
+    int objectNumber;
+    int safezoneNumber;
+    int bossNumber;
     Dungeonarea first(200, 200, 20, 20, 1, 40, 200, 50, 50);
-   spawn(monsterNumber,objectNumber,safezoneNumber,bossNumber,first);
+   spawn(0,10,1,1,first);
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
     // run the program as long as the window is open
     sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
-sf::RectangleShape potionIcon(sf::Vector2f(16.0f, 16.0f));
 
-    sf::Texture playerTexture,hpBar,staminaBar,potion;
+    sf::Texture playerTexture;
+
 
     if(!playerTexture.loadFromFile("../assets/mario.png"))
-        return -1;
+        return -1;//todo funzionante
 
-    if(!hpBar.loadFromFile("../assets/hpBar.png"))
-        return -1;
-    if(!staminaBar.loadFromFile("../assets/green.png"))
-        return -1;
-    if(!potion.loadFromFile("../assets/potions.png"))
-        return -1;
-
-
-staminaBar.setSmooth(true);
-    hpBar.setSmooth(true);
+playerTexture.setSmooth(false);
     player.setTexture(&playerTexture);
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
-   potionIcon.setTexture(&potion);
-    sf::Vector2u textureSize=potion.getSize();
-    textureSize.x/=21;
-    textureSize.y/=15;
-    potionIcon.setTextureRect(sf::IntRect(textureSize.x*12,textureSize.y*0,textureSize.x,textureSize.y));
-
-
     int state;
     bool run=false;
    float deltaTime=0.0f;
@@ -499,29 +401,16 @@ staminaBar.setSmooth(true);
     window.setFramerateLimit(100);
     Mario* hero;
     int startX = 0;
-    int HudXOffset=-268;
+    int HudXOffset=-265;
     int HudYOffset =-147;
-    float HudBarsHeigth=14;
+    float HudBarsHeigth=7;
     int startY = 0;
-    int block=false;
+    findFreeMapTile(startX, startY, first,&bosses,&items,&enemies,&safezones);//todo controllare il passaggio dei vettori
     hero = new Mario(100, 1, 0, 0, "prova",40,2);
-    for (int i = startX; i < first.getWidth()&&block==false; i++) {
-        for (int j = startY; j < first.getHeight()&&block==false; j++) {
-            if(findFreeMapTile(i, j, first, &bosses, &items, &enemies,
-                            &safezones)) {//todo controllare il passaggio dei vettori
-                hero->setposX(i);
-                hero->setposY(j);
-                startX=i;
-                startY=j;
-                block=true;
-            }
-        }}
-
     sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, HudBarsHeigth));
     sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, HudBarsHeigth));
-life.setTexture(&hpBar);
-stamina.setTexture(&staminaBar);
-    //life.setFillColor(sf::Color::Red);
+
+    life.setFillColor(sf::Color::Red);
     sf::Font myFont;
     sf::Text Potion;
     Potion.setFont(myFont);
@@ -533,19 +422,20 @@ stamina.setTexture(&staminaBar);
     float thickness=1;
     Potion.setOutlineThickness(thickness);
 
-//stamina.setFillColor(sf::Color::Green);
+
 
 
     if (!myFont.loadFromFile("../assets/arial.ttf"))
     {
         return -1;
     }
-    //stamina.setFillColor(sf::Color::Yellow);
-   /* life.setOutlineColor(sf::Color::Black);
-    life.setOutlineThickness(thickness);*/
-    /*stamina.setOutlineColor(sf::Color::Black);
-    stamina.setOutlineThickness(thickness);*/
-
+    stamina.setFillColor(sf::Color::Yellow);
+    life.setOutlineColor(sf::Color::Black);
+    life.setOutlineThickness(thickness);
+    stamina.setOutlineColor(sf::Color::Black);
+    stamina.setOutlineThickness(thickness);
+    hero->setposX(startX);
+    hero->setposY(startY);
 
     player.setPosition(startX*16,startY*16);
 
@@ -556,17 +446,11 @@ stamina.setTexture(&staminaBar);
 
    // isLegalMove(*hero,1,-1,first);
     while (window.isOpen()) {
-        TileMap map,object,teleport,safezone;
+        TileMap map,object;
         if (!map.load("../assets/town.png", sf::Vector2u(16, 16), first, first.getWidth(), first.getHeight()))
             return -1;
 if(!object.loadTexture("../assets/potions.png"))
     return -1;
-
-        if(!teleport.loadTexture("../assets/books.png"))
-            return -1;
-
-        if(!safezone.loadTexture("../assets/pixelSet.png"))
-            return -1;
         animationPlayer.updatePlayer(deltaTime,run,state);
         player.setTextureRect(animationPlayer.uvRect);
 
@@ -712,9 +596,7 @@ player.setTextureRect(animationPlayer.uvRect);
             window.setView(view1);
 
             window.draw(map);
-            safezone.loadSafezone(sf::Vector2u(16, 16), &safezones,safezoneNumber,&window);
             window.draw(player);
-
 
 
 
@@ -727,21 +609,17 @@ player.setTextureRect(animationPlayer.uvRect);
             stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, HudBarsHeigth));
             life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, HudBarsHeigth));
             life.setPosition(player.getPosition().x+HudXOffset,player.getPosition().y+HudYOffset);
-            stamina.setPosition(life.getPosition().x+2,life.getPosition().y+8);
-            Potion.setPosition(life.getPosition().x+3, stamina.getPosition().y+8);
-            potionIcon.setPosition(Potion.getPosition().x+7, Potion.getPosition().y);
+            stamina.setPosition(life.getPosition().x,life.getPosition().y+8);
+            Potion.setPosition(life.getPosition().x, stamina.getPosition().y+8);
             ss << hero->getPotionNum();
             Potion.setString( ss.str().c_str() );
 
             ss.str("");
-            object.loaditem( sf::Vector2u(16, 16), &items,objectNumber,&window);
-            teleport.loadTeleport(sf::Vector2u(16, 16), &teleports,bossNumber,&window);
-
-
+            object.loaditem( sf::Vector2u(16, 16), &items,16,&window);
             window.draw(life);
             window.draw(stamina);
             window.draw(Potion);
-window.draw(potionIcon);
+
 
           //  window.draw(object);
             window.display();

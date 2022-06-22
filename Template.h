@@ -70,9 +70,11 @@ checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(
 template<typename T,typename u,typename c,typename d,typename s>//todo aggiungere altri due oggetti
 bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                       s* Object4 = nullptr) {
-
-            if (map.getcell(x,y).getType() == TileType::floor) {
-
+    for (int i = x; i < map.getWidth(); i++) {
+        for (int j = y; j < map.getHeight(); j++) {
+            if (map.getcell(i,j).getType() == TileType::floor) {
+                x = i;
+                y = j;
                 // additional check
                 if (Object1) {
                     for (auto gc : *Object1) {
@@ -99,12 +101,10 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
                     }
 
             } return true;
+        }
+    }
 
-
-
-}else{
-                return false;
-            }}
+}return false;}
 
 
 
