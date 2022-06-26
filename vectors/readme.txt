@@ -1,0 +1,2 @@
+funzione beta
+salvataggio vettori
