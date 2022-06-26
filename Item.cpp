@@ -20,9 +20,9 @@ void Item::setEffect(int effect) {
     Item::effect = effect;
 }
 
-Item::Item(int movements, int posX, int posY, const std::string &name, int effect) : Object(movements, posX, posY,
-                                                                                            name), effect(effect) {
-   Item::taken=false;
+Item::Item(int movements, int posX, int posY, int effect) : Object(movements, posX, posY){
+   this->taken=false;
+   this->effect=effect;
 }
 
 

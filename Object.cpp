@@ -12,6 +12,8 @@ void Object::move(int x, int y) {
     posY += y;
 }
 
-Object::Object(int movements, int posX, int posY, std::string name):movements(movements),
-posX(posX),posY(posY),name(name) {
+Object::Object(int movements, int posX, int posY){
+    this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
 }

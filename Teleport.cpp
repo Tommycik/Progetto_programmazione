@@ -12,7 +12,10 @@ void Teleport::setActivated(bool activated) {
     Teleport::activated = activated;
 }
 
-Teleport::Teleport(int posX, int posY) : Object(movements=0, posX,posY, name="teleport")
-                                                                                                 {
-    this->activated= true;
-                                                                                                 }
+Teleport::Teleport(int posX, int posY) : Object(movements=0, posX,posY){
+    this->activated= true;}
+
+void teleportation(Mario &hero,int finalX,int finalY){
+    hero.setposX(finalX);
+    hero.setposY(finalY);
+}

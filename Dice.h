@@ -8,6 +8,7 @@
 
 class Dice {
 public:
+    Dice();
     explicit Dice(int f = 6);
 
     int roll(int r);

@@ -9,11 +9,20 @@
 class Obstacle: public Entity {
 protected:
 public:
-    Obstacle(int hp, int movements, int posX, int posY, const std::string &name, int fixed);
+    Obstacle();
+    explicit Obstacle(int hp, int movements, int posX, int posY, bool fixed);
+
+    bool isFixed() const;
+
+    bool isActivated() const;
+
+    void setFixed(bool fixed);
+
+    void setActivated(bool activated);
 
 protected:
-    bool activated;
-    int fixed;
+    bool activated=false;
+    bool fixed=true;
 };
 
 

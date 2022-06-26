@@ -5,7 +5,7 @@
 #include "Mario.h"
 #include "Entity.h"
 #include "Object.h"
-Mario::Mario(int hp, int movements, int posX, int posY, std::string name, int stamina, int potioNum):Entity(hp,movements,posX,posY,name),
+Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum):Entity(hp,movements,posX,posY),
 stamina(stamina),maxHp(hp),maxStam(stamina),potionNum(potioNum){
 }
 

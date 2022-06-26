@@ -7,21 +7,19 @@
 
 
 
-Animation::~Animation() {
-
-}
+Animation::~Animation() {}
 Animation::Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime) {//image counter è il numero di texture totali nel file
 
     this->imageCount=imageCount;
     this->switchTime=switchTime;
-    totalTime=0.0f;
-    totalTimeIdle=0.0f;
-    totalTimeMovement=0.0f;
-    currentImage.x=0;
-    currentImage.y=0;
-     turn= false;
-    uvRect.width=texture->getSize().x/float(imageCount.x);
-    uvRect.height=texture->getSize().y/float(imageCount.y);
+    this->turn= false;
+    this->totalTime=0.0f;
+    this->totalTimeIdle=0.0f;
+    this->totalTimeMovement=0.0f;
+    this->currentImage.x=0;
+    this->currentImage.y=0;
+    this->uvRect.width=texture->getSize().x/float(imageCount.x);
+    this->uvRect.height=texture->getSize().y/float(imageCount.y);
 }
 
 
@@ -57,9 +55,10 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
         totalTimeIdle+=deltaTime;
         currentImage.y=0;
         currentImage.x=0;
-        if(!(totalTimeIdle<=2)){
-            totalTimeIdle-=2;
-            uvRect.top=currentImage.y*uvRect.height;
+        uvRect.top=currentImage.y*uvRect.height;
+        if(!(totalTimeIdle<=3)){
+            totalTimeIdle-=3;
+
             if( turn==false){
                 uvRect.left=currentImage.x*uvRect.width;
                 uvRect.width=abs(uvRect.width);
@@ -70,10 +69,15 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
             }
 
         }else{
-            uvRect.top=currentImage.y*uvRect.height;
-            uvRect.left=currentImage.x*uvRect.width;
-            uvRect.width=abs(uvRect.width);
-        }
+            if( turn==false){
+                uvRect.left=currentImage.x*uvRect.width;
+                uvRect.width=abs(uvRect.width);
+                }else{
+                uvRect.left=(currentImage.x+1)*abs(uvRect.width);
+                uvRect.width=-abs(uvRect.width);
+
+
+        }}
     }else{
         totalTimeMovement+=deltaTime;
         totalTimeIdle=0;
@@ -108,10 +112,10 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
         }
 
 
-        }
-
-    //
     }
+
+
+}
 
 
 

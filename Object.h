@@ -9,7 +9,7 @@
 class Object {
 public:
     Object();
-    explicit Object(int movements, int posX,int posY,std::string name);
+    explicit Object(int movements, int posX,int posY);
     virtual void move(int x, int y);
 
 void setMovements(int variation){

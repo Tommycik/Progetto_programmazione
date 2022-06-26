@@ -8,7 +8,8 @@
 
 class Item:public Object  {
 public:
-    Item(int movements, int posX, int posY, const std::string &name, int effect);
+    Item();
+    explicit Item(int movements, int posX, int posY, int effect);
 
     bool isTaken() const;
 

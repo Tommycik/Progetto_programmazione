@@ -12,7 +12,7 @@ class Mario :public Entity{
 
 public:
     Mario();
-    explicit Mario(int hp, int movements, int posX, int posY, std::string name, int stamina,int potioNum );
+    explicit Mario(int hp, int movements, int posX, int posY, int stamina,int potioNum );
     float getStamina() const;
 
     void stamUse(int stamina);//manca il consumo calcolato
@@ -30,7 +30,8 @@ public:
     void setPotionNum(int potionNum);
 
     void recoverStam(float stamina);//ripresa stam nel tempo
-bool recoverHp(int potionUsed);
+    bool recoverHp(int potionUsed);
+
 private:
     float stamina;
     int maxHp;

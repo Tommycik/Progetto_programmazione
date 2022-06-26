@@ -11,10 +11,11 @@
 
 class Animation{
 public:
-    Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime);
+    Animation();
+    explicit Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime);
     void update(int row,float deltaTime,bool faceRight);
     void updatePlayer(float deltaTime,bool running,unsigned int state);
-   ~Animation();
+    ~Animation();
 
 private:
     sf::Vector2u imageCount;

@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include "Dungeonarea.h"
+#define VERBOSE
 template <typename T, typename U>
 
  int l1Distance(const T &p, const U &q) {
@@ -67,12 +68,16 @@ return (
 
 checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(newX, newY, map) );}
 
-template<typename T,typename u,typename c,typename d,typename s>//todo aggiungere altri due oggetti
+/*template<typename T,typename u,typename c,typename d,typename s>//todo aggiungere altri due oggetti
 bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                       s* Object4 = nullptr) {
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
             if (map.getcell(i,j).getType() == TileType::floor) {
+#ifdef VERBOSE
+
+                std::cout << "# floor";
+#endif
                 x = i;
                 y = j;
                 // additional check
@@ -104,7 +109,7 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
         }
     }
 
-}return false;}
+}return false;}*/
 
 
 

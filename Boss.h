@@ -8,8 +8,12 @@
 
 class Boss:public Entity {
 public:
-    Boss(int hp, int movements, int posX, int posY, const std::string &name, int statIncrease);
+    Boss();
+    explicit Boss(int hp, int movements, int posX, int posY, int statIncrease);
 
+    int getStatIncrease() const;
+
+    void setStatIncrease(int statIncrease);
 
 protected:
     int statIncrease;

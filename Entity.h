@@ -9,20 +9,13 @@
 class Entity : public Object  {
 public:
     Entity();
-    explicit Entity(int hp,int movements, int posX,int posY,std::string name);
+    explicit Entity(int hp,int movements, int posX,int posY);
 
     //virtual int fight()
     int getHp() const;
 
     void setHp(int hp);
-    void run(int x,int y) {
-        if (x > movements ||x<-movements)
-            x = movements;
-        if (y > movements||y<-movements)
-            y = movements;
-        posX += 2*x;
-        posY += 2*y;
-    }
+    void run(int x,int y);
 
 protected:
     int hp;

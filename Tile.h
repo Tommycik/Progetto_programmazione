@@ -6,15 +6,19 @@
 #define MAIN_TILE_H
 
 enum class TileType{
-     Unused=0,wall=1,floor=2,corridor=3,damagedfloor,destructible,door=6,pebble
+     Unused=0,wall,floor,corridor,damagedfloor,destructible,door,pebble
 
 };//
 class Tile{
 public:
 
 
+    Tile(){
+        this->type=TileType::Unused;
+    };
+
     TileType getType() const  {
-    return type;
+    return Tile::type;
 }
 
     void setType( TileType tile){

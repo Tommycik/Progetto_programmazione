@@ -3,7 +3,7 @@
 //
 
 #include "Tile.h"
-/*bool Tile::isDestructble() const {
+bool Tile::isDestructble() const {
     return destructible;
 }
 bool Tile::isPassable() const{
@@ -11,4 +11,4 @@ bool Tile::isPassable() const{
 }
 void Tile::unlockPassage(bool unlock){
     passable=unlock;
-}*/
+}

@@ -4,6 +4,11 @@
 
 #include "Entity.h"
 #include "Object.h"
+
+Entity::Entity(int hp, int movements, int posX, int posY):Object(movements,posX,posY) {
+    this->hp=hp;
+}
+
 int Entity::getHp() const {
     return hp;
 }
@@ -12,6 +17,12 @@ void Entity::setHp(int hp) {
     Entity::hp = hp;
 }
 
-Entity::Entity(int hp, int movements, int posX, int posY, std::string name):hp(hp),Object(movements,posX,posY,name) {
-}
 
+void Entity::run(int x,int y) {
+    if (x > movements ||x<-movements)
+        x = movements;
+    if (y > movements||y<-movements)
+        y = movements;
+    posX += 2*x;
+    posY += 2*y;
+}
