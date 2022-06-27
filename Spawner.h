@@ -15,19 +15,28 @@
 #include "Teleport.h"
 class Spawner {
 public :
+
+
+
+
+
+    Spawner();
+    explicit Spawner(int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber);
+
+    ~Spawner() {
+
+    }
+
     void create();
-     std::vector<Obstacle *> &getEnemies() ;
+    std::vector<Obstacle *> &getEnemies() ;
 
-     std::vector<Item *> &getItems() ;
+    std::vector<Item *> &getItems() ;
 
-     std::vector<Object *> &getSafezones();
+    std::vector<Object *> &getSafezones();
 
-     std::vector<Teleport *> &getTeleports() ;
+    std::vector<Teleport *> &getTeleports() ;
 
-     std::vector<Boss *> &getBosses() ;
-
-
-    Spawner(int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber);
+    std::vector<Boss *> &getBosses() ;
     template<typename T>
 
     void spawn(  Dungeonarea &map,T* Vector=nullptr) {
@@ -104,10 +113,10 @@ public :
     std::vector<Teleport*> teleports;
     std::vector<Boss*> bosses;
 private:
-    int monsterNumber;
-    int objectNumber;
-    int safezoneNumber;
-    int bossNumber;
+    int monsterNumber=0;
+    int objectNumber=0;
+    int safezoneNumber=0;
+    int bossNumber=0;
 
 };
 

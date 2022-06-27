@@ -668,7 +668,7 @@ int main() {
     for(int i=0;i<numberMap;i++) {
         //maps[i]->setOldseed(oldseed2);
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
-        vectors[i]->create();
+        //vectors[i]->create();
         if (!loadVectors(savesVec[i],names[i],*vectors[i])) {
             std::cout << "# of tiles made: \t" ;
             vectors[i]->spawn( *maps[i],&vectors[i]->getItems());

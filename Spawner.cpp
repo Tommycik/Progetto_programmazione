@@ -3,9 +3,14 @@
 //
 
 #include "Spawner.h"
-#include "Dungeonarea.h"
 
 
+
+Spawner::Spawner(int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber) : monsterNumber(
+        monsterNumber), objectNumber(objectNumber), safezoneNumber(safezoneNumber), bossNumber(bossNumber) {
+
+    this->create();
+}
 
  std::vector<Obstacle *> &Spawner::getEnemies()  {
     return enemies;
@@ -36,8 +41,7 @@
     return bosses;
 }
 
-Spawner::Spawner(int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber) : monsterNumber(
-        monsterNumber), objectNumber(objectNumber), safezoneNumber(safezoneNumber), bossNumber(bossNumber) {}
+
 
 
 void Spawner::create() {
