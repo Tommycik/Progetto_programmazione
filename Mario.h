@@ -26,6 +26,10 @@ public:
     int getMaxStam() const;
 
     int getPotionNum() const;
+void potionNumSave(int potionNum);
+    void maxStamSave(int maxStam);
+    void maxHpSave(int maxHp);
+    void setStamina(float stamina);
 
     void setPotionNum(int potionNum);
 

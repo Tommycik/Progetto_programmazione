@@ -6,10 +6,12 @@
 #define MAIN_WORLD_H
 #include <iostream>
 #include <vector>
-
+#include "Mario.h"
+#include "Littlelight.h"
 class World {
 public:
-
+    void savePlayer(int map,Mario &player/*,int littleStatus*/);
+    bool loadPlayer(int &mapIndex,Mario &player);
 private:
     std::vector<std::string> areaSaves;
 

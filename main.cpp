@@ -6,7 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Template.h"
-#include "Dice.h"
+#include "World.h"
 #include <string>
 #include "Animation.h"
 #include "Obstacle.h"
@@ -632,15 +632,16 @@ int main() {
     };
     Dungeonarea *maps[numberMap];
 
-
+    bool recreate=false;
     try {
     long oldseed=0;
+
     //todo salvataggio e caricamento vettori vari e stato mario
         for(int i=0;i<numberMap;i++){
             maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, 1, 40, 200, 100, 100,names[i],saves[i]);
 
        if(!maps[i]->loadMap(saves[i],names[i])){
-
+           recreate=true;
 
            oldseed=maps[i]->getOldseed();
            maps[i]->saveMap(saves[i]);}
@@ -669,7 +670,7 @@ int main() {
         //maps[i]->setOldseed(oldseed2);
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
         //vectors[i]->create();
-        if (!loadVectors(savesVec[i],names[i],*vectors[i])) {
+        if ((!loadVectors(savesVec[i],names[i],*vectors[i]))||recreate) {
             std::cout << "# of tiles made: \t" ;
             vectors[i]->spawn( *maps[i],&vectors[i]->getItems());
             std::cout << "# of tiles made: \t" ;
@@ -711,24 +712,30 @@ int main() {
     player.setTexture(&playerTexture);
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
 
-
+World game;
+    Mario* hero;
+    hero = new Mario(100, 1, 0, 0,40,2);
+if(!game.loadPlayer(mapIndex,*hero)){
     int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
     int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
-    int HudXOffset=-268;
-    int HudYOffset =-147;
-    int HudBarsHeigth=14;
-
     while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
         startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
         startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
     }
-
-    Mario* hero;
-    hero = new Mario(100, 1, 0, 0,40,2);
-    hero->setHp(50);
     hero->setposX(startX);
     hero->setposY(startY);
-    player.setPosition(startX*16,startY*16);
+}
+
+    int HudXOffset=-268;
+    int HudYOffset =-147;
+    int HudBarsHeigth=14;
+
+
+
+
+    hero->setHp(50);
+
+    player.setPosition(hero->getposX()*16,hero->getposY()*16);
     player.setOrigin(1,7);
     player.setScale(1.2,1.7);
 
@@ -816,13 +823,22 @@ int main() {
             {
                 switch (Happen.type){
 
-                    case sf::Event::Closed:
+                   /* case sf::Event::Closed:
                         window.close();
-                        break;
+                        break;*/
 
                     case sf::Event::KeyPressed:
-                        if (Happen.key.code == sf::Keyboard::Escape)
+                        if (Happen.key.code == sf::Keyboard::Escape){
+                            game.savePlayer(mapIndex,*hero);
+                            for(int i=0;i<numberMap;i++) {
+                                    saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber, &vectors[i]->getBosses(), &vectors[i]->getItems(), &vectors[i]->getEnemies(), &vectors[i]->getSafezones(),
+                                                &vectors[i]->getTeleports());
+                                }
+
+
                             window.close();
+                        }
+
                         if (Happen.key.code == sf::Keyboard::B){
                             if(hero->getPotionNum()!=0)
                             hero->recoverHp(1);}
@@ -861,6 +877,36 @@ int main() {
 
                                         hero->recoverHp(0);
 
+                                }}}
+                        if (Happen.key.code == sf::Keyboard::O||Happen.key.code == sf::Keyboard::P){
+                            for(auto gc:vectors[mapIndex]->getTeleports()){
+                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1){
+                            if (Happen.key.code == sf::Keyboard::O){
+                                if(mapIndex==numberMap-1) {
+                                    mapIndex=0;
+                                }else{
+                                mapIndex++;}
+                            }else if (Happen.key.code == sf::Keyboard::P){
+                                if(mapIndex==0) {
+                                    mapIndex=numberMap-1;
+                                }else{
+                                    mapIndex--;}
+                            }
+
+                            if (!map.load("../assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+                                return -1;
+                            int herox=0,heroy=0;
+                            object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
+                            teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
+                            safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
+                                    while(!(findFreeMapTile(herox, heroy, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
+                                        herox = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
+                                        heroy = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
+                                    }
+
+                                    hero->setposX(herox);
+                                    hero->setposY(heroy);
+                                    player.setPosition(herox*16,heroy*16);
                                 }}}
                         break;
 

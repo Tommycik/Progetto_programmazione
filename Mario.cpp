@@ -34,7 +34,7 @@ void Mario::setPotionNum(int potionNum) {
 }
 
 void Mario::recoverStam(float stamina) {
-    if(Mario::stamina<Mario::maxStam)
+    if(Mario::stamina<=Mario::maxStam-stamina)
     Mario::stamina += stamina;
 }
 
@@ -62,6 +62,22 @@ void Mario::setMaxHp(int maxHp) {
 
 void Mario::setMaxStam(int maxStam) {
     Mario::maxStam += maxStam;
+}
+
+void Mario::setStamina(float stamina) {
+    Mario::stamina = stamina;
+}
+
+void Mario::potionNumSave(int potionNum) {
+Mario::potionNum=potionNum;
+}
+
+void Mario::maxStamSave(int maxStam) {
+Mario::maxStam=maxStam;
+}
+
+void Mario::maxHpSave(int maxHp) {
+Mario::maxHp=maxHp;
 }
 
 
