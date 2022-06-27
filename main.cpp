@@ -10,7 +10,7 @@
 #include <string>
 #include "Animation.h"
 #include "Obstacle.h"
-
+#include "Spawner.h"
 //#include <ctime>
 //#define VERBOSE
 //todo settare distanza tra i vari oggetti
@@ -26,11 +26,11 @@
 //todo implementare audio
 static const int viewHeigth = 300;
 
-std::vector<Obstacle*> enemies;
-std::vector<Item*> items;
-std::vector<Object*> safezones;
-std::vector<Teleport*> teleports;
-std::vector<Boss*> bosses;
+/*std::vector<Obstacle*> vectors[mapIndex]->getEnemies();
+std::vector<Item*> vectors[mapIndex]->getItems();
+std::vector<Object*> vectors[mapIndex]->getSafezones();
+std::vector<Teleport*> vectors[mapIndex]->getTeleports();
+std::vector<Boss*> vectors[mapIndex]->getBosses();*/
 //static const int width = 1080, length = 1920;
 /*enum class GameEvent {
     quit, left, up, down, right, fight, magic, noop
@@ -74,7 +74,7 @@ int control=0;
     out.close();
     //}
 }
-bool loadVectors(std::string fileName,std::string name){
+bool loadVectors(std::string fileName,std::string name,Spawner &creator){
     std::ifstream in;
 
     in.exceptions(std::ifstream::failbit);
@@ -89,19 +89,19 @@ bool loadVectors(std::string fileName,std::string name){
     if (fileLine.compare(name) != 0)
         throw GameFileException("Map file is in wrong format", "../vectors/vector.txt", true);
     std::getline(in, fileLine);
-    bosses.reserve(std::stoi(fileLine));
-    teleports.reserve(std::stoi(fileLine));
+    creator.getBosses().reserve(std::stoi(fileLine));
+    creator.getTeleports().reserve(std::stoi(fileLine));
     std::getline(in, fileLine);
-    items.reserve(std::stoi(fileLine));
+    creator.getItems().reserve(std::stoi(fileLine));
     std::getline(in, fileLine);
-    enemies.reserve(std::stoi(fileLine));
+    creator.getEnemies().reserve(std::stoi(fileLine));
     std::getline(in, fileLine);
-    safezones.reserve(std::stoi(fileLine));
+    creator.getSafezones().reserve(std::stoi(fileLine));
     std::getline(in, fileLine);
     bool fixed=true;
     int control=0;
     try {
-    for(auto gc:bosses){
+    for(auto gc:creator.getBosses()){
         gc->setHp(std::stoi(fileLine));
         std::getline(in, fileLine);
         gc->setMovements(std::stoi(fileLine));
@@ -113,7 +113,7 @@ bool loadVectors(std::string fileName,std::string name){
         gc->setStatIncrease(std::stoi(fileLine));
         std::getline(in, fileLine);
     }
-    for(auto gd:items){
+    for(auto gd:creator.getItems()){
         gd->setMovements(std::stoi(fileLine));
         std::getline(in, fileLine);
         gd->setposX(std::stoi(fileLine));
@@ -125,7 +125,7 @@ bool loadVectors(std::string fileName,std::string name){
         gd->setTaken(std::stoi(fileLine));
         std::getline(in, fileLine);
     }
-    for(auto gb:enemies){
+    for(auto gb:creator.getEnemies()){
         gb->setHp(std::stoi(fileLine));
         std::getline(in, fileLine);
         gb->setMovements(std::stoi(fileLine));
@@ -139,7 +139,7 @@ bool loadVectors(std::string fileName,std::string name){
         std::getline(in, fileLine);
     }
 
-    for(auto gv:safezones){
+    for(auto gv:creator.getSafezones()){
         gv->setMovements(std::stoi(fileLine));
         std::getline(in, fileLine);
         gv->setposX(std::stoi(fileLine));
@@ -149,7 +149,7 @@ bool loadVectors(std::string fileName,std::string name){
 
     }
 
-    for(auto gm:teleports){
+    for(auto gm:creator.getTeleports()){
         gm->setposX(std::stoi(fileLine));
         std::getline(in, fileLine);
         gm->setposY(std::stoi(fileLine));
@@ -212,13 +212,13 @@ if(safezone!=nullptr){
         }
 
     }return false;}
-void create(const int numObstacle, const int numObject, const int numSafezone,
+/*void create(const int numObstacle, const int numObject, const int numSafezone,
             const int numBoss){
-    enemies.reserve(numObstacle);
-    safezones.reserve(numSafezone);
-    items.reserve(numObject);
-    bosses.reserve(numBoss);
-    teleports.reserve(numBoss);
+    vectors[mapIndex]->getEnemies().reserve(numObstacle);
+    vectors[mapIndex]->getSafezones().reserve(numSafezone);
+    vectors[mapIndex]->getItems().reserve(numObject);
+    vectors[mapIndex]->getBosses().reserve(numBoss);
+    vectors[mapIndex]->getTeleports().reserve(numBoss);
 
     Dice itemTypeDice(3);
 
@@ -232,7 +232,7 @@ void create(const int numObstacle, const int numObject, const int numSafezone,
         }else{
             item = new Item(1,1,1,3);
         }
-        items.push_back(item);
+        vectors[mapIndex]->getItems().push_back(item);
     }
 
     Dice BossTypeDice(3);
@@ -251,8 +251,8 @@ void create(const int numObstacle, const int numObject, const int numSafezone,
 
 
         teleport=new Teleport(3,3);
-        bosses.push_back(boss);
-        teleports.push_back(teleport);
+        vectors[mapIndex]->getBosses().push_back(boss);
+        vectors[mapIndex]->getTeleports().push_back(teleport);
     }
 
     for(int i=0; i<numSafezone; i++) {
@@ -260,7 +260,7 @@ void create(const int numObstacle, const int numObject, const int numSafezone,
         safezone = new Object(1,4,4);
 
 
-        safezones.push_back(safezone);
+        vectors[mapIndex]->getSafezones().push_back(safezone);
     }
 
     Dice enemyTypeDice(3);//todo fare in modo che i nemici peggio abbiano meno possibilità
@@ -275,10 +275,10 @@ void create(const int numObstacle, const int numObject, const int numSafezone,
         }else{
             enemy = new Obstacle(5,1,8,2,true);
         }
-        enemies.push_back(enemy);
+        vectors[mapIndex]->getEnemies().push_back(enemy);
     }
-}
-template<typename T>
+}*/
+/*template<typename T>
 
     void spawn(  Dungeonarea &map,T* Vector=nullptr) {
 
@@ -306,30 +306,30 @@ template<typename T>
 
 
 
-                if (!(bosses.empty())) {
-                    for (auto gb: bosses) {
+                if (!(vectors[mapIndex]->getBosses().empty())) {
+                    for (auto gb: vectors[mapIndex]->getBosses()) {
                         if (gb->getposY() == itemPositionY && gb->getposX() == itemPositionX)
                             positionFound = false;
                     }
                 }
 
 
-                if (!(items.empty())) {
-                    for (auto gi: items) {
+                if (!(vectors[mapIndex]->getItems().empty())) {
+                    for (auto gi: vectors[mapIndex]->getItems()) {
                         if (gi->getposY() == itemPositionY && gi->getposX() == itemPositionX)
                             positionFound = false;
                     }
                 }
 
-                if (!(enemies.empty())) {
-                    for (auto ge: enemies) {
+                if (!(vectors[mapIndex]->getEnemies().empty())) {
+                    for (auto ge: vectors[mapIndex]->getEnemies()) {
                         if (ge->getposY() == itemPositionY && ge->getposX() == itemPositionX)
                             positionFound = false;
                     }
                 }
 
-                if (!(safezones.empty())) {
-                    for (auto gs: safezones) {
+                if (!(vectors[mapIndex]->getSafezones().empty())) {
+                    for (auto gs: vectors[mapIndex]->getSafezones()) {
                         if (gs->getposY() == itemPositionY && gs->getposX() == itemPositionX)
                             positionFound = false;
                     }
@@ -346,7 +346,7 @@ if(positionFound)
 
 
     }
-}
+}*/
 
 
 
@@ -429,8 +429,8 @@ public:
     }
 
 
-    template<typename T>
-    bool loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,T *item=nullptr)
+
+    bool loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator)
     {
 
 
@@ -443,7 +443,7 @@ public:
         int tu=0;
         int i=0;
 
-        for (auto gl : *item) {
+        for (auto gl : creator.getItems()) {
 
              if(!(gl->isTaken())) {
 
@@ -482,8 +482,8 @@ public:
         return true;
     }
 
-    template<typename T>
-    bool loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,T *item=nullptr)
+
+    bool loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator)
     {
 
 
@@ -496,7 +496,7 @@ public:
         int tu=0;
         int i=0;
 
-        for (auto gl : *item) {
+        for (auto gl : creator.getTeleports()) {
 
              if(gl->isActivated()) {
 
@@ -531,8 +531,8 @@ public:
         return true;
     }
 
-    template<typename T>
-    bool loadSafezone ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,T *item=nullptr)
+
+    bool loadSafezone ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator)
     {
 
 
@@ -545,7 +545,7 @@ public:
         int tu=0;
         int i=0;
 
-        for (auto gl : *item) {
+        for (auto gl : creator.getSafezones()) {
 
 
 
@@ -662,38 +662,40 @@ int main() {
 
 
     std::cout << "# of tiles made: \t" ;
-    create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
-   /* long oldseed2=0;//fixme salvataggio e caricamento vettori
+    //create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
+   long oldseed2=0;//fixme salvataggio e caricamento vettori
+    Spawner *vectors[numberMap];
     for(int i=0;i<numberMap;i++) {
-        maps[i]->setOldseed(oldseed2);
-        create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
-        if (!loadVectors(savesVec[i],names[i])) {
+        //maps[i]->setOldseed(oldseed2);
+        vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
+        vectors[i]->create();
+        if (!loadVectors(savesVec[i],names[i],*vectors[i])) {
             std::cout << "# of tiles made: \t" ;
-            spawn( *maps[i],&items);
+            vectors[i]->spawn( *maps[i],&vectors[i]->getItems());
             std::cout << "# of tiles made: \t" ;
-            spawn(*maps[i],&bosses);
-            spawn(*maps[i],&teleports);
+            vectors[i]->spawn(*maps[i],&vectors[i]->getBosses());
+            vectors[i]->spawn(*maps[i],&vectors[i]->getTeleports());
             std::cout << "# of tiles made: \t" ;
-            spawn(*maps[i],&safezones);
+            vectors[i]->spawn(*maps[i],&vectors[i]->getSafezones());
             std::cout << "# of tiles made: \t" ;
-            spawn(*maps[i],&enemies);
+            vectors[i]->spawn(*maps[i],&vectors[i]->getEnemies());
             std::cout << "# of tiles made: \t" ;
 
-            saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber, &bosses, &items, &enemies, &safezones,
-                        &teleports);
+            saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber, &vectors[i]->getBosses(), &vectors[i]->getItems(), &vectors[i]->getEnemies(), &vectors[i]->getSafezones(),
+                        &vectors[i]->getTeleports());
         }
-    }*/
+    }
 
+   /* std::cout << "# of tiles made: \t" ;
+   spawn( *maps[mapIndex],&vectors[mapIndex]->getItems());
     std::cout << "# of tiles made: \t" ;
-   spawn( *maps[mapIndex],&items);
+    spawn(*maps[mapIndex],&vectors[mapIndex]->getBosses());
+    spawn(*maps[mapIndex],&vectors[mapIndex]->getTeleports());
     std::cout << "# of tiles made: \t" ;
-    spawn(*maps[mapIndex],&bosses);
-    spawn(*maps[mapIndex],&teleports);
+    spawn(*maps[mapIndex],&vectors[mapIndex]->getSafezones());
     std::cout << "# of tiles made: \t" ;
-    spawn(*maps[mapIndex],&safezones);
-    std::cout << "# of tiles made: \t" ;
-    spawn(*maps[mapIndex],&enemies);
-    std::cout << "# of tiles made: \t" ;
+    spawn(*maps[mapIndex],&vectors[mapIndex]->getEnemies());
+    std::cout << "# of tiles made: \t" ;*/
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
     window.setFramerateLimit(100);
@@ -716,7 +718,7 @@ int main() {
     int HudYOffset =-147;
     int HudBarsHeigth=14;
 
-    while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&bosses,&items,&enemies,&safezones))){
+    while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
         startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
         startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
     }
@@ -785,9 +787,9 @@ int main() {
        if(!safezone.loadTexture("../assets/pixelSet.png"))
         return -1;
 
-    object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,&items);
-    teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,&teleports);
-    safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,&safezones);
+    object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
+    teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
+    safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
 
     sf::Clock clock;
     float deltaTime=0.0f;
@@ -828,7 +830,7 @@ int main() {
 
                     case sf::Event::KeyReleased:
                         if (Happen.key.code == sf::Keyboard::R){
-                            for(auto gc:items){
+                            for(auto gc:vectors[mapIndex]->getItems()){
                                 if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&!(gc->isTaken())){
 
 
@@ -849,11 +851,11 @@ int main() {
                                                 break;
                                         }
                                         gc->setTaken(true);
-                                    object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,&items);
+                                    object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
 
                                 }}}
                         if (Happen.key.code == sf::Keyboard::T){
-                            for(auto gc:safezones){
+                            for(auto gc:vectors[mapIndex]->getSafezones()){
                                 if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1){
 
 
@@ -894,9 +896,9 @@ int main() {
             }
 
 
-            if (LeftKeyDown &&isLegalMove(*hero,-1,0,*maps[mapIndex],&bosses,&items,&enemies,&teleports)){
+            if (LeftKeyDown &&isLegalMove(*hero,-1,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
 
-                if(LShiftKeyDown&& isLegalMove(*hero,-2,0,*maps[mapIndex],&bosses,&items,&enemies,&teleports)){
+                if(LShiftKeyDown&& isLegalMove(*hero,-2,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
                     player.move(-32, 0);
                     view1.move(-32,0);
                     staminaUsed=1;
@@ -906,8 +908,8 @@ int main() {
                     view1.move(-16,0);
                     hero->move(-1,0);}}
 
-            if (RightKeyDown&&isLegalMove(*hero,1,0,*maps[mapIndex],&bosses,&items,&enemies,&teleports) ){
-                if(LShiftKeyDown&& isLegalMove(*hero,2,0,*maps[mapIndex],&bosses,&items,&enemies,&teleports)){
+            if (RightKeyDown&&isLegalMove(*hero,1,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
+                if(LShiftKeyDown&& isLegalMove(*hero,2,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
                     player.move(32, 0);
                     view1.move(32,0);
                     staminaUsed=1;
@@ -917,8 +919,8 @@ int main() {
                     view1.move(16,0);
                     hero->move(1,0);}}
 
-            if (UpKeyDown&&isLegalMove(*hero,0,1,*maps[mapIndex],&bosses,&items,&enemies,&teleports) ){
-                if(LShiftKeyDown&& isLegalMove(*hero,0,2,*maps[mapIndex],&bosses,&items,&enemies,&teleports)){
+            if (UpKeyDown&&isLegalMove(*hero,0,1,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
+                if(LShiftKeyDown&& isLegalMove(*hero,0,2,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
                     player.move(0, 32);
                     view1.move(0,32);
                     staminaUsed=1;
@@ -928,8 +930,8 @@ int main() {
                     view1.move(0,16);
                     hero->move(0,1);}}
 
-            if (DownKeyDown&&isLegalMove(*hero,0,-1,*maps[mapIndex],&bosses,&items,&enemies,&teleports) ){
-                if(LShiftKeyDown&& isLegalMove(*hero,0,-2,*maps[mapIndex],&bosses,&items,&enemies, &teleports)){
+            if (DownKeyDown&&isLegalMove(*hero,0,-1,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
+                if(LShiftKeyDown&& isLegalMove(*hero,0,-2,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(), &vectors[mapIndex]->getTeleports())){
                     player.move(0, -32);
                     view1.move(0,-32);
                     staminaUsed=1;
