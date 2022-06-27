@@ -661,7 +661,7 @@ int main() {
         abort();
     }
 
-
+bool reposPlayer=false;
     std::cout << "# of tiles made: \t" ;
     //create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
    long oldseed2=0;//fixme salvataggio e caricamento vettori
@@ -671,6 +671,7 @@ int main() {
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
         //vectors[i]->create();
         if ((!loadVectors(savesVec[i],names[i],*vectors[i]))||recreate) {
+            reposPlayer=true;
             std::cout << "# of tiles made: \t" ;
             vectors[i]->spawn( *maps[i],&vectors[i]->getItems());
             std::cout << "# of tiles made: \t" ;
@@ -715,7 +716,10 @@ int main() {
 World game;
     Mario* hero;
     hero = new Mario(100, 1, 0, 0,40,2);
-if(!game.loadPlayer(mapIndex,*hero)){
+if(!game.loadPlayer(mapIndex,*hero)) {
+    reposPlayer= true;
+}
+if(reposPlayer){
     int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
     int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
     while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
@@ -789,7 +793,7 @@ if(!game.loadPlayer(mapIndex,*hero)){
 
     if(!object.loadTexture("../assets/potions.png"))
         return -1;
-     if(!teleport.loadTexture("../assets/books.png"))
+     if(!teleport.loadTexture("../assets/books.png"))//todo deve diventare calpestabile
         return -1;
        if(!safezone.loadTexture("../assets/pixelSet.png"))
         return -1;
@@ -895,18 +899,18 @@ if(!game.loadPlayer(mapIndex,*hero)){
 
                             if (!map.load("../assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
                                 return -1;
-                            int herox=0,heroy=0;
+                            //int herox=0,heroy=0;
                             object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
                             teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
                             safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
-                                    while(!(findFreeMapTile(herox, heroy, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
+                                   /* while(!(findFreeMapTile(herox, heroy, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
                                         herox = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
                                         heroy = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
-                                    }
+                                    }*/
 
-                                    hero->setposX(herox);
-                                    hero->setposY(heroy);
-                                    player.setPosition(herox*16,heroy*16);
+                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());//todo risolvere bug creazione teleport,dopo il primo sono solo in posizione 1 1
+                                    hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
+                                    player.setPosition(hero->getposX()*16,hero->getposY()*16);
                                 }}}
                         break;
 
