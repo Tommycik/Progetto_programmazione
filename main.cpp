@@ -20,7 +20,7 @@
 //todo cambiare texture portale
 //todo ignori nemici e boss morti
 //todo risolvere inaffidabilità spawn a distanza
-
+//todo portare hud su hud
 //todo rendere più veloce l'applicazione
 
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
