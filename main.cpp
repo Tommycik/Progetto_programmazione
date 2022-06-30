@@ -11,10 +11,12 @@
 #include "Animation.h"
 #include "Obstacle.h"
 #include "Spawner.h"
-//#include <ctime>
-//#define VERBOSE
-//todo settare distanza tra i vari oggetti
+#include "Textviewer.h"
 
+//#define VERBOSE
+//fixme in world salvare anche stato tutorial e controllare corettezza salvataggio vita e stamina
+//todo settare distanza tra i vari oggetti
+//todo aggiungere tutorial per oggetti ,safezone e teletrasporti e salvare se sono stati già fatti in world
 //todo ignori nemici e boss morti
 
 //todo disegnare i vari oggetti e altri vettori
@@ -212,141 +214,7 @@ if(safezone!=nullptr){
         }
 
     }return false;}
-/*void create(const int numObstacle, const int numObject, const int numSafezone,
-            const int numBoss){
-    vectors[mapIndex]->getEnemies().reserve(numObstacle);
-    vectors[mapIndex]->getSafezones().reserve(numSafezone);
-    vectors[mapIndex]->getItems().reserve(numObject);
-    vectors[mapIndex]->getBosses().reserve(numBoss);
-    vectors[mapIndex]->getTeleports().reserve(numBoss);
 
-    Dice itemTypeDice(3);
-
-    for(int i=0; i<numObject; i++) {
-        Item* item;
-        int effect=itemTypeDice.roll(1);
-        if(effect==1) {
-            item = new Item(1,1,1,1);
-        } else if(effect==2) {
-            item = new Item(1,1,1,2);
-        }else{
-            item = new Item(1,1,1,3);
-        }
-        vectors[mapIndex]->getItems().push_back(item);
-    }
-
-    Dice BossTypeDice(3);
-
-    for(int i=0; i<numBoss; i++) {
-        Boss* boss;
-        Teleport* teleport;
-        int effect=BossTypeDice.roll(1);
-        if(effect==1) {
-            boss = new Boss(2,1,2,2,1);
-        } else if(effect==2) {
-            boss = new Boss(2,1,2,2,1);
-        }else{
-            boss = new Boss(2,1,2,2,1);
-        }
-
-
-        teleport=new Teleport(3,3);
-        vectors[mapIndex]->getBosses().push_back(boss);
-        vectors[mapIndex]->getTeleports().push_back(teleport);
-    }
-
-    for(int i=0; i<numSafezone; i++) {
-        Object* safezone;
-        safezone = new Object(1,4,4);
-
-
-        vectors[mapIndex]->getSafezones().push_back(safezone);
-    }
-
-    Dice enemyTypeDice(3);//todo fare in modo che i nemici peggio abbiano meno possibilità
-
-    for(int i=0; i<numObstacle; i++) {
-        Obstacle* enemy;
-        int effect=enemyTypeDice.roll(1);
-        if(effect==1) {
-            enemy = new Obstacle(5,1,8,2,true);
-        } else if(effect==2) {
-            enemy = new Obstacle(5,1,8,2,true);
-        }else{
-            enemy = new Obstacle(5,1,8,2,true);
-        }
-        vectors[mapIndex]->getEnemies().push_back(enemy);
-    }
-}*/
-/*template<typename T>
-
-    void spawn(  Dungeonarea &map,T* Vector=nullptr) {
-
-    bool positionFound = false;
-    int itemPositionX = 0;
-    int itemPositionY = 0;
-    TileType control=TileType::Unused;
-    for (auto gc: *Vector) {
-
-        positionFound = false;
-        std::cout << "# auto \t" ;
-
-        while (true) {
-            std::cout << "# while \t" ;
-            itemPositionX = 0;
-            itemPositionY = 0;
-            //control=TileType::Unused;
-
-            itemPositionX = map.getRand(0, (map.getWidth() - 1));
-            itemPositionY = map.getRand(0, (map.getHeight() - 1));
-            control=map.getcell(itemPositionX, itemPositionY);
-            std::cout << "# control \t" ;
-            if ( control== TileType::floor) {//fixme
-                positionFound = true;
-
-
-
-                if (!(vectors[mapIndex]->getBosses().empty())) {
-                    for (auto gb: vectors[mapIndex]->getBosses()) {
-                        if (gb->getposY() == itemPositionY && gb->getposX() == itemPositionX)
-                            positionFound = false;
-                    }
-                }
-
-
-                if (!(vectors[mapIndex]->getItems().empty())) {
-                    for (auto gi: vectors[mapIndex]->getItems()) {
-                        if (gi->getposY() == itemPositionY && gi->getposX() == itemPositionX)
-                            positionFound = false;
-                    }
-                }
-
-                if (!(vectors[mapIndex]->getEnemies().empty())) {
-                    for (auto ge: vectors[mapIndex]->getEnemies()) {
-                        if (ge->getposY() == itemPositionY && ge->getposX() == itemPositionX)
-                            positionFound = false;
-                    }
-                }
-
-                if (!(vectors[mapIndex]->getSafezones().empty())) {
-                    for (auto gs: vectors[mapIndex]->getSafezones()) {
-                        if (gs->getposY() == itemPositionY && gs->getposX() == itemPositionX)
-                            positionFound = false;
-                    }
-
-
-                }
-
-            }
-
-if(positionFound)
-    break;
-        }gc->setposX(itemPositionX);
-        gc->setposY(itemPositionY);
-
-
-    }
-}*/
 
 
 
@@ -598,6 +466,7 @@ private:
 };
 
 int main() {
+
     int monsterNumber=5;
     int objectNumber=15;
     int safezoneNumber=8;
@@ -633,6 +502,7 @@ int main() {
     Dungeonarea *maps[numberMap];
 
     bool recreate=false;
+
     try {
     long oldseed=0;
 
@@ -665,6 +535,7 @@ bool reposPlayer=false;
     std::cout << "# of tiles made: \t" ;
     //create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
    long oldseed2=0;//fixme salvataggio e caricamento vettori
+
     Spawner *vectors[numberMap];
     for(int i=0;i<numberMap;i++) {
         //maps[i]->setOldseed(oldseed2);
@@ -688,16 +559,7 @@ bool reposPlayer=false;
         }
     }
 
-   /* std::cout << "# of tiles made: \t" ;
-   spawn( *maps[mapIndex],&vectors[mapIndex]->getItems());
-    std::cout << "# of tiles made: \t" ;
-    spawn(*maps[mapIndex],&vectors[mapIndex]->getBosses());
-    spawn(*maps[mapIndex],&vectors[mapIndex]->getTeleports());
-    std::cout << "# of tiles made: \t" ;
-    spawn(*maps[mapIndex],&vectors[mapIndex]->getSafezones());
-    std::cout << "# of tiles made: \t" ;
-    spawn(*maps[mapIndex],&vectors[mapIndex]->getEnemies());
-    std::cout << "# of tiles made: \t" ;*/
+
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
     window.setFramerateLimit(100);
@@ -811,11 +673,53 @@ if(reposPlayer){
     float staminaUsed=0;
 
     std::stringstream ss;
+    Textviewer objectInteraction(window.getSize().y/5,window.getSize().x,128);
+    //auto po=vectors[mapIndex]->getTeleports();
+    sf::RectangleShape box;
+    box.setSize(sf::Vector2f (viewHeigth,viewHeigth/6));
+    //fixme 1 è un segnaposto fare in modo che la box nera
 
+    sf::Color color(0,0,0,128);
+    box.setFillColor(color);
+    box.setOutlineColor(sf::Color::White);
+
+    box.setOutlineThickness(1);
+
+    bool makeText=false,teleportText=false,itemText=false,safezoneText=false;
+    bool tutorialItem=false,tutorialSafezone=false,tutorialTeleport=false;
     while (window.isOpen()) {
 
 
         while (window.isOpen()) {
+
+            makeText=false;
+            teleportText=false;
+            itemText=false;
+
+            for(auto gc:vectors[mapIndex]->getTeleports()){
+                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&(gc->isActivated())) {
+                makeText=true;
+                teleportText=true;}
+            }
+
+            if(!tutorialItem){
+                for(auto gc:vectors[mapIndex]->getItems()){
+                    if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&(!gc->isTaken())) {
+                        makeText=true;
+                        itemText=true;}
+                }
+            }
+
+            if(!tutorialSafezone){
+                for(auto gc:vectors[mapIndex]->getSafezones()){
+                    if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1) {
+                        makeText=true;
+                        safezoneText=true;}
+                }
+            }
+
+
+
 
             ResizeView(window,view1);
             deltaTime=clock.restart().asSeconds();
@@ -872,7 +776,7 @@ if(reposPlayer){
                                         }
                                         gc->setTaken(true);
                                     object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
-
+                                    tutorialItem=true;
                                 }}}
                         if (Happen.key.code == sf::Keyboard::T){
                             for(auto gc:vectors[mapIndex]->getSafezones()){
@@ -881,10 +785,11 @@ if(reposPlayer){
 
                                         hero->recoverHp(0);
 
-                                }}}
+                                    tutorialSafezone=true;}}}
                         if (Happen.key.code == sf::Keyboard::O||Happen.key.code == sf::Keyboard::P){
                             for(auto gc:vectors[mapIndex]->getTeleports()){
-                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1){
+                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&gc->isActivated()){//fixme li stampa sotto la mappa dato che è prima;
+
                             if (Happen.key.code == sf::Keyboard::O){
                                 if(mapIndex==numberMap-1) {
                                     mapIndex=0;
@@ -911,6 +816,7 @@ if(reposPlayer){
                                     hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());//todo risolvere bug creazione teleport,dopo il primo sono solo in posizione 1 1
                                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
                                     player.setPosition(hero->getposX()*16,hero->getposY()*16);
+                                    tutorialTeleport=true;
                                 }}}
                         break;
 
@@ -1004,7 +910,7 @@ if(reposPlayer){
             window.clear();
             view1.setCenter(player.getPosition());
             window.setView(view1);
-
+            box.setPosition(view1.getCenter().x-(view1.getSize().x/4),view1.getCenter().y+(view1.getSize().y/6));
             window.draw(map);
             window.draw(teleport);
             window.draw(player);
@@ -1019,7 +925,12 @@ if(reposPlayer){
             life.setPosition(player.getPosition().x+HudXOffset,player.getPosition().y+HudYOffset);
             stamina.setPosition(life.getPosition().x+2,life.getPosition().y+8);
             Potion.setPosition(life.getPosition().x+3, stamina.getPosition().y+8);
-            potionIcon.setPosition(Potion.getPosition().x+7, Potion.getPosition().y);
+            if(hero->getPotionNum()<10){
+                potionIcon.setPosition(Potion.getPosition().x+7, Potion.getPosition().y);
+            }else{
+                potionIcon.setPosition(Potion.getPosition().x+14, Potion.getPosition().y);
+            }
+
 
 
 
@@ -1031,8 +942,41 @@ if(reposPlayer){
             window.draw(Potion);
             window.draw(potionIcon);
             window.draw(object);
+            if(makeText) {
+                window.draw(box);
+                if(teleportText){
+                    if(tutorialTeleport){
 
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window);
+
+                    }else {
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per usare il potere del teletrasporto premere P o O","",&window);//P scorre in avanti mentre  O scorre indietro
+                    }
+
+
+                }
+                if(itemText){
+                    if(tutorialItem==false){
+
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window);
+
+                    }
+                }
+                if(safezoneText){
+                    if(tutorialSafezone==false){
+
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window);
+
+                    }
+                }
+            }
             window.display();
         }}
+    for(int i=0;i<numberMap;i++){
+        delete maps[i];
+        delete vectors[i];
+    }
+
+    delete hero;
     return 0;
 }

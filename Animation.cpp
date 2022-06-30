@@ -84,11 +84,12 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
         currentImage.y=3;
         currentImage.x=1;
         if(running){
-             switching=switchTime/2;
+             switching=switchTime+0.05;
         }else{
             switching=switchTime;
         }
-        if(totalTimeMovement>switching){
+
+        if(totalTimeMovement>=switching){
             totalTimeMovement-=switching;
             //usando variabili float solo = renderebbe l'animazione meno fluida
 
