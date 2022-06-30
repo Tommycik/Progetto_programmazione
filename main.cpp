@@ -29,7 +29,7 @@
 //todo implementare audio
 static const int viewHeigth = 300;
 
-
+//todo portare i save in world
 void saveVectors(std::string fileName,std::string name,int Bosses,int Items,int Enemies,int Safezones,std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,
                  std::vector<Obstacle*>* enemy = nullptr, std::vector<Object*>* safezone = nullptr,std::vector<Teleport*>* teleport = nullptr){
     std::ofstream out;
@@ -208,8 +208,6 @@ if(safezone!=nullptr){
         }
 
     }return false;}
-
-
 
 
 
