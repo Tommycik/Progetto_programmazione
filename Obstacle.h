@@ -7,7 +7,7 @@
 #include "Entity.h"
 
 class Obstacle: public Entity {
-protected:
+
 public:
     Obstacle();
     explicit Obstacle(int hp, int movements, int posX, int posY, bool fixed);

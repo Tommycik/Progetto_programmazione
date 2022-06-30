@@ -6,7 +6,7 @@
 #include <fstream>
 
 
-void World::savePlayer(int map, Mario &player/*, int littleStatus*/) {
+void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*, int littleStatus*/) {
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     // try {
@@ -21,12 +21,15 @@ void World::savePlayer(int map, Mario &player/*, int littleStatus*/) {
     out <<player.getMovements()<< std::endl;
     out <<player.getposX()<< std::endl;
     out <<player.getposY()<< std::endl;
+    out <<tutorialItem<< std::endl;
+    out <<tutorialSafezone<< std::endl;
+    out <<tutorialTeleport<< std::endl;
     out.close();
-    //}
+
 }
 
 
-bool World::loadPlayer(int &mapIndex,Mario &player) {
+bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport) {
 
     std::ifstream in;
 
@@ -46,7 +49,7 @@ bool World::loadPlayer(int &mapIndex,Mario &player) {
 
     mapIndex=(std::stoi(fileLine));
     std::getline(in, fileLine);
-    player.setHp(std::stoi(fileLine));
+    player.setHp(std::stoi(fileLine));//fixme non riporta la vita corretta,la vita massima sì
     std::getline(in, fileLine);
     player.setStamina(std::stoi(fileLine));
     std::getline(in, fileLine);
@@ -61,7 +64,12 @@ bool World::loadPlayer(int &mapIndex,Mario &player) {
     player.setposX(std::stoi(fileLine));
     std::getline(in, fileLine);
     player.setposY(std::stoi(fileLine));
-
+    std::getline(in, fileLine);
+    tutorialItem=(std::stoi(fileLine));
+    std::getline(in, fileLine);
+    tutorialSafezone=(std::stoi(fileLine));
+    std::getline(in, fileLine);
+    tutorialTeleport=(std::stoi(fileLine));
 
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");

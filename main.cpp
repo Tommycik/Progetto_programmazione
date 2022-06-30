@@ -14,7 +14,7 @@
 #include "Textviewer.h"
 
 //#define VERBOSE
-//fixme in world salvare anche stato tutorial e controllare corettezza salvataggio vita e stamina
+//fixme in world salvare anche stato tutorial
 //todo settare distanza tra i vari oggetti
 //todo aggiungere tutorial per oggetti ,safezone e teletrasporti e salvare se sono stati già fatti in world
 //todo ignori nemici e boss morti
@@ -28,15 +28,7 @@
 //todo implementare audio
 static const int viewHeigth = 300;
 
-/*std::vector<Obstacle*> vectors[mapIndex]->getEnemies();
-std::vector<Item*> vectors[mapIndex]->getItems();
-std::vector<Object*> vectors[mapIndex]->getSafezones();
-std::vector<Teleport*> vectors[mapIndex]->getTeleports();
-std::vector<Boss*> vectors[mapIndex]->getBosses();*/
-//static const int width = 1080, length = 1920;
-/*enum class GameEvent {
-    quit, left, up, down, right, fight, magic, noop
-};*/
+
 void saveVectors(std::string fileName,std::string name,int Bosses,int Items,int Enemies,int Safezones,std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,
                  std::vector<Obstacle*>* enemy = nullptr, std::vector<Object*>* safezone = nullptr,std::vector<Teleport*>* teleport = nullptr){
     std::ofstream out;
@@ -506,7 +498,7 @@ int main() {
     try {
     long oldseed=0;
 
-    //todo salvataggio e caricamento vettori vari e stato mario
+
         for(int i=0;i<numberMap;i++){
             maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, 1, 40, 200, 100, 100,names[i],saves[i]);
 
@@ -534,7 +526,7 @@ int main() {
 bool reposPlayer=false;
     std::cout << "# of tiles made: \t" ;
     //create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
-   long oldseed2=0;//fixme salvataggio e caricamento vettori
+   long oldseed2=0;
 
     Spawner *vectors[numberMap];
     for(int i=0;i<numberMap;i++) {
@@ -576,10 +568,12 @@ bool reposPlayer=false;
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
 
 World game;
+    bool tutorialItem=false,tutorialSafezone=false,tutorialTeleport=false;
     Mario* hero;
     hero = new Mario(100, 1, 0, 0,40,2);
-if(!game.loadPlayer(mapIndex,*hero)) {
+if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
     reposPlayer= true;
+
 }
 if(reposPlayer){
     int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
@@ -599,7 +593,7 @@ if(reposPlayer){
 
 
 
-    hero->setHp(50);
+    //hero->setHp(50);
 
     player.setPosition(hero->getposX()*16,hero->getposY()*16);
     player.setOrigin(1,7);
@@ -686,7 +680,7 @@ if(reposPlayer){
     box.setOutlineThickness(1);
 
     bool makeText=false,teleportText=false,itemText=false,safezoneText=false;
-    bool tutorialItem=false,tutorialSafezone=false,tutorialTeleport=false;
+
     while (window.isOpen()) {
 
 
@@ -737,7 +731,7 @@ if(reposPlayer){
 
                     case sf::Event::KeyPressed:
                         if (Happen.key.code == sf::Keyboard::Escape){
-                            game.savePlayer(mapIndex,*hero);
+                            game.savePlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport);
                             for(int i=0;i<numberMap;i++) {
                                     saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber, &vectors[i]->getBosses(), &vectors[i]->getItems(), &vectors[i]->getEnemies(), &vectors[i]->getSafezones(),
                                                 &vectors[i]->getTeleports());
@@ -804,14 +798,11 @@ if(reposPlayer){
 
                             if (!map.load("../assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
                                 return -1;
-                            //int herox=0,heroy=0;
+
                             object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
                             teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
                             safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
-                                   /* while(!(findFreeMapTile(herox, heroy, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
-                                        herox = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
-                                        heroy = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
-                                    }*/
+
 
                                     hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());//todo risolvere bug creazione teleport,dopo il primo sono solo in posizione 1 1
                                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());

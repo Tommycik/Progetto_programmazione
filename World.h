@@ -10,8 +10,8 @@
 #include "Littlelight.h"
 class World {
 public:
-    void savePlayer(int map,Mario &player/*,int littleStatus*/);
-    bool loadPlayer(int &mapIndex,Mario &player);
+    void savePlayer(int map,Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*,int littleStatus*/);
+    bool loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport);
 private:
     std::vector<std::string> areaSaves;
 
