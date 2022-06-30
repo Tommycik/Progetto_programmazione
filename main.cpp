@@ -14,12 +14,11 @@
 #include "Textviewer.h"
 
 //#define VERBOSE
-//fixme in world salvare anche stato tutorial
-//todo settare distanza tra i vari oggetti
-//todo aggiungere tutorial per oggetti ,safezone e teletrasporti e salvare se sono stati già fatti in world
+
+//todo cambiare texture portale
 //todo ignori nemici e boss morti
 
-//todo disegnare i vari oggetti e altri vettori
+
 //todo rendere più veloce l'applicazione
 
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
@@ -65,6 +64,7 @@ int control=0;
         out << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->isActivated();
         out << std::endl;
     }
+    out << std::endl;
     out.close();
     //}
 }
@@ -149,7 +149,7 @@ bool loadVectors(std::string fileName,std::string name,Spawner &creator){
         gm->setposY(std::stoi(fileLine));
         std::getline(in, fileLine);
         gm->setActivated(std::stoi(fileLine));
-       // std::getline(in, fileLine);
+        std::getline(in, fileLine);
     }
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
@@ -461,8 +461,8 @@ int main() {
 
     int monsterNumber=5;
     int objectNumber=15;
-    int safezoneNumber=8;
-    int bossNumber=8;
+    int safezoneNumber=3;
+    int bossNumber=3;
     int numberMap=6;
     int mapIndex=0;
     std::string saves[6]={

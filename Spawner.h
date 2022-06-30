@@ -40,7 +40,7 @@ public :
     template<typename T>
 
     void spawn(  Dungeonarea &map,T* Vector=nullptr) {
-
+        int i=0;
         bool positionFound = false;
         int itemPositionX = 0;
         int itemPositionY = 0;
@@ -55,7 +55,7 @@ public :
                 itemPositionX = 0;
                 itemPositionY = 0;
                 //control=TileType::Unused;
-
+                map.setOldseed(map.getOldseed()+map.getRand(0,1000));
                 itemPositionX = map.getRand(0, (map.getWidth() - 1));
                 itemPositionY = map.getRand(0, (map.getHeight() - 1));
                 control=map.getcell(itemPositionX, itemPositionY);
@@ -66,34 +66,57 @@ public :
 
 
                     if (!(bosses.empty())) {
-                        for (auto gb: bosses) {
-                            if (gb->getposY() == itemPositionY && gb->getposX() == itemPositionX)
-                                positionFound = false;
+                        if (std::is_same<std::vector<Teleport *>, T>::value) {
+                            itemPositionX=bosses[i]->getposX();
+                            itemPositionY=bosses[i]->getposY();
+                            i++;
+                        } else{
+                            for (auto gb: bosses) {
+                           if (std::is_same<std::vector<Boss *>, T>::value) {
+                                    if (l2Distance(*gb, itemPositionX, itemPositionY) <100)
+                                        positionFound = false;
+                                } else {
+                                    if (gb->getposY() == itemPositionY && gb->getposX() == itemPositionX)
+                                        positionFound = false;
+                                }
                         }
-                    }
+                    }}
 
 
                     if (!(items.empty())) {
                         for (auto gi: items) {
-                            if (gi->getposY() == itemPositionY && gi->getposX() == itemPositionX)
+                            if(std::is_same<std::vector<Item *>,T>::value){
+                                if (l2Distance(*gi,itemPositionX,itemPositionY)<15)
+                                    positionFound = false;
+                            }else{
+                                if (gi->getposY() == itemPositionY && gi->getposX() == itemPositionX)
                                 positionFound = false;
+                            }
                         }
                     }
 
                     if (!(enemies.empty())) {
                         for (auto ge: enemies) {
-                            if (ge->getposY() == itemPositionY && ge->getposX() == itemPositionX)
+                            if(std::is_same<std::vector<Obstacle *>,T>::value){
+                                if (l2Distance(*ge,itemPositionX,itemPositionY)<15)
+                                    positionFound = false;
+                            }else{
+                                if (ge->getposY() == itemPositionY && ge->getposX() == itemPositionX)
                                 positionFound = false;
+                            }
                         }
                     }
 
                     if (!(safezones.empty())) {
                         for (auto gs: safezones) {
-                            if (gs->getposY() == itemPositionY && gs->getposX() == itemPositionX)
+                            if(std::is_same<std::vector<Object *>,T>::value){
+                                if (l2Distance(*gs,itemPositionX,itemPositionY)<50)
+                                    positionFound = false;
+                            }else{
+                                if (gs->getposY() == itemPositionY && gs->getposX() == itemPositionX)
                                 positionFound = false;
+                            }
                         }
-
-
                     }
 
                 }
