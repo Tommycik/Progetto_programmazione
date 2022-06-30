@@ -55,25 +55,25 @@ public :
                 itemPositionX = 0;
                 itemPositionY = 0;
                 //control=TileType::Unused;
-                map.setOldseed(map.getOldseed()+map.getRand(0,1000));
+
                 itemPositionX = map.getRand(0, (map.getWidth() - 1));
                 itemPositionY = map.getRand(0, (map.getHeight() - 1));
                 control=map.getcell(itemPositionX, itemPositionY);
                 std::cout << "# control \t" ;
-                if ( control== TileType::floor) {//fixme
+                if ( control== TileType::floor) {
                     positionFound = true;
 
 
 
-                    if (!(bosses.empty())) {
+                    if (!(this->bosses.empty())) {
                         if (std::is_same<std::vector<Teleport *>, T>::value) {
-                            itemPositionX=bosses[i]->getposX();
-                            itemPositionY=bosses[i]->getposY();
+                            itemPositionX=this->bosses[i]->getposX();
+                            itemPositionY=this->bosses[i]->getposY();
                             i++;
                         } else{
-                            for (auto gb: bosses) {
-                           if (std::is_same<std::vector<Boss *>, T>::value) {
-                                    if (l2Distance(*gb, itemPositionX, itemPositionY) <100)
+                            for (auto gb: this->bosses) {
+                           if (std::is_same<std::vector<Boss *>, T>::value) {//fixme
+                                    if (l2Distance(*gb, itemPositionX, itemPositionY) <30)
                                         positionFound = false;
                                 } else {
                                     if (gb->getposY() == itemPositionY && gb->getposX() == itemPositionX)
@@ -83,8 +83,8 @@ public :
                     }}
 
 
-                    if (!(items.empty())) {
-                        for (auto gi: items) {
+                    if (!(this->items.empty())) {
+                        for (auto gi: this->items) {
                             if(std::is_same<std::vector<Item *>,T>::value){
                                 if (l2Distance(*gi,itemPositionX,itemPositionY)<15)
                                     positionFound = false;
@@ -95,8 +95,8 @@ public :
                         }
                     }
 
-                    if (!(enemies.empty())) {
-                        for (auto ge: enemies) {
+                    if (!(this->enemies.empty())) {
+                        for (auto ge: this->enemies) {
                             if(std::is_same<std::vector<Obstacle *>,T>::value){
                                 if (l2Distance(*ge,itemPositionX,itemPositionY)<15)
                                     positionFound = false;
@@ -107,8 +107,8 @@ public :
                         }
                     }
 
-                    if (!(safezones.empty())) {
-                        for (auto gs: safezones) {
+                    if (!(this->safezones.empty())) {
+                        for (auto gs: this->safezones) {
                             if(std::is_same<std::vector<Object *>,T>::value){
                                 if (l2Distance(*gs,itemPositionX,itemPositionY)<50)
                                     positionFound = false;

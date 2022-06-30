@@ -10,7 +10,7 @@ void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSaf
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     // try {
-    out.open("../playerSave/save.txt");
+    out.open("../playerSave/save.txt",std::ios_base::trunc);
     out << map << std::endl;
     //out << littleStatus << std::endl;
     out << player.getHp() << std::endl;

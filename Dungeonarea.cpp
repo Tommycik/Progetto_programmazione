@@ -478,7 +478,7 @@ void Dungeonarea::saveMap(std::string mapSaveName) {
     std::ofstream out;
    out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
    // try {
-        out.open(mapSaveName);
+        out.open(mapSaveName,std::ios_base::trunc);
         out << name << std::endl;
         out << width << "\n" << height << std::endl;
         for (int y = 0; y < height; y++) {
