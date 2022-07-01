@@ -64,7 +64,7 @@ public :
                 std::cout << "# control \t" ;
                 if ( control== TileType::floor) {
                     positionFound = true;
-
+                    std::cout << "# if \t" ;
 
 
                     if (!(this->bosses.empty())) {

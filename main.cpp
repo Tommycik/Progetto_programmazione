@@ -12,7 +12,6 @@
 #include "Obstacle.h"
 #include "Spawner.h"
 #include "Textviewer.h"
-
 #include "Loader.h"
 
 //#define VERBOSE
@@ -306,9 +305,84 @@ if(recreate){
 
     bool makeText=false,teleportText=false,itemText=false,safezoneText=false;
 
-    while (window.isOpen()) {
+    sf::RectangleShape background;
+    background.setFillColor(sf::Color::Black);
+    background.setSize(sf::Vector2f (window.getSize().x,window.getSize().y));
+    background.setPosition(0,0);
+
+    sf::RectangleShape play;
+    play.setFillColor(sf::Color::White);
+    play.setSize(sf::Vector2f (window.getSize().x/2,window.getSize().y/7));
+    play.setPosition(0+window.getSize().x/4,0+play.getSize().y);
+
+    sf::RectangleShape newGame;
+    newGame.setFillColor(sf::Color::White);
+    newGame.setSize(sf::Vector2f (window.getSize().x/2,window.getSize().y/7));
+    newGame.setPosition(0+window.getSize().x/4,play.getPosition().y+newGame.getSize().y*2);
+
+    sf::RectangleShape quit;
+    quit.setFillColor(sf::Color::White);
+    quit.setSize(sf::Vector2f (window.getSize().x/2,window.getSize().y/7));
+    quit.setPosition(0+window.getSize().x/4,newGame.getPosition().y+quit.getSize().y*2);
+
+bool go=false;
+    while (window.isOpen()) {//fixme completare
+
+        sf::Event button;
+        while (window.pollEvent(button))
+        {
+            switch (button.type){
+
+                /* case sf::Event::Closed:
+                     window.close();
+                     break;*/
+
+                case sf::Event::MouseButtonReleased:
+                    if ((sf::Mouse::getPosition(window).x >= quit.getPosition().x
+                        && sf::Mouse::getPosition(window).y >=quit.getPosition().y
+                        && sf::Mouse::getPosition(window).x <= quit.getPosition().x+quit.getSize().x
+                        && sf::Mouse::getPosition(window).y <= quit.getPosition().y+quit.getSize().y)){
+
+                        window.close();//todo quit
+                    }
+
+                    if (sf::Mouse::getPosition(window).x >= play.getPosition().x
+                        && sf::Mouse::getPosition(window).y >=play.getPosition().y
+                        && sf::Mouse::getPosition(window).x <= play.getPosition().x+play.getSize().x
+                        && sf::Mouse::getPosition(window).y <= play.getPosition().y+play.getSize().y){
+                        go=true;//todo gioca normalmente(play)
+                    }
 
 
+
+                    if (sf::Mouse::getPosition(window).x >=newGame.getPosition().x
+                        && sf::Mouse::getPosition(window).y >=newGame.getPosition().y
+                        && sf::Mouse::getPosition(window).x <= newGame.getPosition().x+newGame.getSize().x
+                        && sf::Mouse::getPosition(window).y <= newGame.getPosition().y+newGame.getSize().y){
+                      std::string filename;
+                        for(int i=0;i<numberMap;i++){
+                            filename=saves[i];
+                          remove(filename.c_str());
+                            filename=savesVec[i];
+                          remove(savesVec[i].c_str());
+
+
+                      }
+                        remove("../playerSave/save.txt");
+                        go=true;//todo gioca ma parti da 0(new game) cancellando i salvataggi
+
+                    }
+                    break;
+                default:
+                    break;
+            }}
+        window.clear();
+        window.draw(background);
+        window.draw(play);
+        window.draw(newGame);
+        window.draw(quit);
+        window.display();
+if(go){
         while (window.isOpen()) {
 
 
@@ -568,11 +642,11 @@ if(recreate){
             }
             window.display();
         }}
+    }
     for(int i=0;i<numberMap;i++){
         delete maps[i];
         delete vectors[i];
     }
-
-    delete hero;
+    delete hero;//todo controllare serva
     return 0;
 }
