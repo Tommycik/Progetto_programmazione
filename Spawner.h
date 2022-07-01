@@ -28,6 +28,8 @@ public :
     }
 
     void create();
+    void saveVectors(std::string fileName,std::string name,int Bosses,int Items,int Enemies,int Safezones);
+    bool loadVectors(std::string fileName,std::string name);
     std::vector<Obstacle *> &getEnemies() ;
 
     std::vector<Item *> &getItems() ;

@@ -76,3 +76,29 @@ bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string t
 
     return false;
 }
+
+bool Textviewer::checker(Spawner &creator,Mario &hero, bool &itemText, bool &safezoneText, bool &teleportText,bool tutorialSafezone,bool tutorialItem) {
+   bool makeText=false;
+    for(auto gc:creator.getTeleports()){
+        if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1&&(gc->isActivated())) {
+            makeText=true;
+            teleportText=true;}
+    }
+
+    if(!tutorialItem){
+        for(auto gc:creator.getItems()){
+            if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1&&(!gc->isTaken())) {
+                makeText=true;
+                itemText=true;}
+        }
+    }
+
+    if(!tutorialSafezone){
+        for(auto gc:creator.getSafezones()){
+            if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1) {
+                makeText=true;
+                safezoneText=true;}
+        }
+    }
+    return makeText;
+}

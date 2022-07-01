@@ -109,3 +109,140 @@ void Spawner::create() {
         enemies.push_back(enemy);
     }
 }
+void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int Items,int Enemies,int Safezones){
+    std::ofstream out;
+    out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+    // try {
+    out.open(fileName,std::ios_base::trunc);
+    out << name << std::endl;
+    out <<Bosses<< std::endl;
+    out <<Items<< std::endl;
+    out <<Enemies<< std::endl;
+    out <<Safezones<< std::endl;
+    bool fixed=true;
+    int control=0;
+    for(auto gc:this->bosses){
+        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getStatIncrease();
+        out << std::endl;
+    }
+    for(auto gc:this->items){
+        out << gc->getMovements() << "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getEffect()<< "\n" << gc->isTaken();
+        out << std::endl;
+    }
+    for(auto gc:this->enemies){
+
+        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" <<gc->isFixed();
+        out << std::endl;
+    }
+
+    for(auto gc:this->safezones){
+        out <<gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY();
+        out << std::endl;
+    }
+
+    for(auto gc:this->teleports){
+        out << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->isActivated();
+        out << std::endl;
+    }
+    out << std::endl;
+    out.close();
+    //}
+}
+bool Spawner::loadVectors(std::string fileName,std::string name){
+    std::ifstream in;
+
+    in.exceptions(std::ifstream::failbit);
+    try {
+        in.open(fileName);
+    } catch (std::ios_base::failure& e) {
+
+        return false;
+    }
+    std::string fileLine;
+    std::getline(in, fileLine);
+    if (fileLine.compare(name) != 0)
+        throw GameFileException("Map file is in wrong format", "../vectors/vector.txt", true);
+    std::getline(in, fileLine);
+    this->bosses.reserve(std::stoi(fileLine));
+    this->teleports.reserve(std::stoi(fileLine));
+    std::getline(in, fileLine);
+    this->items.reserve(std::stoi(fileLine));
+    std::getline(in, fileLine);
+    this->enemies.reserve(std::stoi(fileLine));
+    std::getline(in, fileLine);
+    this->safezones.reserve(std::stoi(fileLine));
+    std::getline(in, fileLine);
+    bool fixed=true;
+    int control=0;
+    try {
+        for(auto gc:this->bosses){
+            gc->setHp(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gc->setMovements(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gc->setposX(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gc->setposY(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gc->setStatIncrease(std::stoi(fileLine));
+            std::getline(in, fileLine);
+        }
+        for(auto gd:this->items){
+            gd->setMovements(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gd->setposX(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gd->setposY(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gd->setEffect(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gd->setTaken(std::stoi(fileLine));
+            std::getline(in, fileLine);
+        }
+        for(auto gb:this->enemies){
+            gb->setHp(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gb->setMovements(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gb->setposX(std::stoi(fileLine));
+            std::getline(in, fileLine);
+
+            gb->setposY(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gb->setFixed(std::stoi(fileLine));
+            std::getline(in, fileLine);
+        }
+
+        for(auto gv:this->safezones){
+            gv->setMovements(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gv->setposX(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gv->setposY(std::stoi(fileLine));
+            std::getline(in, fileLine);
+
+        }
+
+        for(auto gm:this->teleports){
+            gm->setposX(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gm->setposY(std::stoi(fileLine));
+            std::getline(in, fileLine);
+            gm->setActivated(std::stoi(fileLine));
+            std::getline(in, fileLine);
+        }
+    } catch (std::out_of_range &e) {
+        throw std::out_of_range("Can not set vector tile at x: ");
+    }
+
+
+
+
+    in.close();
+    return true;
+
+
+
+
+
+}

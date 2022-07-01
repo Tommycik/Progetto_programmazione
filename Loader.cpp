@@ -80,7 +80,7 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow
 
         if(gl->isActivated()) {
 
-            tileNumber = 11*13;
+            tileNumber = 0/*11*13*/;
 
             tv=0;
             tu=0;
@@ -101,9 +101,9 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow
 
 
             quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+            quad[1].texCoords = sf::Vector2f((tu + 2) * tileSize.x, tv * tileSize.y);
+            quad[2].texCoords = sf::Vector2f((tu + 2) * tileSize.x, (tv + 2) * tileSize.y);
+            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 2) * tileSize.y);
 
 
         }
@@ -222,4 +222,8 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize,const Dunge
 
         }
     return true;
+}
+
+const sf::Texture &TileMap::getMTileset() const {
+    return m_tileset;
 }

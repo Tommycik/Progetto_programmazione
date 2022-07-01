@@ -20,7 +20,7 @@
             return true;
         }
 
-
+        const sf::Texture &getMTileset() const;
 
         bool loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator);
 

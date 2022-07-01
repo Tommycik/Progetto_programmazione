@@ -12,7 +12,7 @@
 #include "Obstacle.h"
 #include "Spawner.h"
 #include "Textviewer.h"
-#include <cstdio>
+
 #include "Loader.h"
 
 //#define VERBOSE
@@ -30,144 +30,7 @@
 static const int viewHeigth = 300;
 
 //todo portare i save in world
-void saveVectors(std::string fileName,std::string name,int Bosses,int Items,int Enemies,int Safezones,std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,
-                 std::vector<Obstacle*>* enemy = nullptr, std::vector<Object*>* safezone = nullptr,std::vector<Teleport*>* teleport = nullptr){
-    std::ofstream out;
-    out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-    // try {
-    out.open(fileName,std::ios_base::trunc);
-    out << name << std::endl;
-    out <<Bosses<< std::endl;
-    out <<Items<< std::endl;
-    out <<Enemies<< std::endl;
-    out <<Safezones<< std::endl;
-bool fixed=true;
-int control=0;
-    for(auto gc:*boss){
-        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getStatIncrease();
-        out << std::endl;
-    }
-    for(auto gc:*item){
-        out << gc->getMovements() << "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getEffect()<< "\n" << gc->isTaken();
-        out << std::endl;
-    }
-    for(auto gc:*enemy){
 
-        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" <<gc->isFixed();
-        out << std::endl;
-    }
-
-    for(auto gc:*safezone){
-        out <<gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY();
-        out << std::endl;
-    }
-
-    for(auto gc:*teleport){
-        out << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->isActivated();
-        out << std::endl;
-    }
-    out << std::endl;
-    out.close();
-    //}
-}
-bool loadVectors(std::string fileName,std::string name,Spawner &creator){
-    std::ifstream in;
-
-    in.exceptions(std::ifstream::failbit);
-    try {
-        in.open(fileName);
-    } catch (std::ios_base::failure& e) {
-
-        return false;
-    }
-    std::string fileLine;
-    std::getline(in, fileLine);
-    if (fileLine.compare(name) != 0)
-        throw GameFileException("Map file is in wrong format", "../vectors/vector.txt", true);
-    std::getline(in, fileLine);
-    creator.getBosses().reserve(std::stoi(fileLine));
-    creator.getTeleports().reserve(std::stoi(fileLine));
-    std::getline(in, fileLine);
-    creator.getItems().reserve(std::stoi(fileLine));
-    std::getline(in, fileLine);
-    creator.getEnemies().reserve(std::stoi(fileLine));
-    std::getline(in, fileLine);
-    creator.getSafezones().reserve(std::stoi(fileLine));
-    std::getline(in, fileLine);
-    bool fixed=true;
-    int control=0;
-    try {
-    for(auto gc:creator.getBosses()){
-        gc->setHp(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gc->setMovements(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gc->setposX(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gc->setposY(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gc->setStatIncrease(std::stoi(fileLine));
-        std::getline(in, fileLine);
-    }
-    for(auto gd:creator.getItems()){
-        gd->setMovements(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gd->setposX(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gd->setposY(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gd->setEffect(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gd->setTaken(std::stoi(fileLine));
-        std::getline(in, fileLine);
-    }
-    for(auto gb:creator.getEnemies()){
-        gb->setHp(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gb->setMovements(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gb->setposX(std::stoi(fileLine));
-        std::getline(in, fileLine);
-
-        gb->setposY(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gb->setFixed(std::stoi(fileLine));
-        std::getline(in, fileLine);
-    }
-
-    for(auto gv:creator.getSafezones()){
-        gv->setMovements(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gv->setposX(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gv->setposY(std::stoi(fileLine));
-        std::getline(in, fileLine);
-
-    }
-
-    for(auto gm:creator.getTeleports()){
-        gm->setposX(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gm->setposY(std::stoi(fileLine));
-        std::getline(in, fileLine);
-        gm->setActivated(std::stoi(fileLine));
-        std::getline(in, fileLine);
-    }
-    } catch (std::out_of_range &e) {
-        throw std::out_of_range("Can not set vector tile at x: ");
-    }
-
-
-
-
-    in.close();
-    return true;
-
-
-
-
-
-}
 bool findFreeMapTile(int &x, int &y,const Dungeonarea &map, std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,
                      std::vector<Obstacle*>* enemy = nullptr, std::vector<Object*>* safezone = nullptr) {
     for (int i = x; i < map.getWidth(); i++) {
@@ -297,7 +160,7 @@ int main() {
         //maps[i]->setOldseed(oldseed2);
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
         //vectors[i]->create();
-        if ((!loadVectors(savesVec[i],names[i],*vectors[i]))||recreate) {
+        if ((!vectors[i]->loadVectors(savesVec[i],names[i]))||recreate) {
             recreate=true;
             std::cout << "# of tiles made: \t" ;
             vectors[i]->spawn( *maps[i],&vectors[i]->getItems());
@@ -310,8 +173,7 @@ int main() {
             vectors[i]->spawn(*maps[i],&vectors[i]->getEnemies());
             std::cout << "# of tiles made: \t" ;
 
-            saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber, &vectors[i]->getBosses(), &vectors[i]->getItems(), &vectors[i]->getEnemies(), &vectors[i]->getSafezones(),
-                        &vectors[i]->getTeleports());
+            vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
         }
     }
 
@@ -413,7 +275,7 @@ if(recreate){
 
     if(!object.loadTexture("../assets/potions.png"))
         return -1;
-     if(!teleport.loadTexture("../assets/books.png"))//todo deve diventare calpestabile
+     if(!teleport.loadTexture("../assets/portalRings1.png"))//todo deve diventare calpestabile
         return -1;
        if(!safezone.loadTexture("../assets/pixelSet.png"))
         return -1;
@@ -421,7 +283,6 @@ if(recreate){
     object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
     teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
     safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
-
     sf::Clock clock;
     float deltaTime=0.0f;
 
@@ -450,31 +311,12 @@ if(recreate){
 
         while (window.isOpen()) {
 
-            makeText=false;
+
             teleportText=false;
             itemText=false;
+            makeText=objectInteraction.checker(*vectors[mapIndex],*hero,itemText,safezoneText,teleportText,tutorialSafezone,
+                                               tutorialItem);
 
-            for(auto gc:vectors[mapIndex]->getTeleports()){
-                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&(gc->isActivated())) {
-                makeText=true;
-                teleportText=true;}
-            }
-
-            if(!tutorialItem){
-                for(auto gc:vectors[mapIndex]->getItems()){
-                    if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&(!gc->isTaken())) {
-                        makeText=true;
-                        itemText=true;}
-                }
-            }
-
-            if(!tutorialSafezone){
-                for(auto gc:vectors[mapIndex]->getSafezones()){
-                    if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1) {
-                        makeText=true;
-                        safezoneText=true;}
-                }
-            }
 
 
 
@@ -497,8 +339,7 @@ if(recreate){
                         if (Happen.key.code == sf::Keyboard::Escape){
                             game.savePlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport);
                             for(int i=0;i<numberMap;i++) {
-                                    saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber, &vectors[i]->getBosses(), &vectors[i]->getItems(), &vectors[i]->getEnemies(), &vectors[i]->getSafezones(),
-                                                &vectors[i]->getTeleports());
+                                    vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
                                 }
 
 
