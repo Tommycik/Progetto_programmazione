@@ -41,7 +41,7 @@ Textviewer::Textviewer(int heigth, int length, int textDimension) : heigth(heigt
                                                                                              textDimension(
                                                                                                      textDimension){}
 
-bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string text2,sf::RenderWindow *window ) {
+bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string text2,sf::RenderWindow *window,bool center ) {
     //sf::RectangleShape text(sf::Vector2f(length, heigth));
 
     sf::Font myTextFont;
@@ -58,8 +58,7 @@ bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string t
     textTwo.setCharacterSize(textDimension);
     textTwo.setScale(sf::Vector2f(0.1,0.1));
     textTwo.setOutlineThickness(1);
-    textOne.setPosition(posX,posY);
-    textTwo.setPosition(posX,posY+24);
+
     if (!myTextFont.loadFromFile(font))
     {
         return -1;
@@ -71,6 +70,12 @@ bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string t
     su.str("");
     textTwo.setString( sd.str().c_str() );
     sd.str("");
+    if(center){
+        textOne.setOrigin(textOne.getLocalBounds().width/2,textOne.getLocalBounds().height/2);
+    }
+
+    textOne.setPosition(posX,posY);
+    textTwo.setPosition(posX,posY+24);
     window->draw(textOne);
     window->draw(textTwo);
 

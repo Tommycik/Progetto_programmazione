@@ -15,6 +15,7 @@
 #include "Loader.h"
 
 //#define VERBOSE
+//fixme tile per non dare errore 0.fffffffff
 //todo aggiungere cancellazione salvataggi dal gioco
 //todo cambiare texture portale
 //todo ignori nemici e boss morti
@@ -117,18 +118,128 @@ int main() {
             "6",
     };
     Dungeonarea *maps[numberMap];
+    bool go=false;
 
-    bool recreate=false;
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
+    window.setFramerateLimit(100);
 
-    try {
+    //Textviewer menuText(window.getSize().y/5,window.getSize().x,800);
+    sf::Texture resume,restart,exit,back;
+
+    if(!resume.loadFromFile("../assets/ContinueButton.png"))
+        return -1;
+
+    resume.setSmooth(false);
+
+    if(!restart.loadFromFile("../assets/NewgameButton.png"))
+        return -1;
+
+    restart.setSmooth(false);
+
+    if(!exit.loadFromFile("../assets/QuitButton.png"))
+        return -1;
+
+    exit.setSmooth(false);
+
+    if(!back.loadFromFile("../assets/2cdnIK.png"))
+        return -1;
+
+    sf::RectangleShape background;
+    //background.setFillColor(sf::Color::White);
+    background.setSize(sf::Vector2f (window.getSize().x,window.getSize().y));
+    background.setPosition(0,0);
+    background.setTexture(&back);
+
+    sf::RectangleShape play;
+   // play.setFillColor(sf::Color::Black);
+    play.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
+    play.setPosition(0+window.getSize().x/2.7,0+play.getSize().y*1.5);
+    play.setTexture(&resume);
+
+    sf::RectangleShape newGame;
+    //newGame.setFillColor(sf::Color::Black);
+    newGame.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
+    newGame.setPosition(0+window.getSize().x/2.7,play.getPosition().y+newGame.getSize().y*2);
+    newGame.setTexture(&restart);
+
+    sf::RectangleShape quit;
+    //quit.setFillColor(sf::Color::Black);
+    quit.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
+    quit.setPosition(0+window.getSize().x/2.7,newGame.getPosition().y+quit.getSize().y*2);
+    quit.setTexture(&exit);
+
+    while(go==false){
+        sf::Event button;
+        while (window.pollEvent(button))
+        {
+            switch (button.type){
+
+                case sf::Event::KeyPressed:
+                    if (button.key.code == sf::Keyboard::Escape){
+                        window.close();
+                        return 0;
+                    }
+
+                case sf::Event::MouseButtonReleased:
+                    if ((sf::Mouse::getPosition(window).x >= quit.getPosition().x
+                         && sf::Mouse::getPosition(window).y >=quit.getPosition().y
+                         && sf::Mouse::getPosition(window).x <= quit.getPosition().x+quit.getSize().x
+                         && sf::Mouse::getPosition(window).y <= quit.getPosition().y+quit.getSize().y)){
+
+                        window.close();//todo quit
+                        return 0;
+                    }
+
+                    if (sf::Mouse::getPosition(window).x >= play.getPosition().x
+                        && sf::Mouse::getPosition(window).y >=play.getPosition().y
+                        && sf::Mouse::getPosition(window).x <= play.getPosition().x+play.getSize().x
+                        && sf::Mouse::getPosition(window).y <= play.getPosition().y+play.getSize().y){
+                        go=true;//todo gioca normalmente(play)
+                    }
+
+
+
+                    if (sf::Mouse::getPosition(window).x >=newGame.getPosition().x//fixme deve cancellare prima
+                        && sf::Mouse::getPosition(window).y >=newGame.getPosition().y
+                        && sf::Mouse::getPosition(window).x <= newGame.getPosition().x+newGame.getSize().x
+                        && sf::Mouse::getPosition(window).y <= newGame.getPosition().y+newGame.getSize().y){
+                        std::string filename;
+                        for(int i=0;i<numberMap;i++){
+                            filename=saves[i];
+                            remove(filename.c_str());
+                            filename=savesVec[i];
+                            remove(savesVec[i].c_str());
+
+
+                        }
+                        remove("../playerSave/save.txt");
+                        go=true;//todo gioca ma parti da 0(new game) cancellando i salvataggi
+
+                    }
+                    break;
+                default:
+                    break;
+            }}
+        window.clear();
+        window.draw(background);
+        window.draw(play);
+        window.draw(newGame);
+        window.draw(quit);
+        //menuText.blackBox(play.getPosition().x+play.getSize().x/2,play.getPosition().y+play.getSize().y/2-16,"Continua","",&window,true);
+        //menuText.blackBox(newGame.getPosition().x+newGame.getSize().x/2,newGame.getPosition().y+newGame.getSize().y/2-16,"New game","",&window,true);
+       // menuText.blackBox(quit.getPosition().x+quit.getSize().x/2,quit.getPosition().y+quit.getSize().y/2-16,"Exit","",&window,true);
+        window.display();}
+
     long oldseed=0;
+    try {
+
 
 
         for(int i=0;i<numberMap;i++){
             maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, 1, 40, 200, 100, 100,names[i],saves[i]);
 
        if(!maps[i]->loadMap(saves[i],names[i])){
-           recreate=true;
+
 
           // remove(*savesVec[i]);
            oldseed=maps[i]->getOldseed();
@@ -151,16 +262,13 @@ int main() {
 
 
     std::cout << "# of tiles made: \t" ;
-    //create(monsterNumber,objectNumber,safezoneNumber,bossNumber);
-   long oldseed2=0;
+
 
     Spawner *vectors[numberMap];
     for(int i=0;i<numberMap;i++) {
-        //maps[i]->setOldseed(oldseed2);
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
-        //vectors[i]->create();
-        if ((!vectors[i]->loadVectors(savesVec[i],names[i]))||recreate) {
-            recreate=true;
+        if ((!vectors[i]->loadVectors(savesVec[i],names[i]))) {
+
             std::cout << "# of tiles made: \t" ;
             vectors[i]->spawn( *maps[i],&vectors[i]->getItems());
             std::cout << "# of tiles made: \t" ;
@@ -178,8 +286,7 @@ int main() {
 
 
 
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
-    window.setFramerateLimit(100);
+
 
 
     sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
@@ -192,24 +299,24 @@ int main() {
     player.setTexture(&playerTexture);
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
 
-World game;
+    World game;
     bool tutorialItem=false,tutorialSafezone=false,tutorialTeleport=false;
     Mario* hero;
     hero = new Mario(100, 1, 0, 0,40,2);
 if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
-    recreate= true;
+
+        int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
+        int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
+        while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
+            startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
+            startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
+        }
+        hero->setposX(startX);
+        hero->setposY(startY);
+
 
 }
-if(recreate){
-    int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
-    int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
-    while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
-        startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
-        startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
-    }
-    hero->setposX(startX);
-    hero->setposY(startY);
-}
+
 
     int HudXOffset=-268;
     int HudYOffset =-147;
@@ -282,8 +389,7 @@ if(recreate){
     object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
     teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
     safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
-    sf::Clock clock;
-    float deltaTime=0.0f;
+
 
 
     int state=0;
@@ -292,7 +398,8 @@ if(recreate){
 
     std::stringstream ss;
     Textviewer objectInteraction(window.getSize().y/5,window.getSize().x,128);
-    //auto po=vectors[mapIndex]->getTeleports();
+
+
     sf::RectangleShape box;
     box.setSize(sf::Vector2f (viewHeigth,viewHeigth/6));
     //fixme 1 è un segnaposto fare in modo che la box nera
@@ -305,84 +412,13 @@ if(recreate){
 
     bool makeText=false,teleportText=false,itemText=false,safezoneText=false;
 
-    sf::RectangleShape background;
-    background.setFillColor(sf::Color::Black);
-    background.setSize(sf::Vector2f (window.getSize().x,window.getSize().y));
-    background.setPosition(0,0);
 
-    sf::RectangleShape play;
-    play.setFillColor(sf::Color::White);
-    play.setSize(sf::Vector2f (window.getSize().x/2,window.getSize().y/7));
-    play.setPosition(0+window.getSize().x/4,0+play.getSize().y);
 
-    sf::RectangleShape newGame;
-    newGame.setFillColor(sf::Color::White);
-    newGame.setSize(sf::Vector2f (window.getSize().x/2,window.getSize().y/7));
-    newGame.setPosition(0+window.getSize().x/4,play.getPosition().y+newGame.getSize().y*2);
-
-    sf::RectangleShape quit;
-    quit.setFillColor(sf::Color::White);
-    quit.setSize(sf::Vector2f (window.getSize().x/2,window.getSize().y/7));
-    quit.setPosition(0+window.getSize().x/4,newGame.getPosition().y+quit.getSize().y*2);
-
-bool go=false;
+    sf::Clock clock;
+    float deltaTime=0.0f;
     while (window.isOpen()) {//fixme completare
 
-        sf::Event button;
-        while (window.pollEvent(button))
-        {
-            switch (button.type){
 
-                /* case sf::Event::Closed:
-                     window.close();
-                     break;*/
-
-                case sf::Event::MouseButtonReleased:
-                    if ((sf::Mouse::getPosition(window).x >= quit.getPosition().x
-                        && sf::Mouse::getPosition(window).y >=quit.getPosition().y
-                        && sf::Mouse::getPosition(window).x <= quit.getPosition().x+quit.getSize().x
-                        && sf::Mouse::getPosition(window).y <= quit.getPosition().y+quit.getSize().y)){
-
-                        window.close();//todo quit
-                    }
-
-                    if (sf::Mouse::getPosition(window).x >= play.getPosition().x
-                        && sf::Mouse::getPosition(window).y >=play.getPosition().y
-                        && sf::Mouse::getPosition(window).x <= play.getPosition().x+play.getSize().x
-                        && sf::Mouse::getPosition(window).y <= play.getPosition().y+play.getSize().y){
-                        go=true;//todo gioca normalmente(play)
-                    }
-
-
-
-                    if (sf::Mouse::getPosition(window).x >=newGame.getPosition().x
-                        && sf::Mouse::getPosition(window).y >=newGame.getPosition().y
-                        && sf::Mouse::getPosition(window).x <= newGame.getPosition().x+newGame.getSize().x
-                        && sf::Mouse::getPosition(window).y <= newGame.getPosition().y+newGame.getSize().y){
-                      std::string filename;
-                        for(int i=0;i<numberMap;i++){
-                            filename=saves[i];
-                          remove(filename.c_str());
-                            filename=savesVec[i];
-                          remove(savesVec[i].c_str());
-
-
-                      }
-                        remove("../playerSave/save.txt");
-                        go=true;//todo gioca ma parti da 0(new game) cancellando i salvataggi
-
-                    }
-                    break;
-                default:
-                    break;
-            }}
-        window.clear();
-        window.draw(background);
-        window.draw(play);
-        window.draw(newGame);
-        window.draw(quit);
-        window.display();
-if(go){
         while (window.isOpen()) {
 
 
@@ -606,21 +642,23 @@ if(go){
 
 
 
-
+            window.draw(object);
             window.draw(life);
             window.draw(stamina);
             window.draw(Potion);
             window.draw(potionIcon);
-            window.draw(object);
+
             if(makeText) {
                 window.draw(box);
                 if(teleportText){
                     if(tutorialTeleport){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window);
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window,
+                                                   false);
 
                     }else {
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per usare il potere del teletrasporto premere P o O","",&window);//P scorre in avanti mentre  O scorre indietro
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per usare il potere del teletrasporto premere P o O","",&window,
+                                                   false);//P scorre in avanti mentre  O scorre indietro
                     }
 
 
@@ -628,20 +666,20 @@ if(go){
                 if(itemText){
                     if(tutorialItem==false){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window);
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
 
                     }
                 }
                 if(safezoneText){
                     if(tutorialSafezone==false){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window);
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window,false);
 
                     }
                 }
             }
             window.display();
-        }}
+        }
     }
     for(int i=0;i<numberMap;i++){
         delete maps[i];

@@ -12,7 +12,7 @@
 #include "Spawner.h"
 class Textviewer {
 public:
-    bool blackBox(float posX,float posY,std::string text1,std::string text2,sf::RenderWindow *window );
+    bool blackBox(float posX,float posY,std::string text1,std::string text2,sf::RenderWindow *window,bool center );
     bool checker(Spawner &creator,Mario &hero,bool &itemText,bool &safezoneText,bool &teleportText,bool tutorialSafezone,bool tutorialItem);
 private:
     int heigth=0;
