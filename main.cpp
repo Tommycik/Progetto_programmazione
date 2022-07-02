@@ -16,16 +16,16 @@
 
 //#define VERBOSE
 //fixme tile per non dare errore 0.fffffffff
-//todo aggiungere cancellazione salvataggi dal gioco
-//todo cambiare texture portale
+//todo animazione portale
+//todo migliorare tileset mappa
 //todo ignori nemici e boss morti
-//todo risolvere inaffidabilità spawn a distanza
+
 //todo portare hud su hud
 //todo rendere più veloce l'applicazione
 
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
-//todo implementare metodi world
+
 //todo implementare audio
 static const int viewHeigth = 300;
 
