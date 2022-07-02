@@ -153,19 +153,19 @@ int main() {
     sf::RectangleShape play;
    // play.setFillColor(sf::Color::Black);
     play.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
-    play.setPosition(0+window.getSize().x/2.7,0+play.getSize().y*1.5);
+    play.setPosition(0+window.getSize().x/2.7,0+play.getSize().y*3);
     play.setTexture(&resume);
 
     sf::RectangleShape newGame;
     //newGame.setFillColor(sf::Color::Black);
     newGame.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
-    newGame.setPosition(0+window.getSize().x/2.7,play.getPosition().y+newGame.getSize().y*2);
+    newGame.setPosition(0+window.getSize().x/2.7,play.getPosition().y+newGame.getSize().y*1.5);
     newGame.setTexture(&restart);
 
     sf::RectangleShape quit;
     //quit.setFillColor(sf::Color::Black);
     quit.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
-    quit.setPosition(0+window.getSize().x/2.7,newGame.getPosition().y+quit.getSize().y*2);
+    quit.setPosition(0+window.getSize().x/2.7,newGame.getPosition().y+quit.getSize().y*1.5);
     quit.setTexture(&exit);
 
     while(go==false){
@@ -261,7 +261,7 @@ int main() {
     }
 
 
-    std::cout << "# of tiles made: \t" ;
+
 
 
     Spawner *vectors[numberMap];
@@ -269,16 +269,16 @@ int main() {
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
         if ((!vectors[i]->loadVectors(savesVec[i],names[i]))) {
 
-            std::cout << "# of tiles made: \t" ;
+
             vectors[i]->spawn( *maps[i],&vectors[i]->getItems());
-            std::cout << "# of tiles made: \t" ;
+
             vectors[i]->spawn(*maps[i],&vectors[i]->getBosses());
             vectors[i]->spawn(*maps[i],&vectors[i]->getTeleports());
-            std::cout << "# of tiles made: \t" ;
+
             vectors[i]->spawn(*maps[i],&vectors[i]->getSafezones());
-            std::cout << "# of tiles made: \t" ;
+
             vectors[i]->spawn(*maps[i],&vectors[i]->getEnemies());
-            std::cout << "# of tiles made: \t" ;
+
 
             vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
         }
