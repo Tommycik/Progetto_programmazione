@@ -5,6 +5,7 @@
 #include <sstream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Template.h"
 #include "World.h"
 #include <string>
@@ -15,6 +16,7 @@
 #include "Loader.h"
 
 //#define VERBOSE
+//fixme risolvere problema openal.dll
 //fixme tile per non dare errore 0.fffffffff
 //todo animazione portale
 //todo migliorare tileset mappa
@@ -123,6 +125,19 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
     window.setFramerateLimit(100);
 
+    sf::Music Menu,Game;
+    if (!Menu.openFromFile("../assets/menu.wav"))
+        return -1; // error
+
+    Menu.setVolume(50.f);
+    Menu.setLoop(true);
+    Menu.play();
+
+    if (!Game.openFromFile("../assets/gioco.wav"))
+        return -1; // error
+
+    Game.setVolume(50.f);
+    Game.setLoop(true);
     //Textviewer menuText(window.getSize().y/5,window.getSize().x,800);
     sf::Texture resume,restart,exit,back;
 
@@ -177,6 +192,7 @@ int main() {
                 case sf::Event::KeyPressed:
                     if (button.key.code == sf::Keyboard::Escape){
                         window.close();
+                        Menu.stop();
                         return 0;
                     }
 
@@ -186,7 +202,8 @@ int main() {
                          && sf::Mouse::getPosition(window).x <= quit.getPosition().x+quit.getSize().x
                          && sf::Mouse::getPosition(window).y <= quit.getPosition().y+quit.getSize().y)){
 
-                        window.close();//todo quit
+                        window.close();
+                        Menu.stop();
                         return 0;
                     }
 
@@ -194,12 +211,12 @@ int main() {
                         && sf::Mouse::getPosition(window).y >=play.getPosition().y
                         && sf::Mouse::getPosition(window).x <= play.getPosition().x+play.getSize().x
                         && sf::Mouse::getPosition(window).y <= play.getPosition().y+play.getSize().y){
-                        go=true;//todo gioca normalmente(play)
+                        go=true;
                     }
 
 
 
-                    if (sf::Mouse::getPosition(window).x >=newGame.getPosition().x//fixme deve cancellare prima
+                    if (sf::Mouse::getPosition(window).x >=newGame.getPosition().x
                         && sf::Mouse::getPosition(window).y >=newGame.getPosition().y
                         && sf::Mouse::getPosition(window).x <= newGame.getPosition().x+newGame.getSize().x
                         && sf::Mouse::getPosition(window).y <= newGame.getPosition().y+newGame.getSize().y){
@@ -213,7 +230,7 @@ int main() {
 
                         }
                         remove("../playerSave/save.txt");
-                        go=true;//todo gioca ma parti da 0(new game) cancellando i salvataggi
+                        go=true;
 
                     }
                     break;
@@ -229,7 +246,8 @@ int main() {
         //menuText.blackBox(newGame.getPosition().x+newGame.getSize().x/2,newGame.getPosition().y+newGame.getSize().y/2-16,"New game","",&window,true);
        // menuText.blackBox(quit.getPosition().x+quit.getSize().x/2,quit.getPosition().y+quit.getSize().y/2-16,"Exit","",&window,true);
         window.display();}
-
+    Menu.stop();
+    Game.play();
     long oldseed=0;
     try {
 
@@ -497,7 +515,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                                     tutorialSafezone=true;}}}
                         if (Happen.key.code == sf::Keyboard::O||Happen.key.code == sf::Keyboard::P){
                             for(auto gc:vectors[mapIndex]->getTeleports()){
-                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&gc->isActivated()){//fixme li stampa sotto la mappa dato che è prima;
+                                if(l2Distance(*gc,hero->getposX(),hero->getposY())<=1&&gc->isActivated()){
 
                             if (Happen.key.code == sf::Keyboard::O){
                                 if(mapIndex==numberMap-1) {
@@ -519,7 +537,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                             safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
 
 
-                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());//todo risolvere bug creazione teleport,dopo il primo sono solo in posizione 1 1
+                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());
                                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
                                     player.setPosition(hero->getposX()*16,hero->getposY()*16);
                                     tutorialTeleport=true;
@@ -686,5 +704,6 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
         delete vectors[i];
     }
     delete hero;//todo controllare serva
+    Game.stop();
     return 0;
 }
