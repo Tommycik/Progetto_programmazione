@@ -10,7 +10,7 @@ void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSaf
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     // try {
-    out.open("../playerSave/save.txt",std::ios_base::trunc);
+    out.open("playerSave/save.txt",std::ios_base::trunc);
     out << map << std::endl;
     //out << littleStatus << std::endl;
     out << player.getHp() << std::endl;
@@ -35,7 +35,7 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
 
     in.exceptions(std::ifstream::failbit);
     try {
-        in.open("../playerSave/save.txt");
+        in.open("playerSave/save.txt");
     } catch (std::ios_base::failure& e) {
 
         return false;

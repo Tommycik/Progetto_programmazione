@@ -17,6 +17,7 @@
 
 //#define VERBOSE
 //fixme risolvere problema openal.dll
+//mettere le cartelle necessarie (vettori e co) in cmake build debug
 //fixme tile per non dare errore 0.fffffffff
 //todo animazione portale
 //todo migliorare tileset mappa
@@ -94,21 +95,21 @@ int main() {
     int numberMap=6;
     int mapIndex=0;
     std::string saves[6]={
-            "../map/1.txt",
-            "../map/2.txt",
-            "../map/3.txt",
-            "../map/4.txt",
-            "../map/5.txt",
-            "../map/6.txt",
+            "map/1.txt",
+            "map/2.txt",
+            "map/3.txt",
+            "map/4.txt",
+            "map/5.txt",
+            "map/6.txt",
 
     };
     std::string savesVec[6]={
-            "../vectors/1v.txt",
-            "../vectors/2v.txt",
-            "../vectors/3v.txt",
-            "../vectors/4v.txt",
-            "../vectors/5v.txt",
-            "../vectors/6v.txt",
+            "vectors/1v.txt",
+            "vectors/2v.txt",
+            "vectors/3v.txt",
+            "vectors/4v.txt",
+            "vectors/5v.txt",
+            "vectors/6v.txt",
 
     };
     std::string names[6]={
@@ -126,14 +127,14 @@ int main() {
     window.setFramerateLimit(100);
 
     sf::Music Menu,Game;
-    if (!Menu.openFromFile("../assets/menu.wav"))
+    if (!Menu.openFromFile("assets/menu.wav"))
         return -1; // error
 
     Menu.setVolume(50.f);
     Menu.setLoop(true);
     Menu.play();
 
-    if (!Game.openFromFile("../assets/gioco.wav"))
+    if (!Game.openFromFile("assets/gioco.wav"))
         return -1; // error
 
     Game.setVolume(50.f);
@@ -141,22 +142,22 @@ int main() {
     //Textviewer menuText(window.getSize().y/5,window.getSize().x,800);
     sf::Texture resume,restart,exit,back;
 
-    if(!resume.loadFromFile("../assets/ContinueButton.png"))
+    if(!resume.loadFromFile("assets/ContinueButton.png"))
         return -1;
 
     resume.setSmooth(false);
 
-    if(!restart.loadFromFile("../assets/NewgameButton.png"))
+    if(!restart.loadFromFile("assets/NewgameButton.png"))
         return -1;
 
     restart.setSmooth(false);
 
-    if(!exit.loadFromFile("../assets/QuitButton.png"))
+    if(!exit.loadFromFile("assets/QuitButton.png"))
         return -1;
 
     exit.setSmooth(false);
 
-    if(!back.loadFromFile("../assets/2cdnIK.png"))
+    if(!back.loadFromFile("assets/2cdnIK.png"))
         return -1;
 
     sf::RectangleShape background;
@@ -229,7 +230,7 @@ int main() {
 
 
                         }
-                        remove("../playerSave/save.txt");
+                        remove("playerSave/save.txt");
                         go=true;
 
                     }
@@ -310,7 +311,7 @@ int main() {
     sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
     sf::Texture playerTexture;
 
-    if(!playerTexture.loadFromFile("../assets/mario.png"))
+    if(!playerTexture.loadFromFile("assets/mario.png"))
         return -1;
 
     playerTexture.setSmooth(false);
@@ -358,11 +359,11 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
     sf::RectangleShape potionIcon(sf::Vector2f(16.0f, 16.0f));
     sf::Texture hpBar,staminaBar,potion;
 
-    if(!hpBar.loadFromFile("../assets/hpBar.png"))
+    if(!hpBar.loadFromFile("assets/hpBar.png"))
         return -1;
-    if(!staminaBar.loadFromFile("../assets/green.png"))
+    if(!staminaBar.loadFromFile("assets/green.png"))
         return -1;
-    if(!potion.loadFromFile("../assets/potions.png"))
+    if(!potion.loadFromFile("assets/potions.png"))
         return -1;
     staminaBar.setSmooth(true);
     hpBar.setSmooth(true);
@@ -387,21 +388,21 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
     int thickness=1;
     Potion.setOutlineThickness(thickness);
 
-    if (!myFont.loadFromFile("../assets/arial.ttf"))
+    if (!myFont.loadFromFile("assets/arial.ttf"))
     {
         return -1;
     }
 
     TileMap map,object,teleport,safezone;
 
-    if (!map.load("../assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+    if (!map.load("assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
         return -1;
 
-    if(!object.loadTexture("../assets/potions.png"))
+    if(!object.loadTexture("assets/potions.png"))
         return -1;
-     if(!teleport.loadTexture("../assets/portalRings1.png"))//todo deve diventare calpestabile
+     if(!teleport.loadTexture("assets/portalRings1.png"))//todo deve diventare calpestabile
         return -1;
-       if(!safezone.loadTexture("../assets/pixelSet.png"))
+       if(!safezone.loadTexture("assets/pixelSet.png"))
         return -1;
 
     object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
@@ -420,7 +421,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     sf::RectangleShape box;
     box.setSize(sf::Vector2f (viewHeigth,viewHeigth/6));
-    //fixme 1 è un segnaposto fare in modo che la box nera
+
 
     sf::Color color(0,0,0,128);
     box.setFillColor(color);
@@ -434,7 +435,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     sf::Clock clock;
     float deltaTime=0.0f;
-    while (window.isOpen()) {//fixme completare
+    while (window.isOpen()) {
 
 
         while (window.isOpen()) {
@@ -529,7 +530,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                                     mapIndex--;}
                             }
 
-                            if (!map.load("../assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+                            if (!map.load("assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
                                 return -1;
 
                             object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
@@ -703,7 +704,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
         delete maps[i];
         delete vectors[i];
     }
-    delete hero;//todo controllare serva
+    delete hero;
     Game.stop();
     return 0;
 }
