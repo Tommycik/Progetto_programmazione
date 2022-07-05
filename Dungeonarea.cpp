@@ -10,7 +10,6 @@ Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomW
 std::string save) : xMax(maxLength),yMax(maxHeigth),
                                                                                        minRoomWidth(minRoomWidth),
                                                                                        minRoomHeight(minRoomHeight),
-                                                                                       dungeonType(mapType),
                                                                                        chanceRoom(chanceRoom),
                                                                                        parts(parts), xMin(xMin),
                                                                                                yMin(yMin) {
@@ -19,12 +18,13 @@ std::string save) : xMax(maxLength),yMax(maxHeigth),
     this->createDungeon(getRand(xMin, xMax), getRand(yMin, yMax), parts);
     this->name=name;
     this->save=save;
+    this->dungeonType=mapType;
 }
 
 
 Dungeonarea::~Dungeonarea() {
-    if (tiles)
-        delete[] tiles;
+   /* if (tiles)
+        delete[] tiles;*/
 }
 
 int Dungeonarea::getRand(int min, int max) {
@@ -480,7 +480,7 @@ void Dungeonarea::saveMap(std::string mapSaveName) {
    // try {
         out.open(mapSaveName,std::ios_base::trunc);
         out << name << std::endl;
-        out << width << "\n" << height << std::endl;
+        out << width << "\n" << height << "\n"<<dungeonType<<std::endl;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 out << TileTypeToTileString(getcell(x, y));
@@ -516,6 +516,8 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
     std::getline(in, fileLine);
 
     height = std::stoi(fileLine);
+    std::getline(in, fileLine);
+    dungeonType = std::stoi(fileLine);
     std::getline(in, fileLine);
     int y = 0;
     char c;
@@ -553,6 +555,10 @@ long Dungeonarea::getOldseed() const {
 
 void Dungeonarea::setOldseed(long oldseed) {
     Dungeonarea::oldseed = oldseed;
+}
+
+int Dungeonarea::getDungeonType() const {
+    return dungeonType;
 }
 
 

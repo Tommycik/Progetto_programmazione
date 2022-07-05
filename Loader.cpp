@@ -163,7 +163,7 @@ bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *wi
     return true;
 }
 
-bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize,const Dungeonarea &map, unsigned int width, unsigned int height)
+bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height)
 {
 
 
@@ -177,7 +177,7 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize,const Dunge
     int tv=0;
     int tu=0;
     TileType control=TileType::Unused;
-
+int random=1;
     for (unsigned int i = 0; i < width; ++i)
         for (unsigned int j = 0; j < height; ++j)
         {
@@ -187,8 +187,37 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize,const Dunge
             if(control== TileType::Unused){
                 tileNumber=0;
 
+
             }else if(control== TileType::floor){
-                tileNumber=10;
+                switch (map.getDungeonType()) {
+                    case 0://forest
+                        tileNumber=31*27-5;
+                        break;
+                    case 1://cave
+                        tileNumber=31+11;
+                        break;
+                    case 2://brick
+                        tileNumber=31*6+6;
+                        break;
+                    case 3://chocolate
+                        tileNumber=31*22-8;
+                        break;
+                    case 4://lava
+                        //get rand
+                        random=map.getRand(1,5);
+                        if(random<=4){
+                            tileNumber=31*14+27;
+                        }else{
+                            tileNumber=31*13+14;}
+
+
+                        break;
+                    case 5://sand
+
+                        tileNumber=31*16+27;
+                        break;
+
+                }
 
             }else if(control== TileType::wall){
                 tileNumber=0;

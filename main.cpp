@@ -254,7 +254,7 @@ int main() {
 
 
         for(int i=0;i<numberMap;i++){
-            maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, 1, 40, 200, 100, 100,names[i],saves[i]);
+            maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, i, 40, 200, 100, 100,names[i],saves[i]);
 
        if(!maps[i]->loadMap(saves[i],names[i])){
 
@@ -396,7 +396,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     TileMap map,object,teleport,safezone;
 
-    if (!map.load("assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+    if (!map.load("assets/Textures-16.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
         return -1;
 
     if(!object.loadTexture("assets/potions.png"))
@@ -531,7 +531,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                                     mapIndex--;}
                             }
 
-                            if (!map.load("assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+                            if (!map.load("assets/Textures-16.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
                                 return -1;
 
                             object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);

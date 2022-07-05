@@ -77,7 +77,7 @@ public:
     void setWidth(int xSixe);
     int getHeight() const;
     void setHeight(int ySize);
-    int getRand(int min, int max) ;
+    int getRand(int min, int max)  ;
 
     const std::string &getName() const;
 
@@ -101,7 +101,11 @@ private:
     int parts;
     int minRoomWidth;
     int minRoomHeight;
-    int dungeonType;
+public:
+    int getDungeonType() const;
+
+private:
+    int dungeonType=0;
     int chanceRoom;
     int chanceCorridor;
     long oldseed;
@@ -114,6 +118,7 @@ private:
     std::string name;
     std::string save;
     Tile* tiles;
+
 };
 
 
