@@ -13,23 +13,23 @@ add_executable(main main.cpp Object.cpp Object.h Entity.cpp Entity.h Item.cpp It
 
 
 
+set(SFML_ROOT c:/SFML)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_module")
 find_package(SFML  COMPONENTS system window graphics network audio REQUIRED)
 if (SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
+    include_directories( ${SFML_ROOT}/include)
     target_link_libraries(main sfml-audio sfml-graphics sfml-system sfml-window  )
-    message(STATUS "SFML_INCLUDE_DIR: ${SFML_INCLUDE_DIR}")
+
 endif()
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY playerSave DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY map DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY vectors DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY "c:/SFML/bin/openal32.dll " DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY "${SFML_ROOT}/bin/openal32.dll " DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY "c:/mingw32/bin/libgcc_s_dw2-1.dll " DESTINATION ${CMAKE_BINARY_DIR})
 if(WIN32)
 
-    file(GLOB BINARY_DEP_DLLS "c:/SFML/bin/*.dll ")
+    file(GLOB BINARY_DEP_DLLS "${SFML_ROOT}/bin/*.dll ")
     file(COPY ${BINARY_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
 
 

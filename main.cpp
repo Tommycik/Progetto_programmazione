@@ -2,7 +2,6 @@
 #include "Tile.h"
 #include "Dungeonarea.h"
 #include "Mario.h"
-#include <sstream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -16,8 +15,9 @@
 #include "Loader.h"
 
 //#define VERBOSE
-//fixme risolvere problema openal.dll
-//mettere le cartelle necessarie (vettori e co) in cmake build debug
+
+//fixme tutorial bug mostra più di un testo
+//fixme find sfml cmake
 //fixme tile per non dare errore 0.fffffffff
 //todo animazione portale
 //todo migliorare tileset mappa
@@ -29,12 +29,11 @@
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
 
-//todo implementare audio
+
 static const int viewHeigth = 300;
 
-//todo portare i save in world
 
-bool findFreeMapTile(int &x, int &y,const Dungeonarea &map, std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,
+bool findFreeMapTile(int &x, int &y,const Dungeonarea &map, std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,//fixme
                      std::vector<Obstacle*>* enemy = nullptr, std::vector<Object*>* safezone = nullptr) {
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
@@ -283,6 +282,7 @@ int main() {
 
 
 
+
     Spawner *vectors[numberMap];
     for(int i=0;i<numberMap;i++) {
         vectors[i]=new Spawner(monsterNumber,objectNumber,safezoneNumber,bossNumber);
@@ -338,7 +338,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
 
     int HudXOffset=-268;
-    int HudYOffset =-147;
+    int HudYOffset =-147;//fixme
     int HudBarsHeigth=14;
 
 
@@ -346,7 +346,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     //hero->setHp(50);
 
-    player.setPosition(hero->getposX()*16,hero->getposY()*16);
+    player.setPosition(hero->getposX()*16,hero->getposY()*16);//todo levare 16 magic number
     player.setOrigin(1,7);
     player.setScale(1.2,1.7);
 
@@ -384,6 +384,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
     Potion.setFillColor(sf::Color::White);
     Potion.setCharacterSize(128);
     Potion.setScale(sf::Vector2f(0.1,0.1));
+
     Potion.setOutlineColor(sf::Color::Black);
     int thickness=1;
     Potion.setOutlineThickness(thickness);
@@ -538,7 +539,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                             safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
 
 
-                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());
+                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX()); //fixme controllare teletrasporto d'arrivo
                                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
                                     player.setPosition(hero->getposX()*16,hero->getposY()*16);
                                     tutorialTeleport=true;
@@ -549,8 +550,8 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                         break;
                 }}
 
-            sf::sleep((sf::milliseconds(120)));
 
+            sf::sleep((sf::milliseconds(120)));
             bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
             bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
             bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -568,6 +569,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                 if(LShiftKeyDown){
                     if(hero->getStamina()<=0)
                         LShiftKeyDown = false;
+
                         run=true;}
 
                 if(LeftKeyDown){
@@ -581,45 +583,45 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
                 if(LShiftKeyDown&& isLegalMove(*hero,-2,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
                     player.move(-32, 0);
-                    view1.move(-32,0);
+
                     staminaUsed=1;
                     hero->run(-1,0);
                 }else {
                     player.move(-16, 0);
-                    view1.move(-16,0);
+
                     hero->move(-1,0);}}
 
             if (RightKeyDown&&isLegalMove(*hero,1,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
                 if(LShiftKeyDown&& isLegalMove(*hero,2,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
                     player.move(32, 0);
-                    view1.move(32,0);
+
                     staminaUsed=1;
                     hero->run(1,0);
                 }else {
                     player.move(16, 0);
-                    view1.move(16,0);
+
                     hero->move(1,0);}}
 
             if (UpKeyDown&&isLegalMove(*hero,0,1,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
                 if(LShiftKeyDown&& isLegalMove(*hero,0,2,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
                     player.move(0, 32);
-                    view1.move(0,32);
+
                     staminaUsed=1;
                     hero->run(0,1);
                 }else{
                     player.move(0, 16);
-                    view1.move(0,16);
+
                     hero->move(0,1);}}
 
             if (DownKeyDown&&isLegalMove(*hero,0,-1,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
                 if(LShiftKeyDown&& isLegalMove(*hero,0,-2,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(), &vectors[mapIndex]->getTeleports())){
                     player.move(0, -32);
-                    view1.move(0,-32);
+
                     staminaUsed=1;
                     hero->run(0,-1);
                 }else {
                     player.move(0, -16);
-                    view1.move(0,-16);
+
                     hero->move(0,-1);}}
 
 
@@ -669,7 +671,19 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
             if(makeText) {
                 window.draw(box);
-                if(teleportText){
+                if(itemText){
+                    if(tutorialItem==false){
+
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
+
+                    }
+                }else if(safezoneText){
+                    if(tutorialSafezone==false){
+
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window,false);
+
+                    }
+                }else if(teleportText){
                     if(tutorialTeleport){
 
                         objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window,
@@ -682,20 +696,9 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
 
                 }
-                if(itemText){
-                    if(tutorialItem==false){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
 
-                    }
-                }
-                if(safezoneText){
-                    if(tutorialSafezone==false){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window,false);
-
-                    }
-                }
             }
             window.display();
         }
