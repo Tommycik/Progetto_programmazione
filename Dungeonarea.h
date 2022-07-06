@@ -21,6 +21,8 @@ static std::string TileTypeToTileString(const TileType& tile) {
     switch (tile) {
         case TileType::Unused:
             return "u";
+        case TileType::wall:
+            return "w";
         case TileType:: floor:
             return "+";
         case TileType::door:
@@ -42,6 +44,8 @@ static TileType TileStringToTileType(const char& tile) {
     switch (tile) {
         case 'u':
             return TileType::Unused;
+        case 'w':
+            return TileType::wall;
         case '+':
             return TileType::floor;
         case '.':
