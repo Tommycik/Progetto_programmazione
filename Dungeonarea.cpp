@@ -3,7 +3,7 @@
 //
 
 #include "Dungeonarea.h"
-//todo rimettere save e name
+
 
 Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,
                          int mapType, int chanceRoom, int parts, int xMin, int yMin, std::string name,
@@ -336,9 +336,6 @@ bool Dungeonarea::createDungeon(int xLength, int yLength, int inobj) {
         }
     }
 
-    /*******************************************************************************
-     And now the code of the random-map-generation-algorithm begins!
-     *******************************************************************************/
 
     //start with making a room in the middle, which we can start building upon
     makeRoom(width / 2, height / 2, 10, 8, getRand(0, 3)); //getrand saken f????r att slumpa fram riktning p?? rummet
@@ -439,7 +436,8 @@ TileType Dungeonarea::getcell(int x, int y) const {
 }
 
 bool Dungeonarea::isLegalCell(int x, int y,const Dungeonarea &map) const{
-    TileType cell = map.getcell(x, y);
+    TileType cell =TileType::Unused;
+    cell = map.getcell(x, y);
     switch (cell) {
         case TileType::Unused:
             return false;
@@ -505,7 +503,7 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
 
        return false;
     }
-    std::string fileLine;
+    std::string fileLine=" ";
     std::getline(in, fileLine);
     if (fileLine.compare(name) != 0)
         throw GameFileException("Map file is in wrong format", fileName, true);

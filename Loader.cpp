@@ -181,6 +181,7 @@ int random=1;
     for (unsigned int i = 0; i < width; ++i)
         for (unsigned int j = 0; j < height; ++j)
         {
+            random=1;
             control=TileType::Unused;
             control=map.getcell(i, j);
             tileNumber=0;

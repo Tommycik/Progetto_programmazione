@@ -112,7 +112,7 @@ private:
     int dungeonType=0;
     int chanceRoom;
     int chanceCorridor;
-    long oldseed;
+    long oldseed=0;
 public:
     long getOldseed() const;
 

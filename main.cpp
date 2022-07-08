@@ -16,15 +16,15 @@
 
 //#define VERBOSE
 
-//fixme tutorial bug mostra più di un testo
-//fixme find sfml cmake
+
+
 //fixme tile per non dare errore 0.fffffffff
-//todo animazione portale
-//todo migliorare tileset mappa
+
+
 //todo ignori nemici e boss morti
 
 //todo portare hud su hud
-//todo rendere più veloce l'applicazione
+
 
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
@@ -451,9 +451,10 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
 
 
-            ResizeView(window,view1);
+
             deltaTime=clock.restart().asSeconds();
 
+            ResizeView(window,view1);
 
 
             sf::Event Happen;
@@ -461,9 +462,12 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
             {
                 switch (Happen.type){
 
-                   /* case sf::Event::Closed:
+                    case sf::Event::Closed:
                         window.close();
-                        break;*/
+                        break;
+
+
+
 
                     case sf::Event::KeyPressed:
                         if (Happen.key.code == sf::Keyboard::Escape){
