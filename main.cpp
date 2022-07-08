@@ -408,7 +408,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
     teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
-    safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
+    safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,*vectors[mapIndex]);
 
 
 
@@ -536,7 +536,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
                             object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
                             teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
-                            safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
+                            safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,*vectors[mapIndex]);
 
 
                                     hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX()); //fixme controllare teletrasporto d'arrivo

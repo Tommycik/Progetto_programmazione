@@ -119,8 +119,8 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
     out <<Items<< std::endl;
     out <<Enemies<< std::endl;
     out <<Safezones<< std::endl;
-    bool fixed=true;
-    int control=0;
+
+
     for(auto gc:this->bosses){
         out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getStatIncrease();
         out << std::endl;
@@ -172,8 +172,8 @@ bool Spawner::loadVectors(std::string fileName,std::string name){
     std::getline(in, fileLine);
     this->safezones.reserve(std::stoi(fileLine));
     std::getline(in, fileLine);
-    bool fixed=true;
-    int control=0;
+
+
     try {
         for(auto gc:this->bosses){
             gc->setHp(std::stoi(fileLine));

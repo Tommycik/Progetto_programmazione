@@ -28,7 +28,7 @@
         bool loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator);
 
 
-        bool loadSafezone ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator);
+        bool loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator);
     private:
 
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

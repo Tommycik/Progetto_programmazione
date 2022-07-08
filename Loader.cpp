@@ -16,7 +16,7 @@
     target.draw(m_vertices, states);
 }
 
-bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator)
+bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator)
 {
 
 
@@ -176,7 +176,7 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, Dungeonare
     int tileNumber;
     int tv=0;
     int tu=0;
-    TileType control/*=TileType::Unused*/;
+    TileType control=TileType::Unused;
 int random=1;
     for (unsigned int i = 0; i < width; ++i)
         for (unsigned int j = 0; j < height; ++j)
