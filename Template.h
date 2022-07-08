@@ -25,7 +25,7 @@ int l2Distance(const T &p, const int &x,const int &y) {
 template<typename u,typename c,typename d,typename s>
 bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, d Object3= nullptr,
                          s Object4= nullptr){
-    if (Object1) {
+    if (Object1!= nullptr) {
         for (auto gc : *Object1) {
             if(gc->getHp()>0){
                 if (gc->getposY() == y && gc->getposX() == x)
@@ -34,7 +34,7 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
 
         }
     }
-    if (Object2) {
+    if (Object2!= nullptr) {
         for (auto gc : *Object2) {
             if(gc->isTaken()==false){
                 if (gc->getposY() == y && gc->getposX() == x)
@@ -43,14 +43,14 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
 
         }
     }
-    if (Object3) {
+    if (Object3!= nullptr) {
         for (auto gc : *Object3) {
             if(gc->getHp()>0){
             if (gc->getposY() == y && gc->getposX() == x)
                 return false;
         }
     }}
-    if (Object4) {//todo una volta creata classe teleport va mossa la condizione che se è attivo non ci si può camminare
+    if (Object4!= nullptr) {
         for (auto gc : *Object4) {
             if (gc->getposY() == y && gc->getposX() == x)
                 return false;
@@ -68,48 +68,48 @@ return (
 
 checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(newX, newY, map) );}
 
-/*template<typename T,typename u,typename c,typename d,typename s>//todo aggiungere altri due oggetti
+template<typename T,typename u,typename c,typename d,typename s>
 bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                       s* Object4 = nullptr) {
+    bool found=false;
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
-            if (map.getcell(i,j).getType() == TileType::floor) {
-#ifdef VERBOSE
-
-                std::cout << "# floor";
-#endif
+            if (map.getcell(i,j) == TileType::floor) {
+                found=true;
                 x = i;
                 y = j;
                 // additional check
-                if (Object1) {
+                if (Object1!= nullptr) {
                     for (auto gc : *Object1) {
                         if (gc->getposY() == y && gc->getposX() == x)
-                            return false;
+                            found=false;
                     }
                 }
-                if (Object2) {
+                if (Object2!= nullptr) {
                     for (auto gc : *Object2) {
                         if (gc->getposY() == y && gc->getposX() == x)
-                            return false;
+                            found=false;
                     }
                 }
-                if (Object3) {
+                if (Object3!= nullptr) {
                     for (auto gc : *Object3) {
                         if (gc->getposY() == y && gc->getposX() == x)
-                            return false;
+                            found=false;
                     }
                 }
-                if (Object4) {
+                if (Object4!= nullptr) {
                     for (auto gc : *Object4) {
                         if (gc->getposY() == y && gc->getposX() == x)
-                            return false;
+                            found=false;
                     }
 
-            } return true;
+            }
+                if(found){
+                    return true;}
         }
     }
 
-}return false;}*/
+}return false;}
 
 
 
