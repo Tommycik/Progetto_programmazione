@@ -3,14 +3,13 @@
 //
 
 #include "Dungeonarea.h"
-//todo rimettere save e name
+
 
 Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,
                          int mapType, int chanceRoom, int parts, int xMin, int yMin, std::string name,
 std::string save) : xMax(maxLength),yMax(maxHeigth),
                                                                                        minRoomWidth(minRoomWidth),
                                                                                        minRoomHeight(minRoomHeight),
-                                                                                       dungeonType(mapType),
                                                                                        chanceRoom(chanceRoom),
                                                                                        parts(parts), xMin(xMin),
                                                                                                yMin(yMin) {
@@ -19,12 +18,13 @@ std::string save) : xMax(maxLength),yMax(maxHeigth),
     this->createDungeon(getRand(xMin, xMax), getRand(yMin, yMax), parts);
     this->name=name;
     this->save=save;
+    this->dungeonType=mapType;
 }
 
 
 Dungeonarea::~Dungeonarea() {
-    if (tiles)
-        delete[] tiles;
+   /* if (tiles)
+        delete[] tiles;*/
 }
 
 int Dungeonarea::getRand(int min, int max) {
@@ -336,9 +336,6 @@ bool Dungeonarea::createDungeon(int xLength, int yLength, int inobj) {
         }
     }
 
-    /*******************************************************************************
-     And now the code of the random-map-generation-algorithm begins!
-     *******************************************************************************/
 
     //start with making a room in the middle, which we can start building upon
     makeRoom(width / 2, height / 2, 10, 8, getRand(0, 3)); //getrand saken f????r att slumpa fram riktning p?? rummet
@@ -439,7 +436,8 @@ TileType Dungeonarea::getcell(int x, int y) const {
 }
 
 bool Dungeonarea::isLegalCell(int x, int y,const Dungeonarea &map) const{
-    TileType cell = map.getcell(x, y);
+    TileType cell =TileType::Unused;
+    cell = map.getcell(x, y);
     switch (cell) {
         case TileType::Unused:
             return false;
@@ -480,7 +478,7 @@ void Dungeonarea::saveMap(std::string mapSaveName) {
    // try {
         out.open(mapSaveName,std::ios_base::trunc);
         out << name << std::endl;
-        out << width << "\n" << height << std::endl;
+        out << width << "\n" << height << "\n"<<dungeonType<<std::endl;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 out << TileTypeToTileString(getcell(x, y));
@@ -505,7 +503,7 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
 
        return false;
     }
-    std::string fileLine;
+    std::string fileLine=" ";
     std::getline(in, fileLine);
     if (fileLine.compare(name) != 0)
         throw GameFileException("Map file is in wrong format", fileName, true);
@@ -516,6 +514,8 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
     std::getline(in, fileLine);
 
     height = std::stoi(fileLine);
+    std::getline(in, fileLine);
+    dungeonType = std::stoi(fileLine);
     std::getline(in, fileLine);
     int y = 0;
     char c;
@@ -553,6 +553,10 @@ long Dungeonarea::getOldseed() const {
 
 void Dungeonarea::setOldseed(long oldseed) {
     Dungeonarea::oldseed = oldseed;
+}
+
+int Dungeonarea::getDungeonType() const {
+    return dungeonType;
 }
 
 

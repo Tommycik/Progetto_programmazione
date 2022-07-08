@@ -2,7 +2,6 @@
 #include "Tile.h"
 #include "Dungeonarea.h"
 #include "Mario.h"
-#include <sstream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -14,66 +13,27 @@
 #include "Spawner.h"
 #include "Textviewer.h"
 #include "Loader.h"
-
+#include"Menu.h"
 //#define VERBOSE
-//fixme risolvere problema openal.dll
-//mettere le cartelle necessarie (vettori e co) in cmake build debug
+
+
+
 //fixme tile per non dare errore 0.fffffffff
-//todo animazione portale
-//todo migliorare tileset mappa
+
+
 //todo ignori nemici e boss morti
 
 //todo portare hud su hud
-//todo rendere più veloce l'applicazione
+
 
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
 
-//todo implementare audio
+
 static const int viewHeigth = 300;
 
-//todo portare i save in world
-
-bool findFreeMapTile(int &x, int &y,const Dungeonarea &map, std::vector<Boss*>* boss = nullptr, std::vector<Item*>* item = nullptr,
-                     std::vector<Obstacle*>* enemy = nullptr, std::vector<Object*>* safezone = nullptr) {
-    for (int i = x; i < map.getWidth(); i++) {
-        for (int j = y; j < map.getHeight(); j++) {
-            if (map.getcell(i,j) == TileType::floor) {
-
-                x = i;
-                y = j;
-                // additional check
-if(boss!= nullptr){
-    for (auto gb : *boss) {
-        if (gb->getposY() == y && gb->getposX() == x)
-            return false;
-    }
-}
 
 
-                if(item!= nullptr){
-                    for (auto gi : *item) {
-                        if (gi->getposY() == y && gi->getposX() == x)
-                            return false;
-                    }}
-
-                if(enemy!= nullptr){
-                    for (auto ge : *enemy) {
-                        if (ge->getposY() == y && ge->getposX() == x)
-                            return false;
-                    }}
-
-if(safezone!=nullptr){
-                    for (auto gs : *safezone) {
-                        if (gs->getposY() == y && gs->getposX() == x)
-                            return false;
-                    }
-
-                return true;
-            }}
-        }
-
-    }return false;}
 
 
 
@@ -93,6 +53,7 @@ int main() {
     int safezoneNumber=3;
     int bossNumber=2;
     int numberMap=6;
+    float tilesetResolution=16;
     int mapIndex=0;
     std::string saves[6]={
             "map/1.txt",
@@ -121,149 +82,50 @@ int main() {
             "6",
     };
     Dungeonarea *maps[numberMap];
-    bool go=false;
+
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
     window.setFramerateLimit(100);
 
-    sf::Music Menu,Game;
-    if (!Menu.openFromFile("assets/menu.wav"))
-        return -1; // error
 
-    Menu.setVolume(50.f);
-    Menu.setLoop(true);
-    Menu.play();
 
+    sf::Music Game;
     if (!Game.openFromFile("assets/gioco.wav"))
         return -1; // error
 
     Game.setVolume(50.f);
     Game.setLoop(true);
-    //Textviewer menuText(window.getSize().y/5,window.getSize().x,800);
-    sf::Texture resume,restart,exit,back;
 
-    if(!resume.loadFromFile("assets/ContinueButton.png"))
-        return -1;
 
-    resume.setSmooth(false);
+    Menu menu(&window);
 
-    if(!restart.loadFromFile("assets/NewgameButton.png"))
-        return -1;
+    if(!(menu.load()))
+        return false;
 
-    restart.setSmooth(false);
-
-    if(!exit.loadFromFile("assets/QuitButton.png"))
-        return -1;
-
-    exit.setSmooth(false);
-
-    if(!back.loadFromFile("assets/2cdnIK.png"))
-        return -1;
-
-    sf::RectangleShape background;
-    //background.setFillColor(sf::Color::White);
-    background.setSize(sf::Vector2f (window.getSize().x,window.getSize().y));
-    background.setPosition(0,0);
-    background.setTexture(&back);
-
-    sf::RectangleShape play;
-   // play.setFillColor(sf::Color::Black);
-    play.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
-    play.setPosition(0+window.getSize().x/2.7,0+play.getSize().y*3);
-    play.setTexture(&resume);
-
-    sf::RectangleShape newGame;
-    //newGame.setFillColor(sf::Color::Black);
-    newGame.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
-    newGame.setPosition(0+window.getSize().x/2.7,play.getPosition().y+newGame.getSize().y*1.5);
-    newGame.setTexture(&restart);
-
-    sf::RectangleShape quit;
-    //quit.setFillColor(sf::Color::Black);
-    quit.setSize(sf::Vector2f (window.getSize().x/4,window.getSize().y/7));
-    quit.setPosition(0+window.getSize().x/2.7,newGame.getPosition().y+quit.getSize().y*1.5);
-    quit.setTexture(&exit);
-
-    while(go==false){
-        sf::Event button;
-        while (window.pollEvent(button))
-        {
-            switch (button.type){
-
-                case sf::Event::KeyPressed:
-                    if (button.key.code == sf::Keyboard::Escape){
-                        window.close();
-                        Menu.stop();
-                        return 0;
-                    }
-
-                case sf::Event::MouseButtonReleased:
-                    if ((sf::Mouse::getPosition(window).x >= quit.getPosition().x
-                         && sf::Mouse::getPosition(window).y >=quit.getPosition().y
-                         && sf::Mouse::getPosition(window).x <= quit.getPosition().x+quit.getSize().x
-                         && sf::Mouse::getPosition(window).y <= quit.getPosition().y+quit.getSize().y)){
-
-                        window.close();
-                        Menu.stop();
-                        return 0;
-                    }
-
-                    if (sf::Mouse::getPosition(window).x >= play.getPosition().x
-                        && sf::Mouse::getPosition(window).y >=play.getPosition().y
-                        && sf::Mouse::getPosition(window).x <= play.getPosition().x+play.getSize().x
-                        && sf::Mouse::getPosition(window).y <= play.getPosition().y+play.getSize().y){
-                        go=true;
-                    }
+    menu.show(&window,numberMap,&saves[0],&savesVec[0]);
 
 
 
-                    if (sf::Mouse::getPosition(window).x >=newGame.getPosition().x
-                        && sf::Mouse::getPosition(window).y >=newGame.getPosition().y
-                        && sf::Mouse::getPosition(window).x <= newGame.getPosition().x+newGame.getSize().x
-                        && sf::Mouse::getPosition(window).y <= newGame.getPosition().y+newGame.getSize().y){
-                        std::string filename;
-                        for(int i=0;i<numberMap;i++){
-                            filename=saves[i];
-                            remove(filename.c_str());
-                            filename=savesVec[i];
-                            remove(savesVec[i].c_str());
-
-
-                        }
-                        remove("playerSave/save.txt");
-                        go=true;
-
-                    }
-                    break;
-                default:
-                    break;
-            }}
-        window.clear();
-        window.draw(background);
-        window.draw(play);
-        window.draw(newGame);
-        window.draw(quit);
-        //menuText.blackBox(play.getPosition().x+play.getSize().x/2,play.getPosition().y+play.getSize().y/2-16,"Continua","",&window,true);
-        //menuText.blackBox(newGame.getPosition().x+newGame.getSize().x/2,newGame.getPosition().y+newGame.getSize().y/2-16,"New game","",&window,true);
-       // menuText.blackBox(quit.getPosition().x+quit.getSize().x/2,quit.getPosition().y+quit.getSize().y/2-16,"Exit","",&window,true);
-        window.display();}
-    Menu.stop();
     Game.play();
+
+    bool playerReboot=false;
     long oldseed=0;
     try {
 
-
-
         for(int i=0;i<numberMap;i++){
-            maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, 1, 40, 200, 100, 100,names[i],saves[i]);
+            maps[i]=new Dungeonarea(oldseed,250, 250, 20, 20, i, 40, 200, 100, 100,names[i],saves[i]);
 
        if(!maps[i]->loadMap(saves[i],names[i])){
 
 
-          // remove(*savesVec[i]);
-           oldseed=maps[i]->getOldseed();
-           maps[i]->saveMap(saves[i]);}
+          remove(savesVec[i].c_str());
+          playerReboot=true;
+          oldseed=maps[i]->getOldseed();
+          maps[i]->saveMap(saves[i]);}
        }
+        if(playerReboot)
+        remove("playerSave/save.txt");
+
     } catch(GameFileException& e) {
         std::cerr << e.what() << std::endl;
         e.printError();
@@ -278,6 +140,7 @@ int main() {
         std::cerr << e.what() << std::endl;
         abort();
     }
+
 
 
 
@@ -308,7 +171,7 @@ int main() {
 
 
 
-    sf::RectangleShape player(sf::Vector2f(16.0f, 16.0f));
+    sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::Texture playerTexture;
 
     if(!playerTexture.loadFromFile("assets/mario.png"))
@@ -322,7 +185,7 @@ int main() {
     bool tutorialItem=false,tutorialSafezone=false,tutorialTeleport=false;
     Mario* hero;
     hero = new Mario(100, 1, 0, 0,40,2);
-if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
+    if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
 
         int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 1));
         int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 1));
@@ -334,7 +197,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
         hero->setposY(startY);
 
 
-}
+    }
 
 
     int HudXOffset=-268;
@@ -346,7 +209,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     //hero->setHp(50);
 
-    player.setPosition(hero->getposX()*16,hero->getposY()*16);
+    player.setPosition(hero->getposX()*16,hero->getposY()*16);//todo levare 16 magic number
     player.setOrigin(1,7);
     player.setScale(1.2,1.7);
 
@@ -354,9 +217,9 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
     view1.setCenter(player.getPosition());
 
-    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*16.0f, HudBarsHeigth));
-    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*16.0f, HudBarsHeigth));
-    sf::RectangleShape potionIcon(sf::Vector2f(16.0f, 16.0f));
+    sf::RectangleShape life(sf::Vector2f(hero->getHp()/10*tilesetResolution, HudBarsHeigth));
+    sf::RectangleShape stamina(sf::Vector2f(hero->getStamina()/10*tilesetResolution, HudBarsHeigth));
+    sf::RectangleShape potionIcon(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::Texture hpBar,staminaBar,potion;
 
     if(!hpBar.loadFromFile("assets/hpBar.png"))
@@ -384,6 +247,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
     Potion.setFillColor(sf::Color::White);
     Potion.setCharacterSize(128);
     Potion.setScale(sf::Vector2f(0.1,0.1));
+
     Potion.setOutlineColor(sf::Color::Black);
     int thickness=1;
     Potion.setOutlineThickness(thickness);
@@ -395,19 +259,19 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
     TileMap map,object,teleport,safezone;
 
-    if (!map.load("assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+    if (!map.load("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
         return -1;
 
     if(!object.loadTexture("assets/potions.png"))
         return -1;
-     if(!teleport.loadTexture("assets/portalRings1.png"))//todo deve diventare calpestabile
+     if(!teleport.loadTexture("assets/portalRings1.png"))
         return -1;
        if(!safezone.loadTexture("assets/pixelSet.png"))
         return -1;
 
-    object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
-    teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
-    safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
+    object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),objectNumber,&window,*vectors[mapIndex]);
+    teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),bossNumber,&window,*vectors[mapIndex]);
+    safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),safezoneNumber,*vectors[mapIndex]);
 
 
 
@@ -450,9 +314,10 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
 
 
-            ResizeView(window,view1);
+
             deltaTime=clock.restart().asSeconds();
 
+            ResizeView(window,view1);
 
 
             sf::Event Happen;
@@ -460,9 +325,12 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
             {
                 switch (Happen.type){
 
-                   /* case sf::Event::Closed:
+                    case sf::Event::Closed:
                         window.close();
-                        break;*/
+                        break;
+
+
+
 
                     case sf::Event::KeyPressed:
                         if (Happen.key.code == sf::Keyboard::Escape){
@@ -503,7 +371,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                                                 break;
                                         }
                                         gc->setTaken(true);
-                                    object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
+                                    object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),objectNumber,&window,*vectors[mapIndex]);
                                     tutorialItem=true;
                                 }}}
                         if (Happen.key.code == sf::Keyboard::T){
@@ -530,17 +398,17 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                                     mapIndex--;}
                             }
 
-                            if (!map.load("assets/town.png", sf::Vector2u(16, 16), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
+                            if (!map.load("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
                                 return -1;
 
-                            object.loaditem( sf::Vector2u(16, 16),objectNumber,&window,*vectors[mapIndex]);
-                            teleport.loadTeleport( sf::Vector2u(16, 16),bossNumber,&window,*vectors[mapIndex]);
-                            safezone.loadSafezone( sf::Vector2u(16, 16),safezoneNumber,&window,*vectors[mapIndex]);
+                            object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),objectNumber,&window,*vectors[mapIndex]);
+                            teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),bossNumber,&window,*vectors[mapIndex]);
+                            safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),safezoneNumber,*vectors[mapIndex]);
 
 
-                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());
+                                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX()); //fixme controllare teletrasporto d'arrivo
                                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
-                                    player.setPosition(hero->getposX()*16,hero->getposY()*16);
+                                    player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
                                     tutorialTeleport=true;
                                 }}}
                         break;
@@ -549,8 +417,8 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                         break;
                 }}
 
-            sf::sleep((sf::milliseconds(120)));
 
+            sf::sleep((sf::milliseconds(120)));
             bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
             bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
             bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -568,6 +436,7 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
                 if(LShiftKeyDown){
                     if(hero->getStamina()<=0)
                         LShiftKeyDown = false;
+
                         run=true;}
 
                 if(LeftKeyDown){
@@ -580,46 +449,46 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
             if (LeftKeyDown &&isLegalMove(*hero,-1,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
 
                 if(LShiftKeyDown&& isLegalMove(*hero,-2,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
-                    player.move(-32, 0);
-                    view1.move(-32,0);
+                    player.move(-tilesetResolution*2, 0);
+
                     staminaUsed=1;
                     hero->run(-1,0);
                 }else {
-                    player.move(-16, 0);
-                    view1.move(-16,0);
+                    player.move(-tilesetResolution, 0);
+
                     hero->move(-1,0);}}
 
             if (RightKeyDown&&isLegalMove(*hero,1,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
                 if(LShiftKeyDown&& isLegalMove(*hero,2,0,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
-                    player.move(32, 0);
-                    view1.move(32,0);
+                    player.move(tilesetResolution*2, 0);
+
                     staminaUsed=1;
                     hero->run(1,0);
                 }else {
-                    player.move(16, 0);
-                    view1.move(16,0);
+                    player.move(tilesetResolution, 0);
+
                     hero->move(1,0);}}
 
             if (UpKeyDown&&isLegalMove(*hero,0,1,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
                 if(LShiftKeyDown&& isLegalMove(*hero,0,2,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports())){
-                    player.move(0, 32);
-                    view1.move(0,32);
+                    player.move(0, tilesetResolution*2);
+
                     staminaUsed=1;
                     hero->run(0,1);
                 }else{
-                    player.move(0, 16);
-                    view1.move(0,16);
+                    player.move(0, tilesetResolution);
+
                     hero->move(0,1);}}
 
             if (DownKeyDown&&isLegalMove(*hero,0,-1,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getTeleports()) ){
                 if(LShiftKeyDown&& isLegalMove(*hero,0,-2,*maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(), &vectors[mapIndex]->getTeleports())){
-                    player.move(0, -32);
-                    view1.move(0,-32);
+                    player.move(0, -tilesetResolution*2);
+
                     staminaUsed=1;
                     hero->run(0,-1);
                 }else {
-                    player.move(0, -16);
-                    view1.move(0,-16);
+                    player.move(0, -tilesetResolution);
+
                     hero->move(0,-1);}}
 
 
@@ -640,8 +509,8 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
             window.draw(teleport);
             window.draw(player);
             window.draw(safezone);
-            stamina.setSize(sf::Vector2f (hero->getStamina()/10*16.0f, HudBarsHeigth));
-            life.setSize(sf::Vector2f (hero->getHp()/10*16.0f, HudBarsHeigth));
+            stamina.setSize(sf::Vector2f (hero->getStamina()/10*tilesetResolution, HudBarsHeigth));
+            life.setSize(sf::Vector2f (hero->getHp()/10*tilesetResolution, HudBarsHeigth));
 
             ss << hero->getPotionNum();
             Potion.setString( ss.str().c_str() );
@@ -669,7 +538,19 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
             if(makeText) {
                 window.draw(box);
-                if(teleportText){
+                if(itemText){
+                    if(tutorialItem==false){
+
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
+
+                    }
+                }else if(safezoneText){
+                    if(tutorialSafezone==false){
+
+                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window,false);
+
+                    }
+                }else if(teleportText){
                     if(tutorialTeleport){
 
                         objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window,
@@ -682,20 +563,9 @@ if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTelepor
 
 
                 }
-                if(itemText){
-                    if(tutorialItem==false){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
 
-                    }
-                }
-                if(safezoneText){
-                    if(tutorialSafezone==false){
 
-                        objectInteraction.blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window,false);
-
-                    }
-                }
             }
             window.display();
         }

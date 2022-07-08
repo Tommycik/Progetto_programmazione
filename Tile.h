@@ -6,7 +6,7 @@
 #define MAIN_TILE_H
 
 enum class TileType{
-     Unused=0,wall,floor,corridor,damagedfloor,destructible,door,pebble
+     Unused=0,wall=1,floor=2,corridor=3,damagedfloor=4,destructible=5,door=6,pebble=7
 
 };//
 class Tile{
@@ -31,7 +31,7 @@ public:
 private:
     bool destructible;
     bool passable;
-    TileType type;
+    TileType type=TileType::Unused;
 };
 
 

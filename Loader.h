@@ -13,7 +13,7 @@
     class TileMap : public sf::Drawable, public sf::Transformable {
     public:
 
-        bool load(const std::string& tileset, sf::Vector2u tileSize,const Dungeonarea &map, unsigned int width, unsigned int height);
+        bool load(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height);
         bool loadTexture(const std::string& tileset){
             if (!m_tileset.loadFromFile(tileset))
                 return false;
@@ -28,7 +28,7 @@
         bool loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator);
 
 
-        bool loadSafezone ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator);
+        bool loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator);
     private:
 
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

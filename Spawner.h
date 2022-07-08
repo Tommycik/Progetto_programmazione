@@ -49,15 +49,15 @@ public :
         TileType control=TileType::Unused;
         for (auto gc: *Vector) {
 
-            positionFound = false;
+            //positionFound = false;
             std::cout << "# auto \t" ;
 
             while (true) {
                 std::cout << "# while \t" ;
                 itemPositionX = 0;
                 itemPositionY = 0;
-                //control=TileType::Unused;
-
+                control=TileType::Unused;
+                positionFound = false;
                 itemPositionX = map.getRand(0, (map.getWidth() - 1));
                 itemPositionY = map.getRand(0, (map.getHeight() - 1));
                 control=map.getcell(itemPositionX, itemPositionY);
