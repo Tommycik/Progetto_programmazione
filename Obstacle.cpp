@@ -4,9 +4,15 @@
 
 #include "Obstacle.h"
 
-Obstacle::Obstacle(int hp, int movements, int posX, int posY,bool fixed) : Entity(hp,movements,posX, posY){
+Obstacle::Obstacle(int hp, int movements, int posX, int posY,bool fixed){
     this->activated=false;
     this->fixed=fixed;
+    this->hp=hp;
+    this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
+
+
 }
 
 bool Obstacle::isFixed() const {
@@ -23,4 +29,30 @@ void Obstacle::setActivated(bool activated) {
 
 void Obstacle::setFixed(bool fixed) {
     Obstacle::fixed = fixed;
+}
+
+void Obstacle::tracking() {
+
+}
+
+void Obstacle::behaviour() {
+
+}
+
+void Obstacle::move(int x, int y) {
+
+}
+
+void Obstacle::fight() {
+
+}
+
+
+
+enemy Obstacle::getType() const {
+    return type;
+}
+
+void Obstacle::setType(enemy type) {
+    Obstacle::type = type;
 }

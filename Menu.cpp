@@ -61,8 +61,9 @@ bool Menu::load() {
     return true;
 }
 
-bool Menu::show(sf::RenderWindow *window,int numberMap,std::string *saves,std::string *savesVec) {
+bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::string *savesVec) {
     menu.play();
+
     bool go=false;
     while(go==false){
         sf::Event button;
@@ -74,9 +75,10 @@ bool Menu::show(sf::RenderWindow *window,int numberMap,std::string *saves,std::s
                     if (button.key.code == sf::Keyboard::Escape){
                         window->close();
                         menu.stop();
-                        return 0;
-                    }
+                        return true;
 
+                    }
+                    break;
                 case sf::Event::MouseButtonReleased:
                     if ((sf::Mouse::getPosition(*window).x >= quit.getPosition().x
                          && sf::Mouse::getPosition(*window).y >=quit.getPosition().y
@@ -85,7 +87,8 @@ bool Menu::show(sf::RenderWindow *window,int numberMap,std::string *saves,std::s
 
                         window->close();
                         menu.stop();
-                        return 0;
+                        return true;
+
                     }
 
                     if (sf::Mouse::getPosition(*window).x >= play.getPosition().x
@@ -101,15 +104,40 @@ bool Menu::show(sf::RenderWindow *window,int numberMap,std::string *saves,std::s
                         && sf::Mouse::getPosition(*window).y >=newGame.getPosition().y
                         && sf::Mouse::getPosition(*window).x <= newGame.getPosition().x+newGame.getSize().x
                         && sf::Mouse::getPosition(*window).y <= newGame.getPosition().y+newGame.getSize().y){
-                        std::string filename;
-                        for(int i=0;i<numberMap;i++){
 
-                            remove(saves[i].c_str());
-                            remove(savesVec[i].c_str());
+                        for(int i=0;i<numberMap;i++){
+                            try {
+                                on.open(savesVec[i].c_str());
+                                on.close();
+                                remove(savesVec[i].c_str());
+                            } catch (std::ios_base::failure& e) {
+
+
+                            }
+                            try {
+
+                                on.open(saves[i].c_str());
+                                on.close();
+                                remove(saves[i].c_str());
+                            } catch (std::ios_base::failure& e) {
+
+
+                            }
+
+
 
 
                         }
-                        remove("playerSave/save.txt");
+                        try {
+
+                            on.open("playerSave/save.txt");
+                            on.close();
+                            remove("playerSave/save.txt");
+                        } catch (std::ios_base::failure& e) {
+
+
+                        }
+
                         go=true;
 
                     }
@@ -125,5 +153,6 @@ bool Menu::show(sf::RenderWindow *window,int numberMap,std::string *saves,std::s
         window->display();}
 
     menu.stop();
+    return false;
 }
 

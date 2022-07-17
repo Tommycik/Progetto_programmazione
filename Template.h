@@ -7,13 +7,14 @@
 
 #include <cstdlib>
 #include "Dungeonarea.h"
-#define VERBOSE
-template <typename T, typename U>
 
- int l1Distance(const T &p, const U &q) {
+
+template <typename T, typename U>
+int l1Distance(const T &p, const U &q) {
     int distance = abs(p.getposX() - q.getposX()) + abs(p.getposY() - q.getposY());
     return distance;
 }
+
 template <typename T>
 int l2Distance(const T &p, const int &x,const int &y) {
     int distance = abs(p.getposX() - x) + abs(p.getposY() - y);
@@ -46,10 +47,10 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
     if (Object3!= nullptr) {
         for (auto gc : *Object3) {
             if(gc->getHp()>0){
-            if (gc->getposY() == y && gc->getposX() == x)
-                return false;
-        }
-    }}
+                if (gc->getposY() == y && gc->getposX() == x)
+                    return false;
+            }
+        }}
     if (Object4!= nullptr) {
         for (auto gc : *Object4) {
             if (gc->getposY() == y && gc->getposX() == x)
@@ -60,17 +61,31 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
 
 template <typename T,typename u,typename c,typename d,typename s,typename f>
 bool isLegalMove(const T &object, int dX, int dY,f  &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
-s* Object4= nullptr) {
-int newX = object.getposX() + dX;
-int newY = object.getposY() + dY;
+                 s* Object4= nullptr) {
+    int newX = object.getposX() + dX;
+    int newY = object.getposY() + dY;
 // bool enemyPos = checkEnemyPositions(newX, newY, enemies);
-return (
+    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(newX, newY, map) );}
 
-checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(newX, newY, map) );}
+template <typename T>
+bool isLegalDamage(int x,int y,T* Object){
+
+    if(Object!= nullptr){
+
+
+        for(auto gc: *Object) {
+            if(x==gc->getposX && y==gc->getposY)
+                return true;
+
+        }
+    }
+    return false;
+}//todo implementare il controllo danni nei metodi behaviour e usare come controllo il metodo distanza
+
 
 template<typename T,typename u,typename c,typename d,typename s>
 bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
-                      s* Object4 = nullptr) {
+                     s* Object4 = nullptr) {
     bool found=false;
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
@@ -81,35 +96,35 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
                 // additional check
                 if (Object1!= nullptr) {
                     for (auto gc : *Object1) {
-                        if (gc->getposY() == y && gc->getposX() == x)
+                        if (l2Distance(*gc, x,y)<30)
                             found=false;
                     }
                 }
                 if (Object2!= nullptr) {
                     for (auto gc : *Object2) {
-                        if (gc->getposY() == y && gc->getposX() == x)
+                        if (l2Distance(*gc, x,y)<15)
                             found=false;
                     }
                 }
                 if (Object3!= nullptr) {
                     for (auto gc : *Object3) {
-                        if (gc->getposY() == y && gc->getposX() == x)
+                        if (l2Distance(*gc, x,y)<15)
                             found=false;
                     }
                 }
                 if (Object4!= nullptr) {
                     for (auto gc : *Object4) {
-                        if (gc->getposY() == y && gc->getposX() == x)
+                        if (l2Distance(*gc, x,y)<15)
                             found=false;
                     }
 
-            }
+                }
                 if(found){
                     return true;}
+            }
         }
-    }
 
-}return false;}
+    }return false;}
 
 
 

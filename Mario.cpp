@@ -5,8 +5,13 @@
 #include "Mario.h"
 #include "Entity.h"
 #include "Object.h"
-Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum):Entity(hp,movements,posX,posY),
-stamina(stamina),maxHp(hp),maxStam(stamina),potionNum(potioNum){
+Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum,int bossKill):stamina(stamina),
+maxHp(hp),maxStam(stamina),potionNum(potioNum){
+    this->hp=hp;
+    this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
+    this->bossKilled=bossKill;
 }
 
 float Mario::getStamina() const {
@@ -78,6 +83,14 @@ Mario::maxStam=maxStam;
 
 void Mario::maxHpSave(int maxHp) {
 Mario::maxHp=maxHp;
+}
+
+int Mario::getBossKilled() const {
+    return bossKilled;
+}
+
+void Mario::setBossKilled(int bossKilled) {
+    Mario::bossKilled = bossKilled;
 }
 
 

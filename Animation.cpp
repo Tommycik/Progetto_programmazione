@@ -7,7 +7,7 @@
 
 
 
-Animation::~Animation() {}
+
 Animation::Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime) {//image counter è il numero di texture totali nel file
 
     this->imageCount=imageCount;
@@ -116,6 +116,10 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
     }
 
 
+}
+
+const sf::IntRect &Animation::getUvRect() const {
+    return uvRect;
 }
 
 

@@ -19,15 +19,10 @@
 bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator)
 {
 
-
-
-    // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
-    int tileNumber=0;
-    int tv=0;
-    int tu=0;
-    int i=0;
+    count=0;
+
 
     for (auto gl : creator.getSafezones()) {
 
@@ -35,35 +30,14 @@ bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator
 
         tileNumber =42*3;
 
-        tv=0;
-        tu=0;
-
-        tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
-        tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
-
-
-
-        sf::Vertex* quad = &m_vertices[(i) * 4];
-        i++;
-
-        quad[0].position = sf::Vector2f(gl->getposX() * tileSize.x, gl->getposY() * tileSize.y);
-        quad[1].position = sf::Vector2f((gl->getposX() + 1) * tileSize.x, gl->getposY() * tileSize.y);
-        quad[2].position = sf::Vector2f((gl->getposX() + 1) * tileSize.x,
-                                        (gl->getposY() + 1) * tileSize.y);
-        quad[3].position = sf::Vector2f(gl->getposX() * tileSize.x, (gl->getposY() + 1) * tileSize.y);
-
-
-        quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-        quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-        quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-        quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+        this->loading(tileSize,tileNumber,tv,tu,false,false,gl->getposY(),gl->getposX());
 
 
     }
     return true;
 }
 
-bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator)
+bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator)
 {
 
 
@@ -71,39 +45,14 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow
     // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
-    int tileNumber=0;
-    int tv=0;
-    int tu=0;
-    int i=0;
-
+    count=0;
     for (auto gl : creator.getTeleports()) {
 
         if(gl->isActivated()) {
 
             tileNumber = 0/*11*13*/;
 
-            tv=0;
-            tu=0;
-
-            tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
-            tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
-
-
-
-            sf::Vertex* quad = &m_vertices[(i) * 4];
-            i++;
-
-            quad[0].position = sf::Vector2f(gl->getposX() * tileSize.x, gl->getposY() * tileSize.y);
-            quad[1].position = sf::Vector2f((gl->getposX() + 1) * tileSize.x, gl->getposY() * tileSize.y);
-            quad[2].position = sf::Vector2f((gl->getposX() + 1) * tileSize.x,
-                                            (gl->getposY() + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(gl->getposX() * tileSize.x, (gl->getposY() + 1) * tileSize.y);
-
-
-            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 2) * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 2) * tileSize.x, (tv + 2) * tileSize.y);
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 2) * tileSize.y);
+        this->loading(tileSize,tileNumber,tv,tu,false,true,gl->getposY(),gl->getposX());
 
 
         }
@@ -111,7 +60,7 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,sf::RenderWindow
     return true;
 }
 
-bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *window,Spawner &creator)
+bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator)
 {
 
 
@@ -119,10 +68,7 @@ bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *wi
     // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
-    int tileNumber=0;
-    int tv=0;
-    int tu=0;
-    int i=0;
+    count=0;
 
     for (auto gl : creator.getItems()) {
 
@@ -136,34 +82,14 @@ bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,sf::RenderWindow *wi
                 tileNumber = 7;
 
             }
-            tv=0;
-            tu=0;
-
-            tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
-            tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
-
-            sf::Vertex* quad = &m_vertices[(i) * 4];
-
-
-            quad[0].position = sf::Vector2f(gl->getposX() * tileSize.x, gl->getposY() * tileSize.y);
-            quad[1].position = sf::Vector2f((gl->getposX() + 1) * tileSize.x, gl->getposY() * tileSize.y);
-            quad[2].position = sf::Vector2f((gl->getposX() + 1) * tileSize.x,
-                                            (gl->getposY() + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(gl->getposX() * tileSize.x, (gl->getposY() + 1) * tileSize.y);
-
-            // define its 4 texture coordinates
-            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-            i++;
+            this->loading(tileSize,tileNumber,tv,tu,false,false,gl->getposY(),gl->getposX());
 
         }
     }
     return true;
 }
 
-bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height)
+bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height)
 {
 
 
@@ -173,10 +99,11 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, Dungeonare
 
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
-    int tileNumber;
-    int tv=0;
-    int tu=0;
     TileType control=TileType::Unused;
+    tileNumber=0;
+    tv=0;
+    tu=0;
+    count=0;
 int random=1;
     for (unsigned int i = 0; i < width; ++i)
         for (unsigned int j = 0; j < height; ++j)
@@ -338,26 +265,7 @@ int random=1;
 
                 }
             }
-            tv=0;
-            tu=0;
-
-            tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
-            tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
-
-
-            sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
-
-
-            quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
-            quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
-            quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
-
-
-            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+            this->loading(tileSize,tileNumber,tv,tu, true,false,j,i);
 
 
 
@@ -367,4 +275,40 @@ int random=1;
 
 const sf::Texture &TileMap::getMTileset() const {
     return m_tileset;
+}
+bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,int &tv,int &tu,bool map,bool teleport,int j,int i){
+
+tv=0;
+tu=0;
+int posX=i;
+int posY=j;
+int offset=1;
+if(teleport)
+offset=2;
+
+
+
+
+
+
+tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
+tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
+
+
+
+sf::Vertex* quad = &m_vertices[(count) * 4];
+count++;
+
+quad[0].position = sf::Vector2f(posX * tileSize.x, posY * tileSize.y);
+quad[1].position = sf::Vector2f((posX + 1) * tileSize.x, posY * tileSize.y);
+quad[2].position = sf::Vector2f((posX + 1) * tileSize.x,
+                                (posY + 1) * tileSize.y);
+quad[3].position = sf::Vector2f(posX * tileSize.x, (posY + 1) * tileSize.y);
+
+
+quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
+quad[1].texCoords = sf::Vector2f((tu + offset) * tileSize.x, tv * tileSize.y);
+quad[2].texCoords = sf::Vector2f((tu + offset) * tileSize.x, (tv + offset) * tileSize.y);
+quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + offset) * tileSize.y);
+
 }

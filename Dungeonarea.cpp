@@ -5,26 +5,29 @@
 #include "Dungeonarea.h"
 
 
-Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,
+Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,int maxRoomWidth,int maxRoomHeight,
                          int mapType, int chanceRoom, int parts, int xMin, int yMin, std::string name,
-std::string save) : xMax(maxLength),yMax(maxHeigth),
-                                                                                       minRoomWidth(minRoomWidth),
-                                                                                       minRoomHeight(minRoomHeight),
-                                                                                       chanceRoom(chanceRoom),
-                                                                                       parts(parts), xMin(xMin),
-                                                                                               yMin(yMin) {
-    this->tiles = nullptr;
+std::string save) : xMax(maxLength),yMax(maxHeigth),minRoomWidth(minRoomWidth),minRoomHeight(minRoomHeight),
+chanceRoom(chanceRoom),parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(maxRoomWidth) {
     this->oldseed=oldseed;
-    this->createDungeon(getRand(xMin, xMax), getRand(yMin, yMax), parts);
+    //this->createDungeon(getRand(xMin, xMax), getRand(yMin, yMax), parts);
+
     this->name=name;
     this->save=save;
     this->dungeonType=mapType;
+
+
 }
 
 
 Dungeonarea::~Dungeonarea() {
-   /* if (tiles)
-        delete[] tiles;*/
+    if (!(this->tiles.empty())) {
+        for (auto p : this->tiles)
+        {
+            delete p;
+        }
+        this->tiles.clear();
+    }
 }
 
 int Dungeonarea::getRand(int min, int max) {
@@ -44,7 +47,7 @@ int Dungeonarea::getWidth() const {
 }
 
 void Dungeonarea::setWidth(int xSixe) {
-    Dungeonarea::width = xSixe;
+    this->width = xSixe;
 }
 
 int Dungeonarea::getHeight() const {
@@ -52,7 +55,7 @@ int Dungeonarea::getHeight() const {
 }
 
 void Dungeonarea::setHeight(int ySize) {
-    Dungeonarea::height = ySize;
+    this->height = ySize;
 }
 
 bool Dungeonarea::makeCorridor(int x, int y, int length, int direction) {
@@ -79,13 +82,13 @@ bool Dungeonarea::makeCorridor(int x, int y, int length, int direction) {
             for (ytemp = y; ytemp > (y - len); ytemp--) {
                 if (ytemp < 0 || ytemp > height)
                     return false; // out of boundaries
-                if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                     return false;
             }
 
             //if we're still here, let's start building
             for (ytemp = y; ytemp > (y - len); ytemp--) {
-                tiles[xtemp + width * ytemp].setType(TileType::corridor);
+                tiles[xtemp + width * ytemp]->setType(TileType::corridor);
             }
             break;
         case 1:
@@ -98,12 +101,12 @@ bool Dungeonarea::makeCorridor(int x, int y, int length, int direction) {
             for (xtemp = x; xtemp < (x + len); xtemp++) {
                 if (xtemp < 0 || xtemp > width)
                     return false;
-                if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                     return false;
             }
 
             for (xtemp = x; xtemp < (x + len); xtemp++) {
-                tiles[xtemp + width * ytemp].setType(TileType::corridor);
+                tiles[xtemp + width * ytemp]->setType(TileType::corridor);
             }
             break;
         case 2:
@@ -116,12 +119,12 @@ bool Dungeonarea::makeCorridor(int x, int y, int length, int direction) {
             for (ytemp = y; ytemp < (y + len); ytemp++) {
                 if (ytemp < 0 || ytemp > height)
                     return false;
-                if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                     return false;
             }
 
             for (ytemp = y; ytemp < (y + len); ytemp++) {
-                tiles[xtemp + width * ytemp].setType(TileType::corridor);
+                tiles[xtemp + width * ytemp]->setType(TileType::corridor);
             }
             break;
         case 3:
@@ -134,12 +137,12 @@ bool Dungeonarea::makeCorridor(int x, int y, int length, int direction) {
             for (xtemp = x; xtemp > (x - len); xtemp--) {
                 if (xtemp < 0 || xtemp > width)
                     return false;
-                if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                     return false;
             }
 
             for (xtemp = x; xtemp > (x - len); xtemp--) {
-                tiles[xtemp + width * ytemp].setType(TileType::corridor);
+                tiles[xtemp + width * ytemp]->setType(TileType::corridor);
             }
             break;
     }
@@ -149,8 +152,8 @@ bool Dungeonarea::makeCorridor(int x, int y, int length, int direction) {
 }
 
 bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction) {
-    int xlen = getRand(minRoomWidth, xlength);
-    int ylen = getRand(minRoomHeight, ylength);
+    int xlen = getRand(minRoomWidth, maxRoomWidth);
+    int ylen = getRand(minRoomHeight, maxRoomHeight);
     //the tile type it's going to be filled with
     TileType floor = TileType::floor;
     TileType wall = TileType::wall;
@@ -170,7 +173,7 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                      xtemp++) {
                     if (xtemp < 0 || xtemp > width)
                         return false;
-                    if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                    if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                         return false; //no space left...
                 }
             }
@@ -181,16 +184,16 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                      xtemp++) {
                     //start with the walls
                     if (xtemp == (x - xlen / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (xtemp == (x + (xlen - 1) / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == y)
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == (y - ylen + 1))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                         //and then fill with the floor
                     else
-                        tiles[xtemp + width * ytemp].setType(TileType::floor);
+                        tiles[xtemp + width * ytemp]->setType(TileType::floor);
                 }
             }
             break;
@@ -203,7 +206,7 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                 for (int xtemp = x; xtemp < (x + xlen); xtemp++) {
                     if (xtemp < 0 || xtemp > width)
                         return false;
-                    if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                    if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                         return false;
                 }
             }
@@ -213,15 +216,15 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                 for (int xtemp = x; xtemp < (x + xlen); xtemp++) {
 
                     if (xtemp == x)
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (xtemp == (x + xlen - 1))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == (y - ylen / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == (y + (ylen - 1) / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else
-                        tiles[xtemp + width * ytemp].setType(TileType::floor);
+                        tiles[xtemp + width * ytemp]->setType(TileType::floor);
                 }
             }
             break;
@@ -234,7 +237,7 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                      xtemp++) {
                     if (xtemp < 0 || xtemp > width)
                         return false;
-                    if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                    if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                         return false;
                 }
             }
@@ -244,15 +247,15 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                      xtemp++) {
 
                     if (xtemp == (x - xlen / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (xtemp == (x + (xlen - 1) / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == y)
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == (y + ylen - 1))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else
-                        tiles[xtemp + width * ytemp].setType(TileType::floor);
+                        tiles[xtemp + width * ytemp]->setType(TileType::floor);
                 }
             }
             break;
@@ -265,7 +268,7 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                 for (int xtemp = x; xtemp > (x - xlen); xtemp--) {
                     if (xtemp < 0 || xtemp > width)
                         return false;
-                    if (tiles[xtemp + width * ytemp].getType() != TileType::Unused)
+                    if (tiles[xtemp + width * ytemp]->getType() != TileType::Unused)
                         return false;
                 }
             }
@@ -275,15 +278,15 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
                 for (int xtemp = x; xtemp > (x - xlen); xtemp--) {
 
                     if (xtemp == x)
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (xtemp == (x - xlen + 1))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == (y - ylen / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else if (ytemp == (y + (ylen - 1) / 2))
-                        tiles[xtemp + width * ytemp].setType(TileType::wall);
+                        tiles[xtemp + width * ytemp]->setType(TileType::wall);
                     else
-                        tiles[xtemp + width * ytemp].setType(TileType::floor);
+                        tiles[xtemp + width * ytemp]->setType(TileType::floor);
                 }
             }
             break;
@@ -293,13 +296,15 @@ bool Dungeonarea::makeRoom(int x, int y, int xlength, int ylength, int direction
     return true;
 }
 
-bool Dungeonarea::createDungeon(int xLength, int yLength, int inobj) {
-    if (inobj < 1)
+bool Dungeonarea::createDungeon() {
+    int rooms=0;
+
+    if (parts < 1)
         parts = 10;
-    else
-        parts = inobj;
 
     //adjust the size of the map, if it's smaller or bigger than the limits
+    int xLength=getRand(xMin, xMax);
+    int yLength=getRand(yMin, yMax);
     if (xLength < xMin)
         width = xMin;
     else if (xLength > xMax)
@@ -314,32 +319,53 @@ bool Dungeonarea::createDungeon(int xLength, int yLength, int inobj) {
     else
         height = yLength;
 
+do{
+
+        if (!(this->tiles.empty())) {
+            for (auto p : this->tiles)
+            {
+                delete p;
+            }
+            this->tiles.clear();
+        }
+
+
+    this-> tiles.reserve(width * height);
+    for(int i=0;i<width * height;i++){
+        Tile *tile;
+        tile = new Tile();
+        this->tiles.push_back(tile);}
+
+
+
     //redefine the map var, so it's adjusted to our new map size
-    tiles = new Tile[width * height];
+
+
+    rooms=0;
 
     //start with making the "standard stuff" on the map
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             //ie, making the borders of unwalkable walls
             if (y == 0)
-                tiles[x + width * y].setType(TileType::wall);
+                tiles[x + width * y]->setType(TileType::wall);
             else if (y == height - 1)
-                tiles[x + width * y].setType(TileType::wall);
+                tiles[x + width * y]->setType(TileType::wall);
             else if (x == 0)
-                tiles[x + width * y].setType(TileType::wall);
+                tiles[x + width * y]->setType(TileType::wall);
             else if (x == width - 1)
-                tiles[x + width * y].setType(TileType::wall);
+                tiles[x + width * y]->setType(TileType::wall);
 
                 //and fill the rest with dirt
             else
-                tiles[x + width * y].setType(TileType::Unused);
+                tiles[x + width * y]->setType(TileType::Unused);
         }
     }
 
 
-    //start with making a room in the middle, which we can start building upon
-    makeRoom(width / 2, height / 2, 10, 8, getRand(0, 3)); //getrand saken f????r att slumpa fram riktning p?? rummet
-
+    //start with making a room ip the middle, which we can start building upon
+    makeRoom(width / 2, height / 2, 10, 8, getRand(0, 3));
+    rooms++;
     //keep count of the number of "objects" we've made
     int currentFeatures = 1; //+1 for the first room we just made
 
@@ -356,48 +382,46 @@ bool Dungeonarea::createDungeon(int xLength, int yLength, int inobj) {
         int newy = 0;
         int ymod = 0;
         int validTile = -1;
-        //1000 chances to find a suitable object (room or corridor)..
-        //(yea, i know it's kinda ugly with a for-loop... -_-')
+
         for (int testing = 0; testing < 1000; testing++) {
-            newx = getRand(1, width - 1);
-            newy = getRand(1, height - 1);
+            newx = getRand(1, width - 2);
+            newy = getRand(1, height - 2);
             validTile = -1;
-            //cout<<"tempx: " << newx << "\ttempy: " << newy<<endl;
-            if (tiles[newx + width * newy].getType() == TileType::wall
-                || tiles[newx + width * newy].getType() == TileType::corridor) {
+
+            if (tiles[newx + width * newy]->getType() == TileType::wall
+                || tiles[newx + width * newy]->getType() == TileType::corridor) {
                 //check if we can reach the place
-                if (tiles[newx + width * (newy + 1)].getType() == TileType::floor
-                    || tiles[newx + width * (newy + 1)].getType() == TileType::corridor) {
+                if (tiles[newx + width * (newy + 1)]->getType() == TileType::floor
+                    || tiles[newx + width * (newy + 1)]->getType() == TileType::corridor) {
                     validTile = 0; //
                     xmod = 0;
                     ymod = -1;
-                } else if (tiles[newx - 1 + width * newy].getType() == TileType::floor
-                           || tiles[newx - 1 + width * newy].getType() == TileType::corridor) {
+                } else if (tiles[newx - 1 + width * newy]->getType() == TileType::floor
+                           || tiles[newx - 1 + width * newy]->getType() == TileType::corridor) {
                     validTile = 1; //
                     xmod = +1;
                     ymod = 0;
-                } else if (tiles[newx + width * (newy - 1)].getType() == TileType::floor
-                           || tiles[newx + width * (newy - 1)].getType() == TileType::corridor) {
+                } else if (tiles[newx + width * (newy - 1)]->getType() == TileType::floor
+                           || tiles[newx + width * (newy - 1)]->getType() == TileType::corridor) {
                     validTile = 2; //
                     xmod = 0;
                     ymod = +1;
-                } else if (tiles[newx + 1 + width * newy].getType() == TileType::floor
-                           || tiles[newx + 1 + width * newy].getType() == TileType::corridor) {
+                } else if (tiles[newx + 1 + width * newy]->getType() == TileType::floor
+                           || tiles[newx + 1 + width * newy]->getType() == TileType::corridor) {
                     validTile = 3; //
                     xmod = -1;
                     ymod = 0;
                 }
 
-                //check that we haven't got another door nearby, so we won't get a lot of openings besides
-                //each other
+
                 if (validTile > -1) {
-                    if (tiles[newx + width * (newy + 1)].getType() == TileType::door) //north
+                    if (tiles[newx + width * (newy + 1)]->getType() == TileType::door) //north
                         validTile = -1;
-                    else if (tiles[newx - 1 + width * newy].getType() == TileType::door) //east
+                    else if (tiles[newx - 1 + width * newy]->getType() == TileType::door) //east
                         validTile = -1;
-                    else if (tiles[newx + width * (newy - 1)].getType() == TileType::door) //south
+                    else if (tiles[newx + width * (newy - 1)]->getType() == TileType::door) //south
                         validTile = -1;
-                    else if (tiles[newx + 1 + width * newy].getType() == TileType::door) //west
+                    else if (tiles[newx + 1 + width * newy]->getType() == TileType::door) //west
                         validTile = -1;
                 }
 
@@ -412,27 +436,28 @@ bool Dungeonarea::createDungeon(int xLength, int yLength, int inobj) {
             if (feature <= chanceRoom) { //a new room
                 if (makeRoom((newx + xmod), (newy + ymod), 8, 6, validTile)) {
                     currentFeatures++; //add to our quota
-
+                    rooms++;
                     //then we mark the wall opening with a door
-                    tiles[newx + width * newy].setType(TileType::door);
+                    tiles[newx + width * newy]->setType(TileType::door);
 
-                    //clean up in front of the door so we can reach it
-                    tiles[newx + xmod + width * (newy + ymod)].setType(TileType::floor);
+                    //clean up ip front of the door so we can reach it
+                    tiles[newx + xmod + width * (newy + ymod)]->setType(TileType::floor);
                 }
             } else if (feature >= chanceRoom) { //new corridor
                 if (makeCorridor((newx + xmod), (newy + ymod), 6, validTile)) {
                     //same thing here, add to the quota and a door
                     currentFeatures++;
 
-                    tiles[newx + width * newy].setType(TileType::door);
+                    tiles[newx + width * newy]->setType(TileType::door);
                 }
             }
         }
-    }
+    }}while (rooms<15);//todo correrarlo al numerio di oggetti da diegnare
+
 }
 
 TileType Dungeonarea::getcell(int x, int y) const {
-    return tiles[x + width * y].getType();
+    return tiles[x + width * y]->getType();
 }
 
 bool Dungeonarea::isLegalCell(int x, int y,const Dungeonarea &map) const{
@@ -461,7 +486,7 @@ const std::string &Dungeonarea::getName() const {
 }
 
 void Dungeonarea::setName(const std::string &name) {
-    Dungeonarea::name = name;
+    this->name = name;
 }
 
 const std::string &Dungeonarea::getSave() const {
@@ -469,19 +494,19 @@ const std::string &Dungeonarea::getSave() const {
 }
 
 void Dungeonarea::setSave(const std::string &save) {
-    Dungeonarea::save = save;
+    this->save = save;
 }
 
 void Dungeonarea::saveMap(std::string mapSaveName) {
-    std::ofstream out;
+
    out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
    // try {
         out.open(mapSaveName,std::ios_base::trunc);
         out << name << std::endl;
-        out << width << "\n" << height << "\n"<<dungeonType<<std::endl;
+        out << width << "\n" << height << "\n"<<dungeonType<< "\n"<<rooms<< "\n"<<maxRoomHeight<< "\n"<<maxRoomWidth<<std::endl;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                out << TileTypeToTileString(getcell(x, y));
+                out << TileTypeToTileString(this->getcell(x, y));
             }
             out << std::endl;
         }
@@ -490,44 +515,62 @@ void Dungeonarea::saveMap(std::string mapSaveName) {
 }
 
 void Dungeonarea::setcell(int x, int y, TileType type) const {
-    tiles[x + width * y].setType(type);
+    tiles[x + width * y]->setType(type);
 }
 
 bool Dungeonarea::loadMap(std::string fileName,std::string name) {
-    std::ifstream in;
 
-    in.exceptions(std::ifstream::failbit);
+    ip.exceptions(std::ifstream::failbit);
     try {
-        in.open(fileName);
+        ip.open(fileName);
     } catch (std::ios_base::failure& e) {
 
        return false;
     }
     std::string fileLine=" ";
-    std::getline(in, fileLine);
+    std::getline(ip, fileLine);
     if (fileLine.compare(name) != 0)
-        throw GameFileException("Map file is in wrong format", fileName, true);
+        throw GameFileException("Map file is ip wrong format", fileName, true);
 
-    std::getline(in, fileLine);
+    std::getline(ip, fileLine);
 
     width = std::stoi(fileLine);
-    std::getline(in, fileLine);
+    std::getline(ip, fileLine);
 
     height = std::stoi(fileLine);
-    std::getline(in, fileLine);
+    std::getline(ip, fileLine);
     dungeonType = std::stoi(fileLine);
-    std::getline(in, fileLine);
+    std::getline(ip, fileLine);
+    rooms = std::stoi(fileLine);
+    std::getline(ip, fileLine);
+    maxRoomHeight = std::stoi(fileLine);
+    std::getline(ip, fileLine);
+    maxRoomWidth = std::stoi(fileLine);
+    std::getline(ip, fileLine);
     int y = 0;
     char c;
 
-    tiles=new Tile[width*height];
-    while(!in.eof() /*&& std::getline(in, fileLine)*/) {
+   if (!(this->tiles.empty())) {
+        for (auto p : this->tiles)
+        {
+            delete p;
+        }
+       this->tiles.clear();
+    }
+    this->tiles.reserve(width * height);
+    for(int i=0;i<width * height;i++){
+        Tile *tile;
+        tile = new Tile();
+        this->tiles.push_back(tile);
+    }
+
+    while(!ip.eof() /*&& std::getline(ip, fileLine)*/) {
         for (int x = 0; x < width; x++) {
             try {
 
                 c=fileLine.at(x);
                 TileType cellType = TileStringToTileType(c);
-                tiles[x+width*y].setType(cellType);
+                tiles[x+width*y]->setType(cellType);
 
             } catch (std::out_of_range &e) {
                 throw std::out_of_range("Can not set map tile at x: " + std::to_string(x)+" - y: " + std::to_string(y));
@@ -538,12 +581,12 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
         if(y==height){
             break;
         }else{
-        std::getline(in, fileLine);}
+        std::getline(ip, fileLine);}
     }
     if (y!=height)
         throw std::runtime_error("Map height size wrong. Expected "+std::to_string(height)+" but read: " + std::to_string(y));
 
-    in.close();
+    ip.close();
     return true;
 }
 
@@ -552,11 +595,15 @@ long Dungeonarea::getOldseed() const {
 }
 
 void Dungeonarea::setOldseed(long oldseed) {
-    Dungeonarea::oldseed = oldseed;
+    this->oldseed = oldseed;
 }
 
 int Dungeonarea::getDungeonType() const {
     return dungeonType;
+}
+
+int Dungeonarea::getRooms() const {
+    return rooms;
 }
 
 

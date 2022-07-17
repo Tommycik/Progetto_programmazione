@@ -4,10 +4,13 @@
 
 #ifndef MAIN_ICESLIDE_H
 #define MAIN_ICESLIDE_H
+#include "Skills.h"
+
+class Iceslide:public Skills {
+public:
 
 
-class Iceslide {
-
+    void slide(int &posX, int &posY,int x,int y,int movements);
 };
 
 

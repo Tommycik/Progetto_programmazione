@@ -4,9 +4,9 @@
 
 #ifndef MAIN_FIREBALL_H
 #define MAIN_FIREBALL_H
+#include "Skills.h"
 
-
-class Fireball {
+class Fireball:public Skills {
 
 };
 

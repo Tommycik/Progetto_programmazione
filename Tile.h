@@ -7,30 +7,26 @@
 
 enum class TileType{
      Unused=0,wall=1,floor=2,corridor=3,damagedfloor=4,destructible=5,door=6,pebble=7
-
 };//
+
 class Tile{
+
 public:
 
-
-    Tile(){
-        this->type=TileType::Unused;
-    };
+    bool isDestructble() const;
+    void unlockPassage(bool unlock);
 
     TileType getType() const  {
     return Tile::type;
 }
 
     void setType( TileType tile){
-    Tile::type=tile;
+    this->type=tile;
 }
-    bool isDestructble() const;
-    bool isPassable() const;
-    void unlockPassage(bool unlock);
 
 private:
-    bool destructible;
-    bool passable;
+
+    bool destructible=false;
     TileType type=TileType::Unused;
 };
 

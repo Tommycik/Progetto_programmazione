@@ -4,144 +4,48 @@
 
 #ifndef MAIN_SPAWNER_H
 #define MAIN_SPAWNER_H
+
 #include <vector>
 #include "Obstacle.h"
 #include "Boss.h"
-#include "Object.h"
+#include "Safezone.h"
 #include "Dice.h"
 #include "Item.h"
 #include "Dungeonarea.h"
-#include "Template.h"
 #include "Teleport.h"
+
 class Spawner {
+
 public :
 
+    Spawner(bool loading ,Dungeonarea&map,int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber=1);
+    ~Spawner();
 
-
-
-
-    Spawner();
-    explicit Spawner(int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber);
-
-    ~Spawner() {
-
-    }
-
-    void create();
+    void create(bool loading,Dungeonarea &map);
     void saveVectors(std::string fileName,std::string name,int Bosses,int Items,int Enemies,int Safezones);
-    bool loadVectors(std::string fileName,std::string name);
+    bool loadVectors(std::string fileName,std::string name,Dungeonarea &map);
+    int getMonsterNumber() const;
+    int getObjectNumber() const;
+    int getSafezoneNumber() const;
+    int getBossNumber() const;
     std::vector<Obstacle *> &getEnemies() ;
-
     std::vector<Item *> &getItems() ;
-
-    std::vector<Object *> &getSafezones();
-
+    std::vector<Safezone *> &getSafezones();
     std::vector<Teleport *> &getTeleports() ;
-
     std::vector<Boss *> &getBosses() ;
-    template<typename T>
 
-    void spawn(  Dungeonarea &map,T* Vector=nullptr) {
-        int i=0;
-        bool positionFound = false;
-        int itemPositionX = 0;
-        int itemPositionY = 0;
-        TileType control=TileType::Unused;
-        for (auto gc: *Vector) {
-
-            //positionFound = false;
-            std::cout << "# auto \t" ;
-
-            while (true) {
-                std::cout << "# while \t" ;
-                itemPositionX = 0;
-                itemPositionY = 0;
-                control=TileType::Unused;
-                positionFound = false;
-                itemPositionX = map.getRand(0, (map.getWidth() - 1));
-                itemPositionY = map.getRand(0, (map.getHeight() - 1));
-                control=map.getcell(itemPositionX, itemPositionY);
-                std::cout << "# control \t" ;
-                if ( control== TileType::floor) {
-                    positionFound = true;
-                    std::cout << "# if \t" ;
-
-
-                    if (!(this->bosses.empty())) {
-                        if (std::is_same<std::vector<Teleport *>, T>::value) {
-                            itemPositionX=this->bosses[i]->getposX();
-                            itemPositionY=this->bosses[i]->getposY();
-                            i++;
-                        } else{
-                            for (auto gb: this->bosses) {
-                           if (std::is_same<std::vector<Boss *>, T>::value) {//fixme
-                                    if (l2Distance(*gb, itemPositionX, itemPositionY) <30)
-                                        positionFound = false;
-                                } else {
-                                    if (gb->getposY() == itemPositionY && gb->getposX() == itemPositionX)
-                                        positionFound = false;
-                                }
-                        }
-                    }}
-
-
-                    if (!(this->items.empty())) {
-                        for (auto gi: this->items) {
-                            if(std::is_same<std::vector<Item *>,T>::value){
-                                if (l2Distance(*gi,itemPositionX,itemPositionY)<15)
-                                    positionFound = false;
-                            }else{
-                                if (gi->getposY() == itemPositionY && gi->getposX() == itemPositionX)
-                                positionFound = false;
-                            }
-                        }
-                    }
-
-                    if (!(this->enemies.empty())) {
-                        for (auto ge: this->enemies) {
-                            if(std::is_same<std::vector<Obstacle *>,T>::value){
-                                if (l2Distance(*ge,itemPositionX,itemPositionY)<15)
-                                    positionFound = false;
-                            }else{
-                                if (ge->getposY() == itemPositionY && ge->getposX() == itemPositionX)
-                                positionFound = false;
-                            }
-                        }
-                    }
-
-                    if (!(this->safezones.empty())) {
-                        for (auto gs: this->safezones) {
-                            if(std::is_same<std::vector<Object *>,T>::value){
-                                if (l2Distance(*gs,itemPositionX,itemPositionY)<50)
-                                    positionFound = false;
-                            }else{
-                                if (gs->getposY() == itemPositionY && gs->getposX() == itemPositionX)
-                                positionFound = false;
-                            }
-                        }
-                    }
-
-                }
-
-                if(positionFound)
-                    break;
-            }gc->setposX(itemPositionX);
-            gc->setposY(itemPositionY);
-
-
-        }
-    }
-
-    std::vector<Obstacle*> enemies;
-    std::vector<Item*> items;
-    std::vector<Object*> safezones;
-    std::vector<Teleport*> teleports;
-    std::vector<Boss*> bosses;
 private:
+
+    std::ifstream op;
     int monsterNumber=0;
     int objectNumber=0;
     int safezoneNumber=0;
     int bossNumber=0;
+    std::vector<Obstacle*> enemies;
+    std::vector<Item*> items;
+    std::vector<Safezone*> safezones;
+    std::vector<Teleport*> teleports;
+    std::vector<Boss*> bosses;
 
 };
 

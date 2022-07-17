@@ -4,6 +4,7 @@
 
 #ifndef MAIN_DUNGEONAREA_H
 #define MAIN_DUNGEONAREA_H
+
 #include <iostream>
 #include "Tile.h"
 #include "Template.h"
@@ -11,10 +12,6 @@
 #include <string>
 #include <fstream>
 #include <time.h>
-#include "Obstacle.h"
-#include "Teleport.h"
-#include "Item.h"
-#include "Boss.h"
 #include "GameFileException.h"
 
 static std::string TileTypeToTileString(const TileType& tile) {
@@ -66,15 +63,14 @@ static TileType TileStringToTileType(const char& tile) {
 
 class Dungeonarea {
 public:
-    Dungeonarea();
-    explicit Dungeonarea(long oldsees,int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int mapType,int chanceRoom,int parts,
+
+   Dungeonarea(long oldsees,int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int maxRoomWidth,int maxRoomHeight,int mapType,int chanceRoom,int parts,
                          int xMin,int yMin, std::string name,std::string save);
 
     ~Dungeonarea();
+
     bool isLegalCell(int x, int y,const Dungeonarea &map) const;
-
-
-    bool createDungeon(int xLength,int yLength ,int inobj );//todo inserire if e clo per creare stanza boss e spawnarvi boss, inserire modo per creare stanze segrete
+    bool createDungeon();
     bool makeCorridor(int x,int y , int length , int direction);
     bool makeRoom(int x, int y, int xlength,int ylenghth,int direction);
     int getWidth() const;
@@ -82,19 +78,19 @@ public:
     int getHeight() const;
     void setHeight(int ySize);
     int getRand(int min, int max)  ;
-
     const std::string &getName() const;
-
     void setName(const std::string &name);
-
     const std::string &getSave() const;
-
     void setSave(const std::string &save);
-
     TileType getcell(int x,int y) const ;
     void setcell(int x,int y,TileType type) const ;
     void saveMap(std::string mapSaveName);
     bool loadMap(std::string fileName,std::string name);
+    long getOldseed() const;
+    int getDungeonType() const;
+    void setOldseed(long oldseed);
+    int getRooms() const;
+
 private:
     int width;
     int height;
@@ -105,24 +101,17 @@ private:
     int parts;
     int minRoomWidth;
     int minRoomHeight;
-public:
-    int getDungeonType() const;
-
-private:
+    int maxRoomWidth;
+    int maxRoomHeight;
     int dungeonType=0;
     int chanceRoom;
-    int chanceCorridor;
+    int rooms=0;
     long oldseed=0;
-public:
-    long getOldseed() const;
-
-    void setOldseed(long oldseed);
-
-private:
     std::string name;
     std::string save;
-    Tile* tiles;
-
+    std::vector<Tile*> tiles;
+    std::ifstream ip;
+    std::ofstream out;
 };
 
 

@@ -5,17 +5,24 @@
 #ifndef MAIN_SKILLS_H
 #define MAIN_SKILLS_H
 #include <iostream>
-#include "Object.h"
-//manca l'override di move ed il movimento della skill
+#include "Entity.h"
+
+enum class skill{
+fire=0
+};
+
+//todo implementarle tramite un vettore ed usare vector erase() per cancellare le abilità a schermo da distruggere
+//todo questa srà la classe che gestisce  le abilità
 class Skills:public Object{
+
 public:
 
-    int getUnlocked() const{
-        return unlocked;
-    }
-    void setUnlocked(bool usable){
-        Skills::unlocked=usable;
-    }
+    virtual void tracking() override;
+    virtual void behaviour() override;
+    virtual void move(int x, int y) override;
+    bool isOutOfRange(int posX, int posY,int initialX,int initialY);
+    skill getType() const;
+
     int getstartX() const{
         return startX;
     }
@@ -25,23 +32,23 @@ public:
     int getStamConsumption() const{
         return stamConsumption;
     }
+    bool isOstile() const;
+    void setType(skill type);
+
     int getDamage() const{
         return damage;
     }
-    bool isOutOfRange(int posX, int posY,int initialX,int initialY,int maxRange) {
-
-            if (abs(posX - startX) +(abs(posY - startY) == maxRange))
-                return true;
-        return false;
-    }
 
 protected:
+
     int damage;
     int startX;
     int startY;
     int stamConsumption;
     int range;
-    bool unlocked= false;
+    bool ostile;
+    skill type=skill::fire;
+
 };
 
 

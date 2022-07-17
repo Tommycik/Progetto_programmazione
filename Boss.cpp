@@ -4,15 +4,44 @@
 
 #include "Boss.h"
 
-Boss::Boss(int hp, int movements, int posX, int posY, int statIncrease) : Entity(hp, movements,posX, posY)
-                                                                                                    {
+Boss::Boss(int hp, int movements, int posX, int posY, int statIncrease){
+    this->hp=hp;
+    this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
     this->statIncrease=statIncrease;
 }
 
-int Boss::getStatIncrease() const {
+int Boss::getStatIncrease()const{
     return statIncrease;
 }
 
 void Boss::setStatIncrease(int statIncrease) {
     Boss::statIncrease = statIncrease;
 }
+
+void Boss::tracking() {
+
+}
+
+void Boss::behaviour() {
+
+}
+
+void Boss::move(int x, int y) {
+
+}
+
+void Boss::fight() {
+
+}
+
+boss Boss::getType() const {
+    return  Boss::type;
+}
+
+void Boss::setType(boss type) {
+    Boss::type = type;
+}
+
+

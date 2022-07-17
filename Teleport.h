@@ -7,17 +7,19 @@
 #include "Mario.h"
 
 class Teleport:public Object {
-private:
-    bool activated;
 
 public:
-    Teleport();
-    explicit Teleport( int posX, int posY);
+
+    Teleport( int posX, int posY);
+
     void teleportation(Mario &hero,int finalX,int finalY);
-
     bool isActivated() const;
-
     void setActivated(bool activated);
+
+private:
+
+    bool activated=true;
+
 };
 
 

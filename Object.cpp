@@ -12,8 +12,11 @@ void Object::move(int x, int y) {
     posY += y;
 }
 
-Object::Object(int movements, int posX, int posY){
-    this->movements=movements;
-    this->posX=posX;
-    this->posY=posY;
+void Object::tracking() {
+
 }
+
+void Object::behaviour() {
+
+}
+

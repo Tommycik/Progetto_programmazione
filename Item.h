@@ -7,19 +7,18 @@
 #include "Object.h"
 
 class Item:public Object  {
+
 public:
-    Item();
-    explicit Item(int movements, int posX, int posY, int effect);
+
+    Item( int posX, int posY, int effect,int movements=0);
 
     bool isTaken() const;
-
     void setTaken(bool taken);
-
     int getEffect() const;
-
     void setEffect(int effect);
 
 private:
+
     bool taken;
     int effect;
 };

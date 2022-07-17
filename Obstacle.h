@@ -6,23 +6,35 @@
 #define MAIN_OBSTACLE_H
 #include "Entity.h"
 
+enum class enemy{
+    blocked=0
+};
+
 class Obstacle: public Entity {
 
 public:
-    Obstacle();
-    explicit Obstacle(int hp, int movements, int posX, int posY, bool fixed);
 
+    Obstacle(int hp, int movements, int posX, int posY, bool fixed);
+
+    void behaviour() override;
+    void tracking() override;
+    void move(int x, int y) override;
+    void fight() override;
     bool isFixed() const;
-
     bool isActivated() const;
-
     void setFixed(bool fixed);
-
+    void setType(enemy type);
+    int getObstacleType() const;
+    void setObstacleType(int obstacleType);
     void setActivated(bool activated);
+    enemy getType() const;
 
 protected:
+
     bool activated=false;
     bool fixed=true;
+    enemy type=enemy::blocked;
+
 };
 
 

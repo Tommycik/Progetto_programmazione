@@ -4,42 +4,34 @@
 
 #ifndef MAIN_TEXTVIEWER_H
 #define MAIN_TEXTVIEWER_H
-#include <iostream>
-#include <string>
 #include <sstream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Spawner.h"
+
 class Textviewer {
+
 public:
+
+    Textviewer(int heigth, int length, int textDimension,int viewHeigth);
+
     bool blackBox(float posX,float posY,std::string text1,std::string text2,sf::RenderWindow *window,bool center );
     bool checker(Spawner &creator,Mario &hero,bool &itemText,bool &safezoneText,bool &teleportText,bool tutorialSafezone,bool tutorialItem);
+    const std::string &getFont() const;
+    void setFont(const std::string &font);
+    void show(sf::RenderWindow &window,sf::View &view1,bool &makeText,bool &itemText,bool &tutorialItem,bool &safezoneText,bool &tutorialSafezone,bool &teleportText,bool &tutorialTeleport);
+
 private:
+
     int heigth=0;
     int length=0;
-public:
-    int getHeigth() const;
-
-    void setHeigth(int heigth);
-
-    Textviewer(int heigth, int length, int textDimension);
-
-    int getLength() const;
-
-    void setLength(int length);
-
-    int getTextDimension() const;
-
-    void setTextDimension(int textDimension);
-
-    const std::string &getFont() const;
-
-    void setFont(const std::string &font);
-
-private:
-
     int textDimension=0;
     std::string font="../assets/arial.ttf";
+    sf::Font myTextFont;
+    sf::RectangleShape box;
+    std::stringstream su,sd;
+    sf::Text textOne;
+    sf::Text textTwo;
 
 };
 

@@ -3,18 +3,16 @@
 //
 
 #include "Entity.h"
-#include "Object.h"
 
-Entity::Entity(int hp, int movements, int posX, int posY):Object(movements,posX,posY) {
-    this->hp=hp;
-}
+
+
 
 int Entity::getHp() const {
     return hp;
 }
 
 void Entity::setHp(int hp) {
-    Entity::hp = hp;
+   this->hp = hp;
 }
 
 
@@ -25,4 +23,13 @@ void Entity::run(int x,int y) {
         y = movements;
     posX += 2*x;
     posY += 2*y;
+}
+
+
+void Entity::fight() {
+
+}
+
+void Entity::receiveDamage(int damage) {
+this->hp-=damage;
 }

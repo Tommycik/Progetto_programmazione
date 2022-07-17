@@ -6,9 +6,8 @@
 bool Tile::isDestructble() const {
     return destructible;
 }
-bool Tile::isPassable() const{
-    return passable;
-}
+
+
 void Tile::unlockPassage(bool unlock){
-    passable=unlock;
+    Tile::type=TileType::corridor;
 }

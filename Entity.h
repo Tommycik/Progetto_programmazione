@@ -6,19 +6,20 @@
 #define MAIN_ENTITY_H
 #include "Object.h"
 #include "Skills.h"
+
 class Entity : public Object  {
+
 public:
-    Entity();
-    explicit Entity(int hp,int movements, int posX,int posY);
 
-    //virtual int fight()
+    virtual void fight();
+    virtual void run(int x,int y);
     int getHp() const;
-
+    void receiveDamage(int damage);
     void setHp(int hp);
-    void run(int x,int y);
 
 protected:
-    int hp;
+
+    int hp=0;
 };
 
 

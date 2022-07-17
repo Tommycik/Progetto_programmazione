@@ -7,17 +7,19 @@
 #include <iostream>
 
 class Object {
+
 public:
-    Object();
-    explicit Object(int movements, int posX,int posY);
+
+    virtual void behaviour();
+    virtual void tracking();
     virtual void move(int x, int y);
 
-void setMovements(int variation){
-Object::movements=variation;
-}
-int getMovements()const{
-    return movements;
-}
+    void setMovements(int variation){
+        Object::movements=variation;
+    }
+    int getMovements()const{
+        return movements;
+    }
     void setposX(int x){
         Object::posX=x;
     }
@@ -33,12 +35,13 @@ int getMovements()const{
     std::string getName()const{
         return name;
     }
-protected:
-int movements;
-int posX;
-int posY;
-std::string name;
 
+protected:
+
+int movements=0;
+int posX=0;
+int posY=0;
+std::string name;
 
 };
 

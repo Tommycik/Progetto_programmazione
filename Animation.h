@@ -6,28 +6,28 @@
 #define MAIN_ANIMATION_H
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <string>
 #include "Dungeonarea.h"
 
 class Animation{
+
 public:
-    Animation();
-    explicit Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime);
+
+    Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime);
+
     void update(int row,float deltaTime,bool faceRight);
     void updatePlayer(float deltaTime,bool running,unsigned int state);
-    ~Animation();
+    const sf::IntRect &getUvRect() const;
 
 private:
+
     sf::Vector2u imageCount;
     sf::Vector2u currentImage;
-
     float switchTime;
     float totalTimeIdle;
     float totalTime;
     float totalTimeMovement;
     bool turn;
     float switching;
-public:
     sf::IntRect uvRect;
 };
 

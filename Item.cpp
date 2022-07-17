@@ -20,9 +20,12 @@ void Item::setEffect(int effect) {
     Item::effect = effect;
 }
 
-Item::Item(int movements, int posX, int posY, int effect) : Object(movements, posX, posY){
+Item::Item( int posX, int posY, int effect,int movements){
    this->taken=false;
    this->effect=effect;
+   this->movements=movements;
+   this->posX=posX;
+   this->posY=posY;
 }
 
 

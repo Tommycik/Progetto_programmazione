@@ -4,29 +4,7 @@
 
 #include "Textviewer.h"
 
-int Textviewer::getHeigth() const {
-    return heigth;
-}
 
-void Textviewer::setHeigth(int heigth) {
-    Textviewer::heigth = heigth;
-}
-
-int Textviewer::getLength() const {
-    return length;
-}
-
-void Textviewer::setLength(int length) {
-    Textviewer::length = length;
-}
-
-int Textviewer::getTextDimension() const {
-    return textDimension;
-}
-
-void Textviewer::setTextDimension(int textDimension) {
-    Textviewer::textDimension = textDimension;
-}
 
 const std::string &Textviewer::getFont() const {
     return font;
@@ -36,18 +14,20 @@ void Textviewer::setFont(const std::string &font) {
     Textviewer::font = font;
 }
 
-Textviewer::Textviewer(int heigth, int length, int textDimension) : heigth(heigth),
-                                                                                             length(length),
-                                                                                             textDimension(
-                                                                                                     textDimension){}
+Textviewer::Textviewer(int heigth, int length, int textDimension,int viewHeigth) : heigth(heigth),length(length),
+textDimension(textDimension){
+
+    box.setSize(sf::Vector2f (viewHeigth,viewHeigth/6));
+    sf::Color color(0,0,0,128);
+    box.setFillColor(color);
+    box.setOutlineColor(sf::Color::White);
+    box.setOutlineThickness(1);
+
+}
 
 bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string text2,sf::RenderWindow *window,bool center ) {
     //sf::RectangleShape text(sf::Vector2f(length, heigth));
 
-    sf::Font myTextFont;
-    std::stringstream su,sd;
-    sf::Text textOne;
-    sf::Text textTwo;
     textOne.setFont(myTextFont);
     textTwo.setFont(myTextFont);
     textOne.setFillColor(sf::Color::White);
@@ -106,4 +86,36 @@ bool Textviewer::checker(Spawner &creator,Mario &hero, bool &itemText, bool &saf
         }
     }
     return makeText;
+}
+
+void Textviewer::show(sf::RenderWindow &window,sf::View &view1, bool &makeText, bool &itemText, bool &tutorialItem, bool &safezoneText,
+                      bool &tutorialSafezone, bool &teleportText, bool &tutorialTeleport) {
+
+    if(makeText) {
+        box.setPosition(view1.getCenter().x-(view1.getSize().x/4),view1.getCenter().y+(view1.getSize().y/6));
+        window.draw(box);
+        if(itemText){
+            if(tutorialItem==false){
+
+               this->blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
+
+            }
+        }else if(safezoneText){
+            if(tutorialSafezone==false){
+
+                this->blackBox(box.getPosition().x,box.getPosition().y,"Hai trovato una fonte di luce","Per usarne il potere premi T",&window,false);
+
+            }
+        }else if(teleportText){
+            if(tutorialTeleport){
+
+               this->blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window,
+                                           false);
+
+            }else {
+                this->blackBox(box.getPosition().x,box.getPosition().y,"Per usare il potere del teletrasporto premere P o O","",&window,
+                                           false);//P scorre in avanti mentre  O scorre indietro
+            }
+        }
+    }
 }
