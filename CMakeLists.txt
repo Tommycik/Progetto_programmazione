@@ -28,7 +28,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(MACOSX TRUE)
 
     if(false)#mettere true solo se cmake non trova sfml in autonomia
-        set(SFML_ROOT /usr7local7Cellar/sfml)#assicurarsi che il percorso sia quello giusto
+        set(SFML_ROOT /usr/local/Cellar/sfml)#assicurarsi che il percorso sia quello giusto
     endif()
 
     find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
