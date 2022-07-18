@@ -310,5 +310,5 @@ quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
 quad[1].texCoords = sf::Vector2f((tu + offset) * tileSize.x, tv * tileSize.y);
 quad[2].texCoords = sf::Vector2f((tu + offset) * tileSize.x, (tv + offset) * tileSize.y);
 quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + offset) * tileSize.y);
-
+return true;
 }
