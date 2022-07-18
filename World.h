@@ -17,7 +17,7 @@ class World {
 
 public:
 
-    void savePlayer(int map,Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*,int littleStatus*/);
+    void savePlayer(int map,Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*,int littleStatus*/) const;
     bool loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport);
     bool destroyer(int numberMap,Mario &hero,Spawner **vectors=nullptr, Dungeonarea **maps=nullptr);
     bool entityUpdater();

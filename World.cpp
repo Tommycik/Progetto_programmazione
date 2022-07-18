@@ -6,7 +6,7 @@
 
 
 
-void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*, int littleStatus*/) {
+void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*, int littleStatus*/) const{
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     // try {
@@ -169,7 +169,7 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
 
             hero.move(0,-1);}}
 
-    return 0;
+    return staminaUsed;
 }
 
 bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth, int &numberMap, TileMap &map, TileMap &object, TileMap &teleport,
