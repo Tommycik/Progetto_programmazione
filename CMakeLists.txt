@@ -15,24 +15,29 @@ if(WIN32)
     file(GLOB MINGW_DEP_DLLS "C:/mingw32/bin/*.dll")
     file(COPY ${MINGW_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY "${SFML_ROOT}/bin/openal32.dll " DESTINATION ${CMAKE_BINARY_DIR})
-    find_package(SFML  COMPONENTS system window graphics network audio REQUIRED)
+    find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
     if (SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIRS})
         target_link_libraries(main sfml-system sfml-window  sfml-audio sfml-graphics sfml-network )
         file(GLOB BINARY_DEP_DLLS "${SFML_ROOT}/bin/*.dll ")
         file(COPY ${BINARY_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
-    endif(SFML_FOUND)
-endif(WIN32)
+    endif()
+endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(MACOSX TRUE)
-    find_package(SFML  COMPONENTS system window graphics network audio REQUIRED)
+
+    if(false)#mettere true solo se cmake non trova sfml in autonomia
+        set(SFML_ROOT /usr7local7Cellar/sfml)#assicurarsi che il percorso sia quello giusto
+    endif()
+
+    find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
     if (SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIRS})
         target_link_libraries(main sfml-system sfml-window  sfml-audio sfml-graphics sfml-network)
-    endif(SFML_FOUND)
+    endif()
 
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+endif()
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY playerSave DESTINATION ${CMAKE_BINARY_DIR})
