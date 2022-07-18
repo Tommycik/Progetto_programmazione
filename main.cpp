@@ -54,7 +54,7 @@ int main() {
 
     numberMap=names->size();
 
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try",sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try"/*,sf::Style::Fullscreen*/);
     window.setFramerateLimit(100);
 
 
