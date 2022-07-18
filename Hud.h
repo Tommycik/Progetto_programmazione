@@ -18,7 +18,7 @@ public :
     Hud(int thickness=1);
 
     bool hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth);
-    bool hudSow(Mario &hero,sf::RenderWindow *window,int tilesetResolution,int &HudBarsHeigth,int &HudXOffset,int &HudYOffset);
+    bool hudSow(Mario &hero,sf::RenderWindow *window,int tilesetResolution,int &HudBarsHeigth,sf::View &view1);
 
 private:
 

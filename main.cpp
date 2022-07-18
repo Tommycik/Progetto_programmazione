@@ -212,7 +212,7 @@ int main() {
             window.draw(player);
             window.draw(safezone);
             window.draw(object);
-            hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,HudXOffset,HudYOffset);
+            hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
             objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
             window.display();
         }

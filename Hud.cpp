@@ -26,15 +26,11 @@ bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth) {
     textureSize.y/=15;
     this-> potionIcon.setTextureRect(sf::IntRect(textureSize.x*12,textureSize.y*0,textureSize.x,textureSize.y));
 
-
     this->Potion.setFont(this->myFont);
-
     this->Potion.setFillColor(sf::Color::White);
     this->Potion.setCharacterSize(128);
     this->Potion.setScale(sf::Vector2f(0.1,0.1));
-
     this->Potion.setOutlineColor(sf::Color::Black);
-
     this->Potion.setOutlineThickness(thickness);
 
     if (!this->myFont.loadFromFile("assets/arial.ttf"))
@@ -47,7 +43,7 @@ bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth) {
  Hud::Hud(int thickness) : thickness(thickness) {
 }
 
-bool Hud::hudSow(Mario &player, sf::RenderWindow *window,int tilesetResolution,int &HudBarsHeigth,int &HudXOffset,int &HudYOffset) {
+bool Hud::hudSow(Mario &player, sf::RenderWindow *window,int tilesetResolution,int &HudBarsHeigth,sf::View &view1) {
     stamina.setSize(sf::Vector2f (player.getStamina()/10*tilesetResolution, HudBarsHeigth));
     life.setSize(sf::Vector2f (player.getHp()/10*tilesetResolution, HudBarsHeigth));
 
@@ -55,7 +51,7 @@ bool Hud::hudSow(Mario &player, sf::RenderWindow *window,int tilesetResolution,i
     Potion.setString( ss.str().c_str() );
     ss.str("");
 
-    life.setPosition(player.getposX()*tilesetResolution+HudXOffset,player.getposY()*tilesetResolution+HudYOffset);
+    life.setPosition(player.getposX()*tilesetResolution-view1.getSize().x/2,player.getposY()*tilesetResolution-view1.getSize().y/2);
     stamina.setPosition(life.getPosition().x+2,life.getPosition().y+8);
     Potion.setPosition(life.getPosition().x+3, stamina.getPosition().y+8);
     if(player.getPotionNum()<10){

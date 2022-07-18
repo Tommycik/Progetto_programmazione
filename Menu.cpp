@@ -8,23 +8,14 @@ Menu::Menu(sf::RenderWindow *window) {
     background.setSize(sf::Vector2f (window->getSize().x,window->getSize().y));
     background.setPosition(0,0);
 
-
-
-
     play.setSize(sf::Vector2f (window->getSize().x/4,window->getSize().y/7));
     play.setPosition(0+window->getSize().x/2.7,0+play.getSize().y*3);
-
-
-
 
     newGame.setSize(sf::Vector2f (window->getSize().x/4,window->getSize().y/7));
     newGame.setPosition(0+window->getSize().x/2.7,play.getPosition().y+newGame.getSize().y*1.5);
 
-
     quit.setSize(sf::Vector2f (window->getSize().x/4,window->getSize().y/7));
     quit.setPosition(0+window->getSize().x/2.7,newGame.getPosition().y+quit.getSize().y*1.5);
-
-
 
 }
 
@@ -71,6 +62,12 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
         {
             switch (button.type){
 
+                case sf::Event::Closed:
+                    window->close();
+                    menu.stop();
+                    return true;
+                    break;
+
                 case sf::Event::KeyPressed:
                     if (button.key.code == sf::Keyboard::Escape){
                         window->close();
@@ -80,10 +77,10 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
                     }
                     break;
                 case sf::Event::MouseButtonReleased:
-                    if ((sf::Mouse::getPosition(*window).x >= quit.getPosition().x
-                         && sf::Mouse::getPosition(*window).y >=quit.getPosition().y
-                         && sf::Mouse::getPosition(*window).x <= quit.getPosition().x+quit.getSize().x
-                         && sf::Mouse::getPosition(*window).y <= quit.getPosition().y+quit.getSize().y)){
+                    if ((sf::Mouse::getPosition(*window).x >= 0+window->getSize().x/2.7
+                         && sf::Mouse::getPosition(*window).y >=0+(window->getSize().y/7)*3+(window->getSize().y/7)*1.5+(window->getSize().y/7)*1.5
+                         && sf::Mouse::getPosition(*window).x <= 0+window->getSize().x/2.7+window->getSize().x/4
+                         && sf::Mouse::getPosition(*window).y <= 0+(window->getSize().y/7)*3+(window->getSize().y/7)*1.5+(window->getSize().y/7)*1.5+window->getSize().y/7)){
 
                         window->close();
                         menu.stop();
@@ -91,53 +88,42 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
 
                     }
 
-                    if (sf::Mouse::getPosition(*window).x >= play.getPosition().x
-                        && sf::Mouse::getPosition(*window).y >=play.getPosition().y
-                        && sf::Mouse::getPosition(*window).x <= play.getPosition().x+play.getSize().x
-                        && sf::Mouse::getPosition(*window).y <= play.getPosition().y+play.getSize().y){
+                    if ((sf::Mouse::getPosition(*window).x >= 0+window->getSize().x/2.7
+                         && sf::Mouse::getPosition(*window).y >=0+(window->getSize().y/7)*3
+                         && sf::Mouse::getPosition(*window).x <= 0+window->getSize().x/2.7+window->getSize().x/4
+                         && sf::Mouse::getPosition(*window).y <= 0+(window->getSize().y/7)*3+window->getSize().y/7)){
                         go=true;
                     }
 
 
 
-                    if (sf::Mouse::getPosition(*window).x >=newGame.getPosition().x
-                        && sf::Mouse::getPosition(*window).y >=newGame.getPosition().y
-                        && sf::Mouse::getPosition(*window).x <= newGame.getPosition().x+newGame.getSize().x
-                        && sf::Mouse::getPosition(*window).y <= newGame.getPosition().y+newGame.getSize().y){
+                    if ((sf::Mouse::getPosition(*window).x >= 0+window->getSize().x/2.7
+                         && sf::Mouse::getPosition(*window).y >=0+(window->getSize().y/7)*3+(window->getSize().y/7)*1.5
+                         && sf::Mouse::getPosition(*window).x <= 0+window->getSize().x/2.7+window->getSize().x/4
+                         && sf::Mouse::getPosition(*window).y <= 0+(window->getSize().y/7)*3+(window->getSize().y/7)*1.5+window->getSize().y/7)){
 
                         for(int i=0;i<numberMap;i++){
+
                             try {
                                 on.open(savesVec[i].c_str());
                                 on.close();
                                 remove(savesVec[i].c_str());
-                            } catch (std::ios_base::failure& e) {
+                            } catch (std::ios_base::failure& e) {}
 
-
-                            }
                             try {
 
                                 on.open(saves[i].c_str());
                                 on.close();
                                 remove(saves[i].c_str());
-                            } catch (std::ios_base::failure& e) {
-
-
-                            }
-
-
-
-
+                            } catch (std::ios_base::failure& e) {}
                         }
+
                         try {
 
                             on.open("playerSave/save.txt");
                             on.close();
                             remove("playerSave/save.txt");
-                        } catch (std::ios_base::failure& e) {
-
-
-                        }
-
+                        } catch (std::ios_base::failure& e) {}
                         go=true;
 
                     }
