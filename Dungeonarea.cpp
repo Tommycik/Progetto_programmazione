@@ -11,12 +11,9 @@ std::string save) : xMax(maxLength),yMax(maxHeigth),minRoomWidth(minRoomWidth),m
 chanceRoom(chanceRoom),parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(maxRoomWidth) {
     this->oldseed=oldseed;
     //this->createDungeon(getRand(xMin, xMax), getRand(yMin, yMax), parts);
-
     this->name=name;
     this->save=save;
     this->dungeonType=mapType;
-
-
 }
 
 
