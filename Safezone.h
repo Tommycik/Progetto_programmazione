@@ -7,8 +7,10 @@
 #include "Object.h"
 
 class Safezone:public Object {
+
 public:
-     Safezone(int posX, int posY,int moving=0);
+
+    Safezone(int posX, int posY,int moving=0);
 };
 
 

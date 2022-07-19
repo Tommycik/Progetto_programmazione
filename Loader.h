@@ -18,13 +18,13 @@
         bool loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         bool loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         bool loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator);
+        const sf::Texture &getMTileset() const;
 
         bool loadTexture(const std::string& tileset){
             if (!m_tileset.loadFromFile(tileset))
                 return false;
             return true;
         }
-        const sf::Texture &getMTileset() const;
 
     private:
 

@@ -4,8 +4,6 @@
 
 #include "Textviewer.h"
 
-
-
 const std::string &Textviewer::getFont() const {
     return font;
 }
@@ -15,7 +13,7 @@ void Textviewer::setFont(const std::string &font) {
 }
 
 Textviewer::Textviewer(int heigth, int length, int textDimension,int viewHeigth) : heigth(heigth),length(length),
-textDimension(textDimension){
+                                                                                   textDimension(textDimension){
 
     box.setSize(sf::Vector2f (viewHeigth,viewHeigth/6));
     sf::Color color(0,0,0,128);
@@ -50,6 +48,7 @@ bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string t
     su.str("");
     textTwo.setString( sd.str().c_str() );
     sd.str("");
+
     if(center){
         textOne.setOrigin(textOne.getLocalBounds().width/2,textOne.getLocalBounds().height/2);
     }
@@ -63,7 +62,7 @@ bool Textviewer::blackBox(float posX,float posY,std::string text1, std::string t
 }
 
 bool Textviewer::checker(Spawner &creator,Mario &hero, bool &itemText, bool &safezoneText, bool &teleportText,bool tutorialSafezone,bool tutorialItem) {
-   bool makeText=false;
+    bool makeText=false;
     for(auto gc:creator.getTeleports()){
         if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1&&(gc->isActivated())) {
             makeText=true;
@@ -97,7 +96,7 @@ void Textviewer::show(sf::RenderWindow &window,sf::View &view1, bool &makeText, 
         if(itemText){
             if(tutorialItem==false){
 
-               this->blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
+                this->blackBox(box.getPosition().x,box.getPosition().y,"Per raccogliere gli oggetti premi R","Per usare le pozioni premi B",&window,false);
 
             }
         }else if(safezoneText){
@@ -109,12 +108,13 @@ void Textviewer::show(sf::RenderWindow &window,sf::View &view1, bool &makeText, 
         }else if(teleportText){
             if(tutorialTeleport){
 
-               this->blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window,
-                                           false);
+                this->blackBox(box.getPosition().x,box.getPosition().y,"Il teletrasporto emana un'aura misteriosa...","",&window,
+                               false);
 
             }else {
+
                 this->blackBox(box.getPosition().x,box.getPosition().y,"Per usare il potere del teletrasporto premere P o O","",&window,
-                                           false);//P scorre in avanti mentre  O scorre indietro
+                               false);//P scorre in avanti mentre  O scorre indietro
             }
         }
     }

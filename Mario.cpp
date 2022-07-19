@@ -5,7 +5,7 @@
 #include "Mario.h"
 
 Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum,int bossKill):stamina(stamina),
-maxHp(hp),maxStam(stamina),potionNum(potioNum){
+                                                                                                maxHp(hp),maxStam(stamina),potionNum(potioNum){
     this->hp=hp;
     this->movements=movements;
     this->posX=posX;
@@ -39,7 +39,7 @@ void Mario::setPotionNum(int potionNum) {
 
 void Mario::recoverStam(float stamina) {
     if(Mario::stamina<=Mario::maxStam-stamina)
-    Mario::stamina += stamina;
+        Mario::stamina += stamina;
 }
 
 bool Mario::recoverHp(int potionUsed) {
@@ -56,7 +56,7 @@ bool Mario::recoverHp(int potionUsed) {
             Mario::potionNum-=potionUsed;}
 
     }else{
-         Mario::hp=Mario::getMaxHp();}
+        Mario::hp=Mario::getMaxHp();}
     return true;
 }
 
@@ -73,15 +73,15 @@ void Mario::setStamina(float stamina) {
 }
 
 void Mario::potionNumSave(int potionNum) {
-Mario::potionNum=potionNum;
+    Mario::potionNum=potionNum;
 }
 
 void Mario::maxStamSave(int maxStam) {
-Mario::maxStam=maxStam;
+    Mario::maxStam=maxStam;
 }
 
 void Mario::maxHpSave(int maxHp) {
-Mario::maxHp=maxHp;
+    Mario::maxHp=maxHp;
 }
 
 int Mario::getBossKilled() const {

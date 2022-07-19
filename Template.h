@@ -4,10 +4,8 @@
 
 #ifndef MAIN_TEMPLATE_H
 #define MAIN_TEMPLATE_H
-
 #include <cstdlib>
 #include "Dungeonarea.h"
-
 
 template <typename T, typename U>
 int l1Distance(const T &p, const U &q) {
@@ -32,7 +30,6 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
                 if (gc->getposY() == y && gc->getposX() == x)
                     return false;
             }
-
         }
     }
     if (Object2!= nullptr) {
@@ -41,7 +38,6 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
                 if (gc->getposY() == y && gc->getposX() == x)
                     return false;
             }
-
         }
     }
     if (Object3!= nullptr) {
@@ -50,13 +46,15 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
                 if (gc->getposY() == y && gc->getposX() == x)
                     return false;
             }
-        }}
+        }
+    }
     if (Object4!= nullptr) {
         for (auto gc : *Object4) {
             if (gc->getposY() == y && gc->getposX() == x)
                 return false;
         }
-    }return true;
+    }
+    return true;
 }
 
 template <typename T,typename u,typename c,typename d,typename s,typename f>
@@ -93,7 +91,7 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
                 found=true;
                 x = i;
                 y = j;
-                // additional check
+
                 if (Object1!= nullptr) {
                     for (auto gc : *Object1) {
                         if (l2Distance(*gc, x,y)<30)
@@ -117,14 +115,15 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
                         if (l2Distance(*gc, x,y)<15)
                             found=false;
                     }
-
                 }
                 if(found){
-                    return true;}
+                    return true;
+                }
             }
         }
-
-    }return false;}
+    }
+    return false;
+}
 
 
 

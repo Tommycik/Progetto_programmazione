@@ -38,10 +38,10 @@ public:
 
 protected:
 
-int movements=0;
-int posX=0;
-int posY=0;
-std::string name;
+    int movements=0;
+    int posX=0;
+    int posY=0;
+    std::string name;
 
 };
 

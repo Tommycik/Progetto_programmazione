@@ -23,7 +23,7 @@ public:
     bool entityUpdater();
     int playerMovementUpdater(Mario &hero,Dungeonarea &maps,Spawner &vectors,sf::RectangleShape &player,float tilesetResolution,bool &run,int &state);
     bool  initialize(Mario &hero,int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth,int &numberMap,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,Hud &hud, sf::View &view1,
-                     sf::RectangleShape &player, sf::Texture &playerTexture,float &tilesetResolution,
+                     sf::RectangleShape &player, sf::Texture &playerTexture,float tilesetResolution,
                      Dungeonarea **maps=nullptr,Spawner **vectors=nullptr);
 
 private:

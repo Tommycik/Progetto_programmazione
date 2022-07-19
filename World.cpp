@@ -45,7 +45,6 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
     std::getline(of, fileLine);
     try {
 
-
         mapIndex=(std::stoi(fileLine));
         std::getline(of, fileLine);
         player.setHp(std::stoi(fileLine));//fixme non riporta la vita corretta,la vita massima sì
@@ -71,6 +70,7 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
         tutorialTeleport=(std::stoi(fileLine));
         std::getline(of, fileLine);
         player.setBossKilled((std::stoi(fileLine)));
+
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
     }
@@ -85,18 +85,18 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
 }
 
 bool World::destroyer(int numberMap,Mario &hero,Spawner **vectors, Dungeonarea **maps) {
+
     for(int i=0;i<numberMap;i++){
         maps[i]->~Dungeonarea();
         vectors[i]->~Spawner();
     }
     delete &hero;
-
-
     return true;
 }
 
 int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
                          float tilesetResolution,bool &run,int &state) {
+
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -106,8 +106,6 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
     int staminaUsed=0;
     state=0;
     run=false;
-
-
 
     if(RightKeyDown||UpKeyDown||DownKeyDown||LeftKeyDown){
 
@@ -174,23 +172,11 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
 
 bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth, int &numberMap, TileMap &map, TileMap &object, TileMap &teleport,
                        TileMap &safezone, Hud &hud, sf::View &view1, sf::RectangleShape &player,
-                       sf::Texture &playerTexture, float &tilesetResolution, Dungeonarea **maps, Spawner **vectors) {
+                       sf::Texture &playerTexture, float tilesetResolution, Dungeonarea **maps, Spawner **vectors) {
 
-    if(!this->loadPlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
 
-        int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
-        int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
-        while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
-            startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
-            startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
-        }
-        hero.setposX(startX);
-        hero.setposY(startY);
-    }
 
     if(!playerTexture.loadFromFile("assets/mario.png")){
-
-        this->destroyer(numberMap,hero,&vectors[0],&maps[0]);
         return false;
     }
     playerTexture.setSmooth(false);
@@ -203,31 +189,8 @@ bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tut
     view1.setCenter(player.getPosition());
 
     if(!(hud.hudSetter(hero,tilesetResolution,HudBarsHeigth))){
-        this->destroyer(numberMap,hero,&vectors[0],&maps[0]);
         return false;
     }
-    if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
 
-        this->destroyer(numberMap,hero,&vectors[0],&maps[0]);
-        return false;
-    }
-    if(!object.loadTexture("assets/potions.png")){
-
-        this->destroyer(numberMap,hero,&vectors[0],&maps[0]);
-        return false;
-    }
-    if(!teleport.loadTexture("assets/portalRings1.png")){
-
-        this->destroyer(numberMap,hero,&vectors[0],&maps[0]);
-        return false;
-    }
-    if(!safezone.loadTexture("assets/pixelSet.png")){
-
-        this->destroyer(numberMap,hero,&vectors[0],&maps[0]);
-        return false;
-    }
-    object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
-    teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
-    safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
-return true;
+    return true;
 }

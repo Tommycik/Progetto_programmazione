@@ -16,8 +16,6 @@ Teleport::Teleport(int posX, int posY){
     this->movements=0;
     this->posX=posX;
     this->posY=posY;
-
-
 }
 
 void teleportation(Mario &hero,int finalX,int finalY){

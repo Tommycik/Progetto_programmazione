@@ -53,11 +53,13 @@ bool Menu::load() {
 }
 
 bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::string *savesVec) {
-    menu.play();
 
+    menu.play();
     bool go=false;
+
     while(go==false){
         sf::Event button;
+
         while (window->pollEvent(button))
         {
             switch (button.type){
@@ -66,14 +68,12 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
                     window->close();
                     menu.stop();
                     return true;
-                    break;
 
                 case sf::Event::KeyPressed:
                     if (button.key.code == sf::Keyboard::Escape){
                         window->close();
                         menu.stop();
                         return true;
-
                     }
                     break;
                 case sf::Event::MouseButtonReleased:
@@ -85,7 +85,6 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
                         window->close();
                         menu.stop();
                         return true;
-
                     }
 
                     if ((sf::Mouse::getPosition(*window).x >= 0+window->getSize().x/2.7
@@ -94,8 +93,6 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
                          && sf::Mouse::getPosition(*window).y <= 0+(window->getSize().y/7)*3+window->getSize().y/7)){
                         go=true;
                     }
-
-
 
                     if ((sf::Mouse::getPosition(*window).x >= 0+window->getSize().x/2.7
                          && sf::Mouse::getPosition(*window).y >=0+(window->getSize().y/7)*3+(window->getSize().y/7)*1.5
@@ -125,12 +122,12 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
                             remove("playerSave/save.txt");
                         } catch (std::ios_base::failure& e) {}
                         go=true;
-
                     }
                     break;
                 default:
                     break;
-            }}
+            }
+        }
         window->clear();
         window->draw(background);
         window->draw(play);

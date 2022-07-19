@@ -47,8 +47,6 @@ void Obstacle::fight() {
 
 }
 
-
-
 enemy Obstacle::getType() const {
     return type;
 }

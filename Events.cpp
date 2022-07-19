@@ -6,8 +6,8 @@
 
 int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport,
                   int &mapIndex,int numberMap,World &game,int bossNumber,int monsterNumber,int objectNumber,int safezoneNumber,
-                  float tilesetResolution,sf::Music &Game,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,
-                  sf::RectangleShape &player,Spawner **vectors,Dungeonarea **maps) {
+                  sf::Music &Game,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,
+                 Spawner **vectors,Dungeonarea **maps) {
 
     while (window->pollEvent(Happen))
     {
@@ -16,16 +16,11 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
 
             case sf::Event::Closed:
                 cancel =true;
-
                 break;
-
-
-
 
             case sf::Event::KeyPressed:
                 if (Happen.key.code == sf::Keyboard::Escape){
                     cancel =true;
-
                     break;
                 }
 
@@ -60,18 +55,20 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                                     break;
                             }
 
-
                             tutorialItem=true;
-                            object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),objectNumber,*vectors[mapIndex]);
-                        }}}
+
+                        }
+                    }
+                }
                 if (Happen.key.code == sf::Keyboard::T){
                     for(auto gc:vectors[mapIndex]->getSafezones()){
                         if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1){
 
-
                             hero.recoverHp(0);
-
-                            tutorialSafezone=true;}}}
+                            tutorialSafezone=true;
+                        }
+                    }
+                }
                 if (Happen.key.code == sf::Keyboard::O||Happen.key.code == sf::Keyboard::P){
                     for(auto gc:vectors[mapIndex]->getTeleports()){
                         if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1&&gc->isActivated()){
@@ -80,59 +77,51 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                                 if(mapIndex==numberMap-1) {
                                     mapIndex=0;
                                 }else{
-                                    mapIndex++;}
+                                    mapIndex++;
+                                }
                             }else if (Happen.key.code == sf::Keyboard::P){
                                 if(mapIndex==0) {
                                     mapIndex=numberMap-1;
                                 }else{
-                                    mapIndex--;}
+                                    mapIndex--;
+                                }
                             }
-
-                            if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()))
-                                return -1;
-
-
-                            hero.setposX(vectors[mapIndex]->getTeleports()[0]->getposX()); //fixme controllare teletrasporto d'arrivo
-                            hero.setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
-                            player.setPosition(hero.getposX()*tilesetResolution,hero.getposY()*tilesetResolution);
-                            tutorialTeleport=true;
-                            object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),objectNumber,*vectors[mapIndex]);
-                            teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),bossNumber,*vectors[mapIndex]);
-                            safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),safezoneNumber,*vectors[mapIndex]);
-
-                        }}}
+                            return 2;
+                        }
+                    }
+                }
                 break;
 
             default:
                 break;
         }
-    if (cancel){
-        try {
-            is.open("playerSave/save.txt");
-            is.close();
-            remove("playerSave/save.txt");
-        } catch (std::ios_base::failure& e) {
-
-
-        }
-        game.savePlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport);
-        for(int i=0;i<numberMap;i++) {
+        if (cancel){
             try {
-                is.open(savesVec[i].c_str());
+                is.open("playerSave/save.txt");
                 is.close();
-                remove(savesVec[i].c_str());
+                remove("playerSave/save.txt");
             } catch (std::ios_base::failure& e) {
 
 
             }
-            vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
-        }
-        window->close();
-        game.destroyer(numberMap,hero,&vectors[0],&maps[0]);
-        Game.stop();
+            game.savePlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport);
+            for(int i=0;i<numberMap;i++) {
+                try {
+                    is.open(savesVec[i].c_str());
+                    is.close();
+                    remove(savesVec[i].c_str());
+                } catch (std::ios_base::failure& e) {
 
-        return 1;
-    }
+
+                }
+                vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
+            }
+            window->close();
+            game.destroyer(numberMap,hero,&vectors[0],&maps[0]);
+            Game.stop();
+
+            return 1;
+        }
     }
     return 0;
 }

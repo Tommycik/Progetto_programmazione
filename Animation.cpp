@@ -45,7 +45,6 @@ void Animation::update(int row,float deltaTime,bool faceRight) {
         uvRect.left=(currentImage.x+1)*abs(uvRect.width);
         uvRect.width=-abs(uvRect.width);
     }
-
 }
 
 void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
@@ -75,9 +74,8 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
                 }else{
                 uvRect.left=(currentImage.x+1)*abs(uvRect.width);
                 uvRect.width=-abs(uvRect.width);
-
-
-        }}
+            }
+        }
     }else{
         totalTimeMovement+=deltaTime;
         totalTimeIdle=0;
@@ -97,7 +95,6 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
             if(currentImage.x>2){
                 currentImage.x=1;
             }
-
         }
         uvRect.top=currentImage.y*uvRect.height;
 
@@ -109,13 +106,8 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
 
             uvRect.left=(currentImage.x+1)*abs(uvRect.width);
             uvRect.width=-abs(uvRect.width);
-
         }
-
-
     }
-
-
 }
 
 const sf::IntRect &Animation::getUvRect() const {

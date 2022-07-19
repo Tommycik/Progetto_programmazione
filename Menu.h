@@ -21,7 +21,6 @@ public:
     bool load();
     bool show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::string *savesVec);
 
-
 private:
 
     sf::RectangleShape background;

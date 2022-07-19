@@ -32,7 +32,7 @@ Dungeonarea::~Dungeonarea() {
 
 int Dungeonarea::getRand(int min, int max) {
     long seed = time(NULL) + oldseed;
-    oldseed = seed;
+    this->oldseed = seed;
 
     srand(seed);
     int n = max - min + 1;
