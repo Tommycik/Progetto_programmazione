@@ -232,7 +232,7 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
     std::getline(op, fileLine);
 
     if (fileLine.compare(name) != 0)
-        throw GameFileException("Map file is op wrong format", "../vectors/vector.txt", true);
+        throw GameFileException("Vectors file is wrong format", fileName, true);
 
     std::getline(op, fileLine);
 

@@ -34,7 +34,7 @@ int main() {
     if(safezoneNumber<1)
         safezoneNumber=1;
 
-    int bossNumber=1;
+    int bossNumber=8;
     if(bossNumber<1)
         bossNumber=1;
 
