@@ -234,7 +234,7 @@ int main() {
             player.setTextureRect(animationPlayer.getUvRect());
 
             window.clear();
-            view1.setCenter(player.getPosition());
+            view1.setCenter(player.getPosition()*1.0f);
             window.setView(view1);
             window.draw(map);
             window.draw(teleport);

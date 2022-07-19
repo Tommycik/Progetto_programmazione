@@ -14,7 +14,7 @@ int l1Distance(const T &p, const U &q) {
 }
 
 template <typename T>
-int l2Distance(const T &p, const int &x,const int &y) {
+int l2Distance(const T &p, const float &x,const float &y) {
     int distance = abs(p.getposX() - x) + abs(p.getposY() - y);
     return distance;
 }
@@ -22,7 +22,7 @@ int l2Distance(const T &p, const int &x,const int &y) {
 
 
 template<typename u,typename c,typename d,typename s>
-bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, d Object3= nullptr,
+bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullptr, d Object3= nullptr,
                          s Object4= nullptr){
     if (Object1!= nullptr) {
         for (auto gc : *Object1) {
@@ -58,10 +58,10 @@ bool checkEnemyPositions(int &x, int &y,u Object1= nullptr, c Object2= nullptr, 
 }
 
 template <typename T,typename u,typename c,typename d,typename s,typename f>
-bool isLegalMove(const T &object, int dX, int dY,f  &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
+bool isLegalMove(const T &object, float dX, float dY,f  &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                  s* Object4= nullptr) {
-    int newX = object.getposX() + dX;
-    int newY = object.getposY() + dY;
+    float newX = object.getposX() + dX;
+    float newY = object.getposY() + dY;
 // bool enemyPos = checkEnemyPositions(newX, newY, enemies);
     return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(newX, newY, map) );}
 

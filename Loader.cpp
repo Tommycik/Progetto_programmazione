@@ -232,7 +232,7 @@ const sf::Texture &TileMap::getMTileset() const {
     return m_tileset;
 }
 
-bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,int &tv,int &tu,bool map,bool teleport,int j,int i){
+bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,int &tv,int &tu,bool map,bool teleport,float j,float i){
 
     tv=0;
     tu=0;

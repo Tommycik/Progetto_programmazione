@@ -23,13 +23,13 @@ public:
     void setposX(int x){
         Object::posX=x;
     }
-    int getposX()const{
+    float getposX()const{
         return posX;
     }
     void setposY(int y){
         Object::posY=y;
     }
-    int getposY()const{
+    float getposY()const{
         return posY;
     }
     std::string getName()const{
@@ -39,8 +39,8 @@ public:
 protected:
 
     int movements=0;
-    int posX=0;
-    int posY=0;
+    float posX=0;
+    float posY=0;
     std::string name;
 
 };

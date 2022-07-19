@@ -13,7 +13,7 @@
 
     public:
 
-        bool loading (sf::Vector2u tileSize,int tileNumber,int &tv,int &tu,bool map,bool teleport,int j,int i);
+        bool loading (sf::Vector2u tileSize,int tileNumber,int &tv,int &tu,bool map,bool teleport,float j,float i);
         bool loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height);
         bool loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         bool loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator);
