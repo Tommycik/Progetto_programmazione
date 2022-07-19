@@ -113,14 +113,14 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
             if(hero.getStamina()<=0)
                 LShiftKeyDown = false;
 
-            run=true;}
-
+            run=true;
+        }
         if(LeftKeyDown){
             state=1;
         }else{
-            state=2;}
+            state=2;
+        }
     }
-
 
     if (LeftKeyDown &&isLegalMove(hero,-1,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
 
@@ -132,7 +132,9 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
         }else {
             player.move(-tilesetResolution, 0);
 
-            hero.move(-1,0);}}
+            hero.move(-1,0);
+        }
+    }
 
     if (RightKeyDown&&isLegalMove(hero,1,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
         if(LShiftKeyDown&& isLegalMove(hero,2,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
@@ -143,7 +145,9 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
         }else {
             player.move(tilesetResolution, 0);
 
-            hero.move(1,0);}}
+            hero.move(1,0);
+        }
+    }
 
     if (UpKeyDown&&isLegalMove(hero,0,1,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
         if(LShiftKeyDown&& isLegalMove(hero,0,2,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
@@ -154,7 +158,9 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
         }else{
             player.move(0, tilesetResolution);
 
-            hero.move(0,1);}}
+            hero.move(0,1);
+        }
+    }
 
     if (DownKeyDown&&isLegalMove(hero,0,-1,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
         if(LShiftKeyDown&& isLegalMove(hero,0,-2,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(), &vectors.getTeleports())){
@@ -165,7 +171,9 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
         }else {
             player.move(0, -tilesetResolution);
 
-            hero.move(0,-1);}}
+            hero.move(0,-1);
+        }
+    }
 
     return staminaUsed;
 }
