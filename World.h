@@ -11,7 +11,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Hud.h"
-#include <iostream>
 #include "Loader.h"
 
 class World {
