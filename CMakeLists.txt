@@ -20,7 +20,6 @@ if(WIN32)
     endif()
 
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(SFML_STATIC_LIBRARIES TRUE)
     set(MACOSX TRUE)
     if(false)#mettere true solo se cmake non trova sfml in autonomia
         set(SFML_DIR /usr/local/Cellar/sfml)#assicurarsi che sia il percorso dove è presente il file config
