@@ -26,15 +26,15 @@ int main() {
     if(monsterNumber<1)
         monsterNumber=1;
 
-    int objectNumber=10;
+    int objectNumber=15;
     if(objectNumber<1)
         objectNumber=1;
 
-    int safezoneNumber=1;
+    int safezoneNumber=2;
     if(safezoneNumber<1)
         safezoneNumber=1;
 
-    int bossNumber=6;
+    int bossNumber=1;
     if(bossNumber<1)
         bossNumber=1;
 
@@ -69,7 +69,7 @@ int main() {
     };
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try"/*,sf::Style::Fullscreen*/);
-    window.setFramerateLimit(100);
+    window.setFramerateLimit(60);
 
     sf::Music Game;
     if (!Game.openFromFile("assets/gioco.wav"))
@@ -108,7 +108,6 @@ int main() {
                 oldseed=maps[i]->getOldseed()+maps[i]->getRand(0,1000);
                 maps[i]->saveMap(saves[i]);}
         }
-
     } catch(GameFileException& e) {
         std::cerr << e.what() << std::endl;
         e.printError();
@@ -133,7 +132,6 @@ int main() {
             vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
         }
     }
-
     if(playerReboot){
         try {
             in.open("playerSave/save.txt");
@@ -177,21 +175,6 @@ int main() {
         game.destroyer(numberMap,*hero,&vectors[0],&maps[0]);
         return false;
     }
-    if(!object.loadTexture("assets/potions.png")){
-
-        game.destroyer(numberMap,*hero,&vectors[0],&maps[0]);
-        return false;
-    }
-    if(!teleport.loadTexture("assets/portalRings1.png")){
-
-        game.destroyer(numberMap,*hero,&vectors[0],&maps[0]);
-        return false;
-    }
-    if(!safezone.loadTexture("assets/pixelSet.png")){
-
-        game.destroyer(numberMap,*hero,&vectors[0],&maps[0]);
-        return false;
-    }
 
     int state=0;
     bool run=false;
@@ -218,6 +201,7 @@ int main() {
             ResizeView(window,view1,viewHeigth);
 
             eventControl=events.event(&window,&saves[0],&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,bossNumber,monsterNumber,objectNumber,safezoneNumber,Game,map,object,teleport,safezone,&vectors[0],&maps[0]) ;
+
             switch (eventControl) {
                 case 1:
                     return 1;
@@ -233,6 +217,7 @@ int main() {
                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
                     tutorialTeleport=true;
                     break;
+
                 default:
                     break;
             }

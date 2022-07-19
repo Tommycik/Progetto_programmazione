@@ -191,6 +191,15 @@ bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tut
     if(!(hud.hudSetter(hero,tilesetResolution,HudBarsHeigth))){
         return false;
     }
+    if(!object.loadTexture("assets/potions.png")){
+        return false;
+    }
+    if(!teleport.loadTexture("assets/portalRings1.png")){
+        return false;
+    }
+    if(!safezone.loadTexture("assets/pixelSet.png")){
+        return false;
+    }
 
     return true;
 }

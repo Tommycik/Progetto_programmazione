@@ -100,26 +100,21 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                 is.open("playerSave/save.txt");
                 is.close();
                 remove("playerSave/save.txt");
-            } catch (std::ios_base::failure& e) {
+            } catch (std::ios_base::failure& e) {}
 
-
-            }
             game.savePlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport);
             for(int i=0;i<numberMap;i++) {
                 try {
                     is.open(savesVec[i].c_str());
                     is.close();
                     remove(savesVec[i].c_str());
-                } catch (std::ios_base::failure& e) {
+                } catch (std::ios_base::failure& e) {}
 
-
-                }
                 vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
             }
             window->close();
             game.destroyer(numberMap,hero,&vectors[0],&maps[0]);
             Game.stop();
-
             return 1;
         }
     }
