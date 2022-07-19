@@ -2,11 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(main)
 
 set(CMAKE_CXX_STANDARD 20)
-
-
 add_executable(main main.cpp Object.cpp Object.h Entity.cpp Entity.h Item.cpp Item.h Obstacle.cpp Obstacle.h Skills.cpp Skills.h Boss.cpp Boss.h Mario.cpp Mario.h World.cpp World.h Tile.cpp Tile.h Dungeonarea.cpp Dungeonarea.h  Iceslide.cpp Iceslide.h Fireball.cpp Fireball.h Littlelight.cpp Littlelight.h Dice.cpp Dice.h  Template.h Hud.cpp Hud.h Animation.cpp Animation.h Teleport.h Teleport.cpp GameFileException.cpp GameFileException.h Spawner.cpp Spawner.h Textviewer.cpp Textviewer.h Loader.cpp Loader.h Menu.cpp Menu.h Safezone.cpp Safezone.h Events.cpp Events.h)
-
-
 
 if(WIN32)
     set(SFML_STATIC_LIBRARIES TRUE)
@@ -15,7 +11,7 @@ if(WIN32)
     file(GLOB MINGW_DEP_DLLS "C:/mingw32/bin/*.dll")
     file(COPY ${MINGW_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
     file(COPY "${SFML_ROOT}/bin/openal32.dll " DESTINATION ${CMAKE_BINARY_DIR})
-    find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
+    find_package(SFML  2.5.1 COMPONENTS system window graphics network audio REQUIRED)
     if (SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIRS})
         target_link_libraries(main sfml-system sfml-window  sfml-audio sfml-graphics sfml-network )
@@ -31,7 +27,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         set(SFML_ROOT /usr/local/Cellar/sfml)#assicurarsi che il percorso sia quello giusto
     endif()
 
-    find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
+    find_package(SFML  2.5.1 COMPONENTS system window graphics network audio REQUIRED)
     if (SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIRS})
         target_link_libraries(main sfml-system sfml-window  sfml-audio sfml-graphics sfml-network)
