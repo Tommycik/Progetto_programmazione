@@ -6,12 +6,12 @@ add_executable(main main.cpp Object.cpp Object.h Entity.cpp Entity.h Item.cpp It
 
 if(WIN32)
     set(SFML_STATIC_LIBRARIES TRUE)
-    set(SFML_DIR c:/SFML)
+    set(SFML_DIR c:/SFML/lib/cmake/SFML)
     file(COPY "c:/mingw32/bin/libgcc_s_dw2-1.dll " DESTINATION ${CMAKE_BINARY_DIR})
     file(GLOB MINGW_DEP_DLLS "C:/mingw32/bin/*.dll")
     file(COPY ${MINGW_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
-    file(COPY "${SFML_DIR}/bin/openal32.dll " DESTINATION ${CMAKE_BINARY_DIR})
-    find_package(SFML  2.5.1 COMPONENTS system window graphics network audio REQUIRED)
+    file(COPY "${SFML_DIR}/../../../bin/openal32.dll " DESTINATION ${CMAKE_BINARY_DIR})
+    find_package(SFML  2.5 COMPONENTS system window graphics network audio REQUIRED)
     if (SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIRS})
         target_link_libraries(main sfml-system sfml-window  sfml-audio sfml-graphics sfml-network )
@@ -22,10 +22,10 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(MACOSX TRUE)
 
     if(false)#mettere true solo se cmake non trova sfml in autonomia
-        set(SFML_DIR /usr/local/Cellar/sfml)#assicurarsi che il percorso sia quello giusto
+        set(SFML_DIR /usr/local/Cellar/sfml)#assicurarsi che sia il percorso dove è presente il file config
     endif()
 
-    find_package(SFML  2.5.1 COMPONENTS system window graphics network audio REQUIRED)
+    find_package(SFML  2.5 COMPONENTS system window graphics network audio REQUIRED)
     if (SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIRS})
         target_link_libraries(main sfml-system sfml-window  sfml-audio sfml-graphics sfml-network)
@@ -37,3 +37,5 @@ file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY playerSave DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY map DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY vectors DESTINATION ${CMAKE_BINARY_DIR})
+
+
