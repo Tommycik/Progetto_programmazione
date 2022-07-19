@@ -18,9 +18,7 @@ if(WIN32)
         file(GLOB BINARY_DEP_DLLS "${SFML_ROOT}/bin/*.dll ")
         file(COPY ${BINARY_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
     endif()
-endif()
-
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(MACOSX TRUE)
 
     if(false)#mettere true solo se cmake non trova sfml in autonomia
