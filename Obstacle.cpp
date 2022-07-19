@@ -5,14 +5,13 @@
 #include "Obstacle.h"
 
 Obstacle::Obstacle(int hp, int movements, int posX, int posY,bool fixed){
+    
     this->activated=false;
     this->fixed=fixed;
     this->hp=hp;
     this->movements=movements;
     this->posX=posX;
     this->posY=posY;
-
-
 }
 
 bool Obstacle::isFixed() const {
