@@ -14,7 +14,7 @@ TEST_F(TheClassTest,DISABLED_Menu){
 
 }
 
-TEST_F(TheClassTest,DISABLED_WorldCreation){
+TEST_F(TheClassTest,WorldCreation){
 
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
