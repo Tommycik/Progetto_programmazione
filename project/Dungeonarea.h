@@ -26,7 +26,7 @@ public:
 
     ~Dungeonarea();
 
-    bool isLegalCell(int x, int y,const Dungeonarea &map) const;
+    bool isLegalCell(int x, int y) const;
     bool createDungeon();
     bool makeCorridor(int x,int y , int length , int direction);
     bool makeRoom(int x, int y, int xlength,int ylenghth,int direction);
@@ -47,6 +47,8 @@ public:
     int getDungeonType() const;
     void setOldseed(long oldseed);
     int getRooms() const;
+    bool getPassable(float x,float y) const;
+    bool getSpawnPlace(float x,float y)const;
 
 private:
     int width;

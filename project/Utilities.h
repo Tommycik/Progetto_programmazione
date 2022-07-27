@@ -63,7 +63,7 @@ bool isLegalMove(const T &object, float dX, float dY,f  &map, u* Object1= nullpt
     float newX = object.getposX() + dX;
     float newY = object.getposY() + dY;
 // bool enemyPos = checkEnemyPositions(newX, newY, enemies);
-    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.isLegalCell(newX, newY, map) );}
+    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.getPassable(newX, newY) );}
 
 template <typename T>
 bool isLegalDamage(int x,int y,T* Object){
@@ -87,38 +87,42 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
     bool found=false;
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
-            if (map.getcell(i,j) == TileType::floor) {//fixme incapsulare l'informazione se è camminabile
-                found=true;
-                x = i;
-                y = j;
+            if (map.getPassable(i,j)== true) {//fixme incapsulare l'informazione se è camminabile
 
-                if (Object1!= nullptr) {
-                    for (auto &gc : *Object1) {
-                        if (l2Distance(*gc, x,y)<30)
-                            found=false;
+                if(map.getSpawnPlace(i,j)==true){
+                    found=true;
+                    x = i;
+                    y = j;
+
+                    if (Object1!= nullptr) {
+                        for (auto &gc : *Object1) {
+                            if (l2Distance(*gc, x,y)<30)
+                                found=false;
+                        }
+                    }
+                    if (Object2!= nullptr) {
+                        for (auto &gc : *Object2) {
+                            if (l2Distance(*gc, x,y)<15)
+                                found=false;
+                        }
+                    }
+                    if (Object3!= nullptr) {
+                        for (auto &gc : *Object3) {
+                            if (l2Distance(*gc, x,y)<15)
+                                found=false;
+                        }
+                    }
+                    if (Object4!= nullptr) {
+                        for (auto &gc : *Object4) {
+                            if (l2Distance(*gc, x,y)<15)
+                                found=false;
+                        }
+                    }
+                    if(found){
+                        return true;
                     }
                 }
-                if (Object2!= nullptr) {
-                    for (auto &gc : *Object2) {
-                        if (l2Distance(*gc, x,y)<15)
-                            found=false;
-                    }
-                }
-                if (Object3!= nullptr) {
-                    for (auto &gc : *Object3) {
-                        if (l2Distance(*gc, x,y)<15)
-                            found=false;
-                    }
-                }
-                if (Object4!= nullptr) {
-                    for (auto &gc : *Object4) {
-                        if (l2Distance(*gc, x,y)<15)
-                            found=false;
-                    }
-                }
-                if(found){
-                    return true;
-                }
+
             }
         }
     }

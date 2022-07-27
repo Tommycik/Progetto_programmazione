@@ -3,7 +3,7 @@
 #include "Textviewer.h"
 #include "Menu.h"
 #include "Events.h"
-//todo fare in modo che boss e nemici non nei corridoi
+ //todo incapsulamento oggetti
  //todo ripulire da codice vecchio classi spawner e main..
 //todo skill e enum class per ogni abilità
 //todo ignori nemici e boss morti

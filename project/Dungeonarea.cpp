@@ -448,25 +448,9 @@ TileType Dungeonarea::getcell(int x, int y) const {
     return tiles[x + width * y]->getType();
 }
 
-bool Dungeonarea::isLegalCell(int x, int y,const Dungeonarea &map) const{
-    TileType cell =TileType::Unused;
-    cell = map.getcell(x, y);
-    switch (cell) {
-        case TileType::Unused:
-            return false;
-        case TileType::wall:
-            return false;
-        case TileType::floor:
-            return true;
-        case TileType::corridor:
-            return true;
-        case TileType::door:
-            return true;
-        case TileType::damagedfloor:
-            return true;
-        default:
-            return false;
-    }
+bool Dungeonarea::isLegalCell(int x, int y) const{
+
+
 }
 
 const std::string &Dungeonarea::getName() const {
@@ -586,6 +570,15 @@ int Dungeonarea::getDungeonType() const {
 int Dungeonarea::getRooms() const {
     return rooms;
 }
+
+bool Dungeonarea::getPassable(float x,float y) const{
+    tiles[x + width * y]->isPassable();
+}
+
+bool Dungeonarea::getSpawnPlace(float x ,float y) const{
+    tiles[x + width * y]->isSpawnPlace();
+}
+
 
 
 TileType TileStringToTileType(const char &tile){

@@ -16,16 +16,17 @@ public:
     bool isDestructble() const;
     void unlockPassage(bool unlock);
 
-    TileType getType() const  {
-        return Tile::type;
-    }
-
-    void setType( TileType tile){
-        this->type=tile;
-    }
+    TileType getType() const;
+    void setType( TileType tile);
+    bool isPassable() const;
+    void setPassable(bool passable);
+    bool isSpawnPlace() const;
+    void setSpawnPlace(bool spawnPlace);
 
 private:
 
+    bool passable=true;
+    bool spawnPlace=true;
     bool destructible=false;
     TileType type=TileType::Unused;
 };
