@@ -571,11 +571,12 @@ int Dungeonarea::getRooms() const {
     return rooms;
 }
 
-bool Dungeonarea::getPassable(float x,float y) const{
+bool Dungeonarea::getPassable(int x,int y) const{
+
     tiles[x + width * y]->isPassable();
 }
 
-bool Dungeonarea::getSpawnPlace(float x ,float y) const{
+bool Dungeonarea::getSpawnPlace(int x ,int y) const{
     tiles[x + width * y]->isSpawnPlace();
 }
 

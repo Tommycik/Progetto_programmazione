@@ -147,7 +147,8 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
 
 int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
                          float tilesetResolution,bool &run,int &state) {
-
+    float movement=1;
+    float movementRunning=2;
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -173,54 +174,54 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
         }
     }
 
-    if (LeftKeyDown &&isLegalMove(hero,-1,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+    if (LeftKeyDown &&isLegalMove(hero,-movement,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
 
-        if(LShiftKeyDown&& isLegalMove(hero,-2,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
-            player.move(-tilesetResolution*2, 0);
+        if(LShiftKeyDown&& isLegalMove(hero,-movementRunning,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+            player.move(-tilesetResolution*movementRunning, 0);
 
             staminaUsed=1;
             hero.run(-1,0);
         }else {
-            player.move(-tilesetResolution, 0);
+            player.move(-tilesetResolution*movement, 0);
 
             hero.move(-1,0);
         }
     }
 
-    if (RightKeyDown&&isLegalMove(hero,1,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
-        if(LShiftKeyDown&& isLegalMove(hero,2,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
-            player.move(tilesetResolution*2, 0);
+    if (RightKeyDown&&isLegalMove(hero,movement,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+        if(LShiftKeyDown&& isLegalMove(hero,movementRunning,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+            player.move(tilesetResolution*movementRunning, 0);
 
             staminaUsed=1;
             hero.run(1,0);
         }else {
-            player.move(tilesetResolution, 0);
+            player.move(tilesetResolution*movement, 0);
 
             hero.move(1,0);
         }
     }
 
-    if (UpKeyDown&&isLegalMove(hero,0,1,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
-        if(LShiftKeyDown&& isLegalMove(hero,0,2,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
-            player.move(0, tilesetResolution*2);
+    if (UpKeyDown&&isLegalMove(hero,0,movement,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+        if(LShiftKeyDown&& isLegalMove(hero,0,movementRunning,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+            player.move(0, tilesetResolution*movementRunning);
 
             staminaUsed=1;
             hero.run(0,1);
         }else{
-            player.move(0, tilesetResolution);
+            player.move(0, tilesetResolution*movement);
 
             hero.move(0,1);
         }
     }
 
-    if (DownKeyDown&&isLegalMove(hero,0,-1,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
-        if(LShiftKeyDown&& isLegalMove(hero,0,-2,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(), &vectors.getTeleports())){
-            player.move(0, -tilesetResolution*2);
+    if (DownKeyDown&&isLegalMove(hero,0,-movement,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+        if(LShiftKeyDown&& isLegalMove(hero,0,-movementRunning,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(), &vectors.getTeleports())){
+            player.move(0, -tilesetResolution*movementRunning);
 
             staminaUsed=1;
             hero.run(0,-1);
         }else {
-            player.move(0, -tilesetResolution);
+            player.move(0, -tilesetResolution*movement);
 
             hero.move(0,-1);
         }

@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "Events.h"
  //todo incapsulamento oggetti
+ //todo movimento in float
  //todo ripulire da codice vecchio classi spawner e main..
 //todo skill e enum class per ogni abilità
 //todo ignori nemici e boss morti
