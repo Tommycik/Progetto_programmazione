@@ -39,6 +39,15 @@ bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,
     window.draw(safezone);
     window.draw(object);
     hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
+    hero.notify();
+   // window.clear();
+    window.setView(view1);
+    window.draw(map);
+    window.draw(teleport);
+    window.draw(player);
+    window.draw(safezone);
+    window.draw(object);
+    hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
     objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
     window.display();
     return true;

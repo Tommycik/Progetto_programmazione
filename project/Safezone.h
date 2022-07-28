@@ -11,6 +11,12 @@ class Safezone:public virtual Object {
 public:
 
     Safezone(int posX, int posY,int moving=0);
+
+    bool isUsed() const;
+    void setUsed(bool used);
+
+private:
+    bool used=false;
 };
 
 

@@ -27,7 +27,7 @@ bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullp
     if (Object1!= nullptr) {
         for (auto &gc : *Object1) {
             if(gc->getHp()>0){
-                if (gc->getposY() == y && gc->getposX() == x)
+                if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
                     return false;
             }
         }
@@ -35,7 +35,7 @@ bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullp
     if (Object2!= nullptr) {
         for (auto &gc : *Object2) {
             if(gc->isTaken()==false){
-                if (gc->getposY() == y && gc->getposX() == x)
+                if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
                     return false;
             }
         }
@@ -43,14 +43,14 @@ bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullp
     if (Object3!= nullptr) {
         for (auto &gc : *Object3) {
             if(gc->getHp()>0){
-                if (gc->getposY() == y && gc->getposX() == x)
+                if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
                     return false;
             }
         }
     }
     if (Object4!= nullptr) {
         for (auto &gc : *Object4) {
-            if (gc->getposY() == y && gc->getposX() == x)
+            if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
                 return false;
         }
     }
@@ -63,7 +63,7 @@ bool isLegalMove(const T &object, float dX, float dY,f  &map, u* Object1= nullpt
     float newX = object.getposX() + dX;
     float newY = object.getposY() + dY;
 // bool enemyPos = checkEnemyPositions(newX, newY, enemies);
-    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.getPassable(newX, newY) );}
+    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.getPassable(newX, newY));}
 
 template <typename T>
 bool isLegalDamage(int x,int y,T* Object){

@@ -3,9 +3,13 @@
 #include "Textviewer.h"
 #include "Menu.h"
 #include "Events.h"
+#include "Achievements.h"
+ //todo mettere effetto achievement;
+ //todo per i vari vettori implementare erase invece di lascare i vari oggetti presi o i nemici morti;
  //todo incapsulamento oggetti
+ //TODO AGGIUNGERE CONTROLOO CHE SE OSTACOLO è DIETRO MODIFICARE CONTROLLO IS LEGAL MOVE(MOVIMENTO ALL'INDIETRO)(altrimenti considera solo la piastrella che è davanti
+//todo modificare che se lka distanza tra il muro e il personaggio è minore di 1 il movimento diventa di quel valore
  //todo movimento in float
- //todo ripulire da codice vecchio classi spawner e main..
 //todo skill e enum class per ogni abilità
 //todo ignori nemici e boss morti
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
@@ -23,11 +27,11 @@ int main() {
     if(numberMap<1)
         numberMap=1;
 
-    int monsterNumber=30;
+    int monsterNumber=15;
     if(monsterNumber<1)
         monsterNumber=1;
 
-    int objectNumber=20;
+    int objectNumber=10;
     if(objectNumber<1)
         objectNumber=1;
 
@@ -35,7 +39,7 @@ int main() {
     if(safezoneNumber<1)
         safezoneNumber=1;
 
-    int bossNumber=2;
+    int bossNumber=10;
     if(bossNumber<1)
         bossNumber=1;
     int minRooms=(bossNumber+safezoneNumber+objectNumber+monsterNumber)/3+bossNumber;
@@ -106,6 +110,9 @@ int main() {
     sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::Texture playerTexture;
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
+    Achievements achievements(*hero,window,view1);
+    if(!achievements.load())
+        return -1;
     Hud hud(1);
     TileMap map,teleport,safezone;
     Textviewer objectInteraction(window.getSize().y/5,window.getSize().x,128,viewHeigth);
@@ -146,6 +153,7 @@ int main() {
                                                tutorialItem);
 
             deltaTime=clock.restart().asSeconds();
+            hero->setGameTime(hero->getGameTime()+0.001);
             ResizeView(window,view1,viewHeigth);
 
             eventControl=events.event(&window,&saves[0],&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,bossNumber,monsterNumber,objectNumber,safezoneNumber,Game,map,object,teleport,safezone,&vectors[0],&maps[0]) ;
@@ -174,14 +182,21 @@ int main() {
 
             sf::sleep((sf::milliseconds(120)));
             staminaUsed+=game.playerMovementUpdater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
+
             hero->stamUse(staminaUsed);
             hero->recoverStam((0.5));
-            player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
-
             window.clear();
             view1.setCenter(player.getPosition());
+            window.setView(view1);
+            window.draw(map);
+            window.draw(teleport);
+            window.draw(player);
+            window.draw(safezone);
+            window.draw(object);
+            hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
+            hero->notify();
             window.setView(view1);
             window.draw(map);
             window.draw(teleport);

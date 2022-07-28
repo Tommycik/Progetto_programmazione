@@ -15,7 +15,7 @@ public:
 
     Textviewer(unsigned int heigth, unsigned int length, int textDimension,int viewHeigth);
 
-    bool blackBox(float posX,float posY,std::string text1,std::string text2,sf::RenderWindow *window,bool center );
+    bool blackBox(float posX,float posY,std::string text1,std::string text2,sf::RenderWindow *window,sf::View &view1,bool center );
     bool checker(Spawner &creator,Mario &hero,bool &itemText,bool &safezoneText,bool &teleportText,bool tutorialSafezone,bool tutorialItem);
     const std::string &getFont() const;
     void setFont(const std::string &font);

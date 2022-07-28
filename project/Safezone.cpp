@@ -10,3 +10,11 @@ Safezone::Safezone(int posX, int posY,int moving) {
     this->posY=posY;
 
 }
+
+bool Safezone::isUsed() const {
+    return used;
+}
+
+void Safezone::setUsed(bool used) {
+    Safezone::used = used;
+}

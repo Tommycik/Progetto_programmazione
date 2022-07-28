@@ -571,9 +571,87 @@ int Dungeonarea::getRooms() const {
     return rooms;
 }
 
-bool Dungeonarea::getPassable(int x,int y) const{
+bool Dungeonarea::getPassable(float futureX,float futureY) const {
+    bool halfY = false;
+    bool halfX = false;
+    bool quarterX = false;
+    bool quarterY = false;
+    float xTemp = (futureX / 0.25);
+    float yTemp = (futureY / 0.25);
+    int xPass = xTemp;
+    int yPass = yTemp;
+    int passingX = xPass % 4;
+    int passingY = yPass % 4;
+    float finalX = 0;
+    float finalY = 0;
+    if (passingX * 0.25 != 0) {
+        if (passingX * 0.25 <= 0.25) {
+            quarterX = true;
+            //futureX=futureX-passingX*0.25;
+        } else if (passingX * 0.25 >= 0.75) {
+            finalX = 1 - passingX * 0.25;
+            futureX = futureX + finalX;
+        } else if (passingX * 0.25 == 0.50) {
+            halfX = true;
+        }
+    }
 
-    tiles[x + width * y]->isPassable();
+        if (passingY * 0.25 != 0) {
+            if (passingY * 0.25 <= 0.25) {
+                quarterY = true;
+
+            } else if (passingY * 0.25 >= 0.75) {
+                finalY = 1 - passingY * 0.25;
+                futureY = futureY + finalY;
+            } else if (passingY * 0.25 == 0.50) {
+                halfY = true;
+
+            }
+
+        }
+
+        if (halfX == false && halfY == false) {
+
+            if (quarterX == true && quarterY == false) {
+                return (tiles[futureX + 0.25 + width * (futureY)]->isPassable() &&
+                        tiles[futureX - 0.25 + width * (futureY)]->isPassable());
+            } else if (quarterX == false && quarterY == true) {
+                return (tiles[futureX + width * (futureY + 0.25)]->isPassable() &&
+                        tiles[futureX + width * (futureY - 0.25)]->isPassable());
+            } else if (quarterX == true && quarterY == true) {
+                return (tiles[futureX + 0.25 + width * (futureY + 0.25)]->isPassable() &&
+                        tiles[futureX - 0.25 + width * (futureY - 0.25)]->isPassable() &&
+                        tiles[futureX + 0.25 + width * (futureY - 0.25)]->isPassable() &&
+                        tiles[futureX - 0.25 + width * (futureY + 0.25)]->isPassable());
+
+            }
+            return tiles[futureX + width * futureY]->isPassable();
+        } else if (halfX == true && halfY == false) {
+
+            if (quarterY == true) {
+                return (tiles[futureX + 0.5 + width * (futureY + 0.25)]->isPassable() &&
+                        tiles[futureX - 0.5 + width * (futureY - 0.25)]->isPassable());
+            }
+
+            return (tiles[futureX + 0.5 + width * (futureY)]->isPassable() &&
+                    tiles[futureX - 0.5 + width * (futureY)]->isPassable());
+
+        } else if (halfX == false && halfY == true) {
+
+            if (quarterX == true) {
+                return (tiles[futureX + 0.25 + width * (futureY + 0.5)]->isPassable() &&
+                        tiles[futureX - 0.25 + width * (futureY - 0.5)]->isPassable());
+            }
+            return (tiles[futureX + width * (futureY + 0.5)]->isPassable() &&
+                    tiles[futureX + width * (futureY - 0.5)]->isPassable());
+        } else if (halfX == true && halfY == true) {
+            return (tiles[futureX + 0.5 + width * (futureY + 0.5)]->isPassable() &&
+                    tiles[futureX - 0.5 + width * (futureY - 0.5)]->isPassable() &&
+                    tiles[futureX + 0.5 + width * (futureY - 0.5)]->isPassable() &&
+                    tiles[futureX - 0.5 + width * (futureY + 0.5)]->isPassable());
+
+        }
+
 }
 
 bool Dungeonarea::getSpawnPlace(int x ,int y) const{

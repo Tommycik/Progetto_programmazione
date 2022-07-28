@@ -47,7 +47,7 @@ public:
     int getDungeonType() const;
     void setOldseed(long oldseed);
     int getRooms() const;
-    bool getPassable(int x,int y) const;
+    bool getPassable(float futureX,float futureY) const;
     bool getSpawnPlace(int x,int y)const;
 
 private:

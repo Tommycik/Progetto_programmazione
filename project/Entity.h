@@ -20,9 +20,11 @@ public:
      int getHp() const;
      void receiveDamage(int damage);
      void setHp(int hp);
+     float getPreviousPos() const;
+     void setPreviousPos(float previousPos);
 
-protected:
-
+ protected:
+    float previousPos=0;
     int hp=0;
 };
 

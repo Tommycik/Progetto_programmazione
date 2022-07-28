@@ -93,21 +93,31 @@ void Mario::setBossKilled(int bossKilled) {
 }
 
 void Mario::run(int x, int y) {
+    float runSpeed=2;
     if (x > movements ||x<-movements)
         x = movements;
     if (y > movements||y<-movements)
         y = movements;
-    posX += 2*x;
-    posY += 2*y;
+    posX += runSpeed*x;
+    if(x!=0)
+    distanceWalked+=runSpeed;
+    posY += runSpeed*y;
+    if(y!=0)
+    distanceWalked+=runSpeed*y;
 }
 
 void Mario::move(int x, int y) {
+    float speed=1;
     if (x > movements ||x<-movements)
         x = movements;
     if (y > movements||y<-movements)
         y = movements;
-    posX += x;
-    posY += y;
+    posX += speed*x;
+    if(x!=0)
+    distanceWalked+=speed/**x*/;
+    posY += speed*y;
+    if(y!=0)
+    distanceWalked+=speed/**y*/;
 }
 
 void Mario::behaviour() {
@@ -120,6 +130,54 @@ void Mario::tracking() {
 
 void Mario::fight() {
 
+}
+
+float Mario::getGameTime() const {
+    return gameTime;
+}
+
+void Mario::setGameTime(float gameTime) {
+    Mario::gameTime = gameTime;
+}
+
+int Mario::getTeleported() const {
+    return teleported;
+}
+
+void Mario::setTeleported(int teleported) {
+    Mario::teleported = teleported;
+}
+
+int Mario::getPotionTaken() const {
+    return potionTaken;
+}
+
+void Mario::setPotionTaken(int potionTaken) {
+    Mario::potionTaken = potionTaken;
+}
+
+float Mario::getDistanceWalked() const {
+    return distanceWalked;
+}
+
+void Mario::setDistanceWalked(float distanceWalked) {
+    Mario::distanceWalked = distanceWalked;
+}
+
+int Mario::getSafezoneUsed() const {
+    return safezoneUsed;
+}
+
+void Mario::setSafezoneUsed(int safezoneUsed) {
+    Mario::safezoneUsed = safezoneUsed;
+}
+
+int Mario::getDeaths() const {
+    return deaths;
+}
+
+void Mario::setDeaths(int deaths) {
+    Mario::deaths = deaths;
 }
 
 

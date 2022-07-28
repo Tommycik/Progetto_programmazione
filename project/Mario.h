@@ -5,8 +5,8 @@
 #ifndef MAIN_MARIO_H
 #define MAIN_MARIO_H
 #include "Entity.h"
-
-class Mario :public virtual Entity{
+#include "Subject.h"
+class Mario :public virtual Entity,public Subject {
 
 public:
 
@@ -33,6 +33,19 @@ public:
     void setPotionNum(int potionNum);
     void recoverStam(float stamina);
     bool recoverHp(int potionUsed);
+    float getGameTime() const;
+    void setGameTime(float gameTime);
+    int getTeleported() const;
+    void setTeleported(int teleported);
+    int getPotionTaken() const;
+    void setPotionTaken(int potionTaken);
+    float getDistanceWalked() const;
+    void setDistanceWalked(float distanceWalked);
+    int getSafezoneUsed() const;
+    void setSafezoneUsed(int safezoneUsed);
+    int getDeaths() const;
+    void setDeaths(int deaths);
+
 
 private:
 
@@ -40,7 +53,14 @@ private:
     int maxHp;
     int maxStam;
     int potionNum;
-    int bossKilled=0;
+    int bossKilled=0;//done
+    float gameTime=0;//done
+    int teleported=0;//done
+    int potionTaken=0;//done
+    float distanceWalked=0;//done
+    int safezoneUsed=0;//done
+    int deaths=0;//done
+
 };
 
 

@@ -56,7 +56,7 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                             }
 
                             tutorialItem=true;
-
+                            hero.setPotionTaken(hero.getPotionTaken()+1);
                         }
                     }
                 }
@@ -66,6 +66,7 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
 
                             hero.recoverHp(0);
                             tutorialSafezone=true;
+                            hero.setSafezoneUsed(hero.getSafezoneUsed()+1);
                         }
                     }
                 }
@@ -86,6 +87,7 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                                     mapIndex--;
                                 }
                             }
+                            hero.setTeleported(hero.getTeleported()+1);
                             return 2;
                         }
                     }

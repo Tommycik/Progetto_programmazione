@@ -10,6 +10,7 @@
 #include "../Textviewer.h"
 #include "../Menu.h"
 #include "../Events.h"
+#include "../Achievements.h"
 
 class TheClassTest : public ::testing::Test {
 protected:

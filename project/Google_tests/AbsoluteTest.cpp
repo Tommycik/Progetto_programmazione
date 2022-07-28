@@ -2,6 +2,7 @@
 // Created by tommy on 23/07/2022.
 //
 #include "TestSetting.h"
+
 void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
@@ -14,7 +15,7 @@ TEST_F(TheClassTest,DISABLED_Menu){
 
 }
 
-TEST_F(TheClassTest,WorldCreation){
+TEST_F(TheClassTest,DISABLED_WorldCreation){
 
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
@@ -118,6 +119,8 @@ TEST_F(TheClassTest,TestMap){
     sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
     Hud hud(1);
+    Achievements achievements(*hero,window,view1);
+    ASSERT_EQ (achievements.load(),true);
     Textviewer objectInteraction(window.getSize().y/5,window.getSize().x,128,viewHeigth);
     ASSERT_EQ (game.initialize(*hero,mapIndex,tutorialItem,tutorialSafezone,tutorialTeleport,HudBarsHeigth,numberMap,map/*,object*/,teleport,safezone,hud,view1,player,
                                playerTexture,tilesetResolution,&maps[0],&vectors[0]), true);
@@ -139,6 +142,7 @@ TEST_F(TheClassTest,TestMap){
                                                tutorialItem);
 
             deltaTime=clock.restart().asSeconds();
+            hero->setGameTime(hero->getGameTime()+0.001);
             ResizeView(window,view1,viewHeigth);
             eventControl=events.event(&window,&saves[0],&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,bossNumber,monsterNumber,objectNumber,safezoneNumber,Game,map,object,teleport,safezone,&vectors[0],&maps[0]) ;
 
@@ -167,6 +171,7 @@ TEST_F(TheClassTest,TestMap){
             player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
+
             ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone), true);
             sf::sleep((sf::milliseconds(120)));
         }
