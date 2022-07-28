@@ -2,18 +2,18 @@
 // Created by tommy on 28/07/2022.
 //
 #include "Subject.h"
-void Subject::attach (Observer* o)
+void Subject::attach (Observer* newObserver)
 {
-    _observers.push_back(o);
+    _observers.push_back(newObserver);
 }
 
-void Subject::detach (Observer* o)
+void Subject::detach (Observer* newObserver)
 {
     int count = _observers.size();
     int i;
 
     for (i = 0; i < count; i++) {
-        if(_observers[i] == o)
+        if(_observers[i] == newObserver)
             break;
     }
     if(i < count)

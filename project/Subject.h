@@ -9,12 +9,16 @@
 class Observer;
 class Subject {
 public:
+
     Subject() {};
     virtual ~Subject() {};
-    virtual void attach(Observer*);
-    virtual void detach(Observer*);
+
+    virtual void attach(Observer* newObserver);
+    virtual void detach(Observer* newObserver);
     virtual void notify();
+
 private:
+
     std::vector<Observer*> _observers;
 };
 

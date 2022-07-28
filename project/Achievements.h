@@ -11,12 +11,16 @@
 #include <unistd.h>
 class Achievements: public Observer{
 public:
-    Achievements(Mario &s,sf::RenderWindow &window,sf::View &view1);
+
+    Achievements(Mario &hero,sf::RenderWindow &window,sf::View &view1);
     ~Achievements();
+
     virtual void update(Subject *subjectChange) override;
     void draw();
     bool load();
+
 private:
+
     sf::RenderWindow *window;
     sf::View *view;
     sf::Music achievementMusic;

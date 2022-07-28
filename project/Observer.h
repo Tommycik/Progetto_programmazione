@@ -8,6 +8,7 @@
 class Subject;
 class Observer {
 public:
+
     Observer() {};
     ~Observer() {};
 

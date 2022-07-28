@@ -5,11 +5,11 @@
 #include "Achievements.h"
 
 
-Achievements::Achievements (Mario &s,sf::RenderWindow &window,sf::View &view1)
+Achievements::Achievements (Mario &hero,sf::RenderWindow &window,sf::View &view1)
 {
     this->window=&window;
     this->view=&view1;
-    _subject = &s;
+    _subject = &hero;
     _subject->attach(this);
 
 }
@@ -25,10 +25,8 @@ void Achievements::update (Subject *theChangedSubject)
         draw();
 }
 
-void Achievements::draw ()
-{
+void Achievements::draw (){
 
-    //todo dopo 3-5 secondi di delta time si toglie il testo
     Textviewer Achievement(window->getSize().y/5,window->getSize().x/5,128,300);
     if(_subject->getMaxHp()>=1000&&(!immortal)){
         immortal=true;
