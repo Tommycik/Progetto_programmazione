@@ -8,6 +8,12 @@ void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
 }
 
+int main(int argc, char **argv) {
+
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
 TEST_F(TheClassTest,DISABLED_Menu){
     Menu menu(&window);
     ASSERT_EQ (menu.load(), true);
@@ -15,7 +21,7 @@ TEST_F(TheClassTest,DISABLED_Menu){
 
 }
 
-TEST_F(TheClassTest,DISABLED_WorldCreation){
+TEST_F(TheClassTest,WorldCreation){
 
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
@@ -82,7 +88,6 @@ TEST_F(TheClassTest,DISABLED_WorldCreation){
                     }
                     window.close();
                     Game.stop();
-                    ASSERT_EQ (cancel, false);
                 }
             }
 
@@ -148,7 +153,7 @@ TEST_F(TheClassTest,TestMap){
 
             switch (eventControl) {
                 case 1:
-                    ASSERT_EQ (1, 0);
+                    window.close();
                     break;
                 case 2:
                     ASSERT_EQ(map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()),true);
