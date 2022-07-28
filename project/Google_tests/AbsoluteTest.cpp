@@ -8,12 +8,6 @@ void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
 }
 
-int main(int argc, char **argv) {
-
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-
 TEST_F(TheClassTest,DISABLED_Menu){
     Menu menu(&window);
     ASSERT_EQ (menu.load(), true);
@@ -182,4 +176,9 @@ TEST_F(TheClassTest,TestMap){
         }
     }
     Game.stop();
+}
+
+int main(int argc, char **argv) {
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
