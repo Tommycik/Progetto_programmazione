@@ -4,7 +4,9 @@
 #include "Menu.h"
 #include "Events.h"
 #include "Achievements.h"
- //todo mettere effetto achievement;
+ //todo implementare  nemici
+ //todo mettere effetto audio achievement e sistemare le soglie
+ //todo controllare rallentamento creazione mappa e vettori
  //todo per i vari vettori implementare erase invece di lascare i vari oggetti presi o i nemici morti;
  //todo incapsulamento oggetti
  //TODO AGGIUNGERE CONTROLOO CHE SE OSTACOLO è DIETRO MODIFICARE CONTROLLO IS LEGAL MOVE(MOVIMENTO ALL'INDIETRO)(altrimenti considera solo la piastrella che è davanti

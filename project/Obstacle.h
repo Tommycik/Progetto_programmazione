@@ -15,7 +15,7 @@ public:
     void behaviour() override;
     void tracking() override;
     void move(int x, int y) override;
-    void fight() override;
+    void fight() override;//levare la completa virtualità
     bool isFixed() const;
     bool isActivated() const;
     void setFixed(bool fixed);
@@ -23,6 +23,7 @@ public:
     void setObstacleType(int obstacleType);
     void setActivated(bool activated);
     void run(int x, int y) override;
+    void setTileNumber(int tileNumber);
 
 protected:
 

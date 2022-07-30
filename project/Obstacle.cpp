@@ -49,3 +49,11 @@ void Obstacle::fight() {
 void Obstacle::run(int x, int y) {
 
 }
+
+int Obstacle::getObstacleType() const {
+    return 0;
+}
+
+void Obstacle::setTileNumber(int tileNumber) {
+
+}

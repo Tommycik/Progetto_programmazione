@@ -12,6 +12,10 @@ public:
 
     virtual ~Object() { }
 
+
+    int getTileNumber() const{
+        return tileNumber;
+    }
     void setMovements(int variation){
         Object::movements=variation;
     }
@@ -40,6 +44,7 @@ protected:
     float posX=0;
     float posY=0;
     std::string name;
+    int tileNumber=0;
 
 };
 

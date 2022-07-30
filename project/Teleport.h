@@ -16,6 +16,7 @@ public:
     bool isActivated() const;
     void setActivated(bool activated);
 
+
 private:
 
     bool activated=true;

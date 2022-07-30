@@ -25,8 +25,7 @@ bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator
 
     for (auto &gl : creator.getSafezones()) {
 
-        tileNumber =42*3;
-        this->loading(tileSize,tileNumber,false,false,gl->getposY(),gl->getposX());
+        this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
     }
     return true;
 }
@@ -42,8 +41,8 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator
 
         if(gl->isActivated()) {
 
-            tileNumber = 0/*11*13*/;
-            this->loading(tileSize,tileNumber,false,true,gl->getposY(),gl->getposX());
+
+            this->loading(tileSize,gl->getTileNumber(),false,true,gl->getposY(),gl->getposX());
         }
     }
     return true;
@@ -60,16 +59,7 @@ bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator)
     for (auto &gl : creator.getItems()) {
 
         if(!(gl->isTaken())) {
-
-            tileNumber = 12;
-            if (gl->getEffect() == 2) {
-                tileNumber = 3;
-
-            } else if (gl->getEffect() == 3) {
-                tileNumber = 7;
-
-            }
-            this->loading(tileSize,tileNumber,false,false,gl->getposY(),gl->getposX());
+            this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
         }
     }
     return true;
@@ -83,8 +73,8 @@ bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeon
 
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
-    TileType control=TileType::Unused;
-    tileNumber=0;
+    //TileType control=TileType::Unused;
+    //tileNumber=0;
     tv=0;
     tu=0;
     count=0;
@@ -94,136 +84,12 @@ bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeon
         for (unsigned int j = 0; j < height; ++j)
         {
             random=1;
-            control=TileType::Unused;
-            control=map.getcell(i, j);
-            tileNumber=0;
+            //control=TileType::Unused;
+            //control=map.getcell(i, j);
+            //tileNumber=0;
 
-            if(control== TileType::Unused){
-                switch (map.getDungeonType()) {
-                    case 0://forest
-                        tileNumber=31*17+60;
-                        break;
-                    case 1://cave
-                        tileNumber=31+12;
-                        break;
-                    case 2://brick
-                        tileNumber=31*6+14;
-                        break;
-                    case 3://chocolate
-                        tileNumber=31*22-3;
-                        break;
-                    case 4://lava
-                        tileNumber=31*13+23;
-                        break;
-                    case 5://sand
-                        tileNumber=31*12+13;
-                        break;
-                }
-            }else if(control== TileType::floor){
-                switch (map.getDungeonType()) {
-                    case 0://forest
-                        tileNumber=31*27-5;
-                        break;
-                    case 1://cave
-                        tileNumber=31+11;
-                        break;
-                    case 2://brick
-                        random=map.getRand(1,10);
-                        if(random<=9){
-                            tileNumber=31*6+6;
-                        }else{
-                            tileNumber=31*6+8;}
-                        break;
-                    case 3://chocolate
-                        tileNumber=31*22-8;
-                        break;
-                    case 4://lava
-                        random=map.getRand(1,5);
-                        if(random<=4){
-                            tileNumber=31*14+27;
-                        }else{
-                            tileNumber=31*13+14;}
-                        break;
-                    case 5://sand
-                        tileNumber=31*16+27;
-                        break;
-                }
-            }else if(control== TileType::wall){
-                switch (map.getDungeonType()) {
-                    case 0://forest
-                        tileNumber=31*17+57;
-                        break;
-                    case 1://cave
-                        tileNumber=31+12;
-                        break;
-                    case 2://brick
-                        tileNumber=31*6+13;
-                        break;
-                    case 3://chocolate
-                        tileNumber=31*22-7;
-                        break;
-                    case 4://lava
-                        tileNumber=31*13+23;
-                        break;
-                    case 5://sand
-                        tileNumber=31*12+12;
-                        break;
-                }
-            }else if(control== TileType::corridor){
-                switch (map.getDungeonType()) {
-                    case 0://forest
-                        tileNumber=31*17+55;
-                        break;
-                    case 1://cave
-                        tileNumber=31+11;
-                        break;
-                    case 2://brick
-                        tileNumber=31*6+6;
-                        break;
-                    case 3://chocolate
-                        tileNumber=31*22+7;
-                        break;
-                    case 4://lava
-                        //get rand
-                        random=map.getRand(1,5);
-                        if(random<=4){
-                            tileNumber=31*14+27;
-                        }else{
-                            tileNumber=31*13+14;}
-                        break;
-                    case 5://sand
-                        tileNumber=31*16+27;
-                        break;
-                }
-            }else if(control== TileType::door){
-                switch (map.getDungeonType()) {
-                    case 0://forest
-                        tileNumber=31*17+55;
-                        break;
-                    case 1://cave
-                        tileNumber=31+11;
-                        break;
-                    case 2://brick
-                        tileNumber=31*6+6;
-                        break;
-                    case 3://chocolate
-                        tileNumber=31*22+7;
-                        break;
-                    case 4://lava
-                        //get rand
-                        random=map.getRand(1,5);
-                        if(random<=4){
-                            tileNumber=31*14+27;
-                        }else{
-                            tileNumber=31*13+14;
-                        }
-                        break;
-                    case 5://sand
-                        tileNumber=31*16+27;
-                        break;
-                }
-            }
-            this->loading(tileSize,tileNumber,true,false,j,i);
+
+            this->loading(tileSize,map.getTileNumber(i,j),true,false,j,i);
         }
     return true;
 }

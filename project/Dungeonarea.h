@@ -5,13 +5,11 @@
 #ifndef MAIN_DUNGEONAREA_H
 #define MAIN_DUNGEONAREA_H
 
-#include <iostream>
 #include "Tile.h"
 #include "Utilities.h"
 #include <vector>
 #include <string>
 #include <fstream>
-#include <time.h>
 #include <memory>
 #include "GameFileException.h"
 
@@ -49,6 +47,7 @@ public:
     int getRooms() const;
     bool getPassable(float futureX,float futureY) const;
     bool getSpawnPlace(int x,int y)const;
+    int getTileNumber(int x,int y)const;
 
 private:
     int width;

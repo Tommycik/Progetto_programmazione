@@ -16,6 +16,7 @@ public:
     void setUsed(bool used);
 
 private:
+
     bool used=false;
 };
 
