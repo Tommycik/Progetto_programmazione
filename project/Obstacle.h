@@ -4,7 +4,7 @@
 
 #ifndef MAIN_OBSTACLE_H
 #define MAIN_OBSTACLE_H
-#include "Entity.h"
+#include "Mario.h"
 
 class Obstacle: public virtual Entity {
 
@@ -19,16 +19,18 @@ public:
     bool isFixed() const;
     bool isActivated() const;
     void setFixed(bool fixed);
-    int getObstacleType() const;
     void setObstacleType(int obstacleType);
     void setActivated(bool activated);
     void run(int x, int y) override;
-    void setTileNumber(int tileNumber);
+    bool isKillable() const;
+    int getType() const;
 
 protected:
 
     bool activated=false;
     bool fixed=true;
+    bool killable=false;
+    int type=0;
 
 };
 

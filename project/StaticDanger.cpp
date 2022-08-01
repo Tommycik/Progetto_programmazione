@@ -5,8 +5,9 @@
 #include "StaticDanger.h"
 
 
-StaticDanger::StaticDanger(int hp, int movements, int posX, int posY, bool fixed, int mapNumber)
+StaticDanger::StaticDanger(int hp, int movements, int posX, int posY, bool fixed, int dungeonType)
         : Obstacle(hp, movements, posX, posY, fixed){
-    this->tileNumber=mapNumber;
-
+    this->tileNumber=dungeonType;
+    this->killable=false;
+    this->type=1;
 }

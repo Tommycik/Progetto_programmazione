@@ -17,7 +17,7 @@ public:
 
 private:
 
-    bool used=false;
+    bool used=false;//todo per trovare una safezone già usata per respawn
 };
 
 

@@ -11,6 +11,9 @@ Achievements::Achievements (Mario &hero,sf::RenderWindow &window,sf::View &view1
     this->view=&view1;
     _subject = &hero;
     _subject->attach(this);
+    if(!loadAchievements()){
+        saveAchievements();
+    }
 
 }
 
@@ -91,7 +94,7 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
- window->clear();
+    this->saveAchievements();
 }
 
 bool Achievements::load() {
@@ -100,5 +103,58 @@ bool Achievements::load() {
 
     this->achievementMusic.setVolume(50.f);
     this->achievementMusic.setLoop(true);
+    return true;
+}
+
+void Achievements::saveAchievements() const {
+    std::ofstream out;
+    out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+    // try {
+    out.open("playerSave/Achievement.txt",std::ios_base::trunc);
+    out <<immortal << std::endl;
+    out <<sonic<< std::endl;
+    out <<godSlayer<< std::endl;
+    out <<oldMan<< std::endl;
+    out <<rickSanchez<< std::endl;
+    out <<cargo<< std::endl;
+    out <<wanderer<< std::endl;
+    out <<lionheart<< std::endl;
+    out <<undead<< std::endl;
+    out.close();
+}
+
+bool Achievements::loadAchievements() {
+    op.exceptions(std::ifstream::failbit);
+
+    try {
+        op.open("playerSave/Achievement.txt");
+    } catch (std::ios_base::failure& e) {
+
+        return false;
+    }
+   std::getline(op, fileLine);
+    try {
+        immortal=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        sonic=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        godSlayer=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        oldMan=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        rickSanchez=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        cargo=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        wanderer=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        lionheart=std::stoi(fileLine);
+        std::getline(op, fileLine);
+        undead=std::stoi(fileLine);
+    } catch (std::out_of_range &e) {
+        throw std::out_of_range("Can not set vector tile at x: ");
+    }
+
+    op.close();
     return true;
 }

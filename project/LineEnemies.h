@@ -10,9 +10,14 @@ class LineEnemies: public Obstacle{
 
 public:
 
+    LineEnemies(int hp, int movements, int posX, int posY, bool fixed,int dungeonType);
+
     void behaviour() override;
     void move(int x, int y) override;
+private:
 
+    int dirX=0;
+    int dirY=0;
 };
 
 

@@ -19,15 +19,13 @@ int l2Distance(const T &p, const float &x,const float &y) {
     return distance;
 }
 
-
-
 template<typename u,typename c,typename d,typename s>
 bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullptr, d Object3= nullptr,
                          s Object4= nullptr){
     if (Object1!= nullptr) {
         for (auto &gc : *Object1) {
             if(gc->getHp()>0){
-                if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
+                if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)//todo provare a fare abs dopo avert fatto*100 e poi fare /100
                     return false;
             }
         }
@@ -50,8 +48,10 @@ bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullp
     }
     if (Object4!= nullptr) {
         for (auto &gc : *Object4) {
-            if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
-                return false;
+            if(gc->isActivated()){
+                if (abs(gc->getposY() -y)<0.25 && abs(gc->getposX() -x)<0.25)
+                    return false;
+            }
         }
     }
     return true;
@@ -62,7 +62,6 @@ bool isLegalMove(const T &object, float dX, float dY,f  &map, u* Object1= nullpt
                  s* Object4= nullptr) {
     float newX = object.getposX() + dX;
     float newY = object.getposY() + dY;
-// bool enemyPos = checkEnemyPositions(newX, newY, enemies);
     return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.getPassable(newX, newY));}
 
 template <typename T>
@@ -122,7 +121,6 @@ bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nu
                         return true;
                     }
                 }
-
             }
         }
     }

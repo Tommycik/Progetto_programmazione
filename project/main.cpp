@@ -1,22 +1,17 @@
 
 #include "Animation.h"
-#include "Textviewer.h"
 #include "Menu.h"
 #include "Events.h"
 #include "Achievements.h"
- //todo implementare  nemici
+
+ //todo implementare  line enemies
  //todo mettere effetto audio achievement e sistemare le soglie
- //todo controllare rallentamento creazione mappa e vettori
  //todo per i vari vettori implementare erase invece di lascare i vari oggetti presi o i nemici morti;
- //todo incapsulamento oggetti
- //TODO AGGIUNGERE CONTROLOO CHE SE OSTACOLO è DIETRO MODIFICARE CONTROLLO IS LEGAL MOVE(MOVIMENTO ALL'INDIETRO)(altrimenti considera solo la piastrella che è davanti
-//todo modificare che se lka distanza tra il muro e il personaggio è minore di 1 il movimento diventa di quel valore
- //todo movimento in float
 //todo skill e enum class per ogni abilità
 //todo ignori nemici e boss morti
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
 //todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
-//todo implementare achievement con observer
+//todo differenziare mappe in possibilità stanze e loro dimensione
 void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
@@ -157,7 +152,6 @@ int main() {
             deltaTime=clock.restart().asSeconds();
             hero->setGameTime(hero->getGameTime()+0.001);
             ResizeView(window,view1,viewHeigth);
-
             eventControl=events.event(&window,&saves[0],&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,bossNumber,monsterNumber,objectNumber,safezoneNumber,Game,map,object,teleport,safezone,&vectors[0],&maps[0]) ;
 
             switch (eventControl) {
@@ -198,14 +192,9 @@ int main() {
             window.draw(safezone);
             window.draw(object);
             hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
-            hero->notify();
-            window.setView(view1);
-            window.draw(map);
-            window.draw(teleport);
-            window.draw(player);
-            window.draw(safezone);
-            window.draw(object);
-            hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
+            if(!makeText){
+                hero->notify();
+            }
             objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
             window.display();
         }

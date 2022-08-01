@@ -18,9 +18,14 @@ public:
     virtual void update(Subject *subjectChange) override;
     void draw();
     bool load();
+    void saveAchievements() const;
+    bool loadAchievements();
+
 
 private:
 
+    std::string fileLine;
+    std::ifstream op;
     sf::RenderWindow *window;
     sf::View *view;
     sf::Music achievementMusic;

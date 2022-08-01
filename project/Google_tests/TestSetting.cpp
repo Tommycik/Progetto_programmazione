@@ -18,13 +18,10 @@ bool TheClassTest::gameSet() {
 
     Game.setVolume(50.f);
     Game.setLoop(true);
-
     if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%3!=0)
         minRoomsNumber++;
 
     minRoomsNumber++;
-
-
     return true;
 }
 
@@ -39,15 +36,9 @@ bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,
     window.draw(safezone);
     window.draw(object);
     hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
-    hero.notify();
-   // window.clear();
-    window.setView(view1);
-    window.draw(map);
-    window.draw(teleport);
-    window.draw(player);
-    window.draw(safezone);
-    window.draw(object);
-    hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
+    if(!makeText){
+        hero.notify();
+    }
     objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
     window.display();
     return true;
@@ -85,7 +76,6 @@ bool TheClassTest::creation(std::unique_ptr<Spawner> *vectors,std::unique_ptr<Du
         std::cerr << e.what() << std::endl;
         abort();
     }
-
     for(int i=0;i<numberMap;i++) {
         vectors[i]=std::make_unique<Spawner>(false,*maps[i],monsterNumber,objectNumber,safezoneNumber,bossNumber);
         if ((!vectors[i]->loadVectors(savesVec[i],names[i],*maps[i]))) {
@@ -101,7 +91,6 @@ bool TheClassTest::creation(std::unique_ptr<Spawner> *vectors,std::unique_ptr<Du
             remove("playerSave/save.txt");
         } catch (std::ios_base::failure& e) {}
     }
-
     hero=std::make_unique<Mario>(100, 1, 0, 0,40,2,0);
     if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
 

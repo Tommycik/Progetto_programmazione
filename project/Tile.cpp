@@ -41,7 +41,7 @@ void Tile::setType(TileType tile,int dungeonType){
         this->spawnPlace=true;
     }
     int random=1;
-    int n = 0;
+    int n=0;
     int i=0;
     long seed = time(NULL) + oldseed;
     this->oldseed = seed;
@@ -78,7 +78,7 @@ void Tile::setType(TileType tile,int dungeonType){
                 break;
             case 2://brick
                  n = 10 - 1 + 1;
-                 i = rand() % n; // 0 < i < n
+                 i = rand() % n;
                 if (i < 0)
                     i = -i;
 
@@ -94,7 +94,7 @@ void Tile::setType(TileType tile,int dungeonType){
                 break;
             case 4://lava
                  n = 5 - 1 + 1;
-                 i = rand() % n; // 0 < i < n
+                 i = rand() % n;
                 if (i < 0)
                     i = -i;
 
@@ -146,7 +146,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 4://lava
                 //get rand
                 n = 5 - 1 + 1;
-                i = rand() % n; // 0 < i < n
+                i = rand() % n;
                 if (i < 0)
                     i = -i;
 
@@ -177,7 +177,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 4://lava
                 //get rand
                 n = 5 - 1 + 1;
-                i = rand() % n; // 0 < i < n
+                i = rand() % n;
                 if (i < 0)
                     i = -i;
 

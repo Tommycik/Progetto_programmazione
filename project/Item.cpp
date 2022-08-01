@@ -18,21 +18,27 @@ int Item::getEffect() const {
 
 void Item::setEffect(int effect) {
     Item::effect = effect;
-}
-
-Item::Item( int posX, int posY, int effect,int movements){
-   this->taken=false;
-   this->effect=effect;
-   this->movements=movements;
-   this->posX=posX;
-   this->posY=posY;
     tileNumber = 12;
     if ( this->effect == 2) {
         tileNumber = 3;
 
     } else if ( this->effect == 3) {
         tileNumber = 7;
+    }
+}
 
+Item::Item( int posX, int posY, int effect,int movements){
+   this->taken=false;
+   this->effect=effect;
+   this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
+    tileNumber = 12;
+    if ( this->effect == 2) {
+        tileNumber = 3;
+
+    } else if ( this->effect == 3) {
+        tileNumber = 7;
     }
 }
 

@@ -32,7 +32,6 @@ void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSaf
     out << player.getTeleported() << std::endl;
     out << player.getDeaths() << std::endl;
     out.close();
-
 }
 
 
@@ -48,7 +47,6 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
     std::string fileLine;
     std::getline(of, fileLine);
     try {
-
         mapIndex=(std::stoi(fileLine));
         std::getline(of, fileLine);
         player.setHp(std::stoi(fileLine));//fixme non riporta la vita corretta,la vita massima sì
@@ -90,14 +88,8 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
     }
-
-
-
-
     of.close();
     return true;
-
-
 }
 bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezoneNumber,int bossNumber ,int numberMap,long oldseed,int minRoomsNumber,int &mapIndex,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport,std::string *saves,std::string *names,std::string *savesVec, std::unique_ptr<Spawner> *vectors,std::unique_ptr<Dungeonarea> *maps) {
     bool playerReboot=false;
@@ -164,7 +156,7 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
 }
 
 int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
-                         float tilesetResolution,bool &run,int &state) {
+                                 float tilesetResolution,bool &run,int &state) {
     float movement=1;
     float decimalMove=0.25;
     float movementRunning=2/*1.25*/;
@@ -173,7 +165,6 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
     bool DownKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LShiftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
-
     int staminaUsed=0;
     state=0;
     run=false;
@@ -197,104 +188,78 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
 
         if(LShiftKeyDown&& isLegalMove(hero,-movementRunning,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
             player.move(-tilesetResolution*movementRunning, 0);
-
             staminaUsed=1;
             hero.run(-1,0);
         }else {
             player.move(-tilesetResolution*movement, 0);
-
             hero.move(-1,0);
         }
+
     }else if (LeftKeyDown &&isLegalMove(hero,-decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
         player.move(-tilesetResolution*decimalMove, 0);
-
         hero.move(-decimalMove,0);
-
     }else if (LeftKeyDown &&isLegalMove(hero,-2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
         player.move(-tilesetResolution*2*decimalMove, 0);
-
         hero.move(-2*decimalMove,0);
-
     }
 
-        if (RightKeyDown&&isLegalMove(hero,movement,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+    if (RightKeyDown&&isLegalMove(hero,movement,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+
         if(LShiftKeyDown&& isLegalMove(hero,movementRunning,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
             player.move(tilesetResolution*movementRunning, 0);
-
             staminaUsed=1;
             hero.run(1,0);
         }else {
             player.move(tilesetResolution*movement, 0);
-
             hero.move(1,0);
         }
+
     }else if (RightKeyDown &&isLegalMove(hero,decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
-            player.move(tilesetResolution*decimalMove, 0);
-
-            hero.move(decimalMove,0);
-
-        }else if (RightKeyDown &&isLegalMove(hero,2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
-player.move(tilesetResolution*2*decimalMove, 0);
-
-hero.move(2*decimalMove,0);
-
-}
+        player.move(tilesetResolution*decimalMove, 0);
+        hero.move(decimalMove,0);
+    }else if (RightKeyDown &&isLegalMove(hero,2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
+        player.move(tilesetResolution*2*decimalMove, 0);
+        hero.move(2*decimalMove,0);
+    }
 
     if (UpKeyDown&&isLegalMove(hero,0,movement,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+
         if(LShiftKeyDown&& isLegalMove(hero,0,movementRunning,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
             player.move(0, tilesetResolution*movementRunning);
-
             staminaUsed=1;
             hero.run(0,1);
         }else{
             player.move(0, tilesetResolution*movement);
-
             hero.move(0,1);
         }
+
     }else if (UpKeyDown &&isLegalMove(hero,0,decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
         player.move(0, tilesetResolution*decimalMove);
-
         hero.move(0,decimalMove);
-
     }else if (UpKeyDown &&isLegalMove(hero,0,2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
         player.move(0, tilesetResolution*2*decimalMove);
-
         hero.move(0,2*decimalMove);
-
     }
 
     if (DownKeyDown&&isLegalMove(hero,0,-movement,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+
         if(LShiftKeyDown&& isLegalMove(hero,0,-movementRunning,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(), &vectors.getTeleports())){
             player.move(0, -tilesetResolution*movementRunning);
-
             staminaUsed=1;
             hero.run(0,-1);
         }else {
             player.move(0, -tilesetResolution*movement);
-
             hero.move(0,-1);
         }
+
     }else if (DownKeyDown &&isLegalMove(hero,0,-decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
         player.move(0, -tilesetResolution*decimalMove);
-
         hero.move(0,-decimalMove);
-
     }else if (DownKeyDown &&isLegalMove(hero,0,-2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-
         player.move(0, -tilesetResolution*2*decimalMove);
-
         hero.move(0,-2*decimalMove);
-
     }
     player.setPosition(hero.getposX()*tilesetResolution,hero.getposY()*tilesetResolution);
-
     return staminaUsed;
 }
 
@@ -309,13 +274,11 @@ bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tut
     }
     playerTexture.setSmooth(false);
     player.setTexture(&playerTexture);
-    //hero.setHp(50);
+    //hero.setHp(50); //per testare cure
     player.setPosition(hero.getposX()*tilesetResolution,hero.getposY()*tilesetResolution);
     player.setOrigin(1,7);
     player.setScale(1.2,1.7);
-
     view1.setCenter(player.getPosition());
-
     if(!(hud.hudSetter(hero,tilesetResolution,HudBarsHeigth))){
         return false;
     }

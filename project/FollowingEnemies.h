@@ -10,6 +10,8 @@ class FollowingEnemies: public Obstacle{
 
 public:
 
+    FollowingEnemies(int hp, int movements, int posX, int posY, bool fixed, int dungeonType);
+
     void behaviour() override;
     void tracking() override;
     void move(int x, int y) override;

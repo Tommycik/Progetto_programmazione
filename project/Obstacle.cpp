@@ -50,10 +50,10 @@ void Obstacle::run(int x, int y) {
 
 }
 
-int Obstacle::getObstacleType() const {
-    return 0;
+bool Obstacle::isKillable() const {
+    return killable;
 }
 
-void Obstacle::setTileNumber(int tileNumber) {
-
+int Obstacle::getType() const {
+    return type;
 }

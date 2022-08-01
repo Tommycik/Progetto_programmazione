@@ -6,7 +6,9 @@
 #define MAIN_SPAWNER_H
 
 #include <vector>
-#include "Obstacle.h"
+#include "StaticDanger.h"
+#include "LineEnemies.h"
+#include "FollowingEnemies.h"
 #include "Boss.h"
 #include "Safezone.h"
 #include "Dice.h"
@@ -29,6 +31,7 @@ public :
     int getObjectNumber() const;
     int getSafezoneNumber() const;
     int getBossNumber() const;
+    void createEnemies(int type);
     std::vector<std::unique_ptr<Obstacle>> &getEnemies() ;
     std::vector<std::unique_ptr<Item>> &getItems() ;
     std::vector<std::unique_ptr<Safezone>> &getSafezones();
@@ -37,6 +40,7 @@ public :
 
 private:
 
+    std::string fileLine;
     std::ifstream op;
     int monsterNumber=0;
     int objectNumber=0;

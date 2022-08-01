@@ -15,11 +15,3 @@ void Entity::setHp(int hp) {
 void Entity::receiveDamage(int damage) {
 this->hp-=damage;
 }
-
-float Entity::getPreviousPos() const {
-    return previousPos;
-}
-
-void Entity::setPreviousPos(float previousPos) {
-    Entity::previousPos = previousPos;
-}

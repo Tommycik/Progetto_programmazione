@@ -40,4 +40,8 @@ void Boss::run(int x, int y) {
 
 }
 
+int Boss::getType() const {
+    return type;
+}
+
 

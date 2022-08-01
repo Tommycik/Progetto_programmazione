@@ -5,6 +5,8 @@
 #ifndef MAIN_ENTITY_H
 #define MAIN_ENTITY_H
 #include "Object.h"
+#include "Utilities.h"
+#include "Dungeonarea.h"
 
  class Entity : public virtual Object  {
 
@@ -20,11 +22,9 @@ public:
      int getHp() const;
      void receiveDamage(int damage);
      void setHp(int hp);
-     float getPreviousPos() const;
-     void setPreviousPos(float previousPos);
 
  protected:
-    float previousPos=0;
+
     int hp=0;
 };
 

@@ -121,6 +121,13 @@ bool Menu::show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::
                             on.close();
                             remove("playerSave/save.txt");
                         } catch (std::ios_base::failure& e) {}
+
+                        try {
+
+                            on.open("playerSave/Achievement.txt");
+                            on.close();
+                            remove("playerSave/Achievement.txt");
+                        } catch (std::ios_base::failure& e) {}
                         go=true;
                     }
                     break;

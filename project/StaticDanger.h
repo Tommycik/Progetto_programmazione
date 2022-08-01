@@ -9,7 +9,7 @@
 class StaticDanger :public Obstacle{
 public:
 
-    StaticDanger(int hp, int movements, int posX, int posY, bool fixed, int mapNumber);
+    StaticDanger(int hp, int movements, int posX, int posY, bool fixed, int dungeonType);
 
 private:
 

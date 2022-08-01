@@ -53,13 +53,13 @@ private:
     int maxHp;
     int maxStam;
     int potionNum;
-    int bossKilled=0;//done
-    float gameTime=0;//done
-    int teleported=0;//done
-    int potionTaken=0;//done
-    float distanceWalked=0;//done
-    int safezoneUsed=0;//done
-    int deaths=0;//done
+    int bossKilled=0;
+    float gameTime=0;
+    int teleported=0;
+    int potionTaken=0;
+    float distanceWalked=0;
+    int safezoneUsed=0;
+    int deaths=0;
 
 };
 

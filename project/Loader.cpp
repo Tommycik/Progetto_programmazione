@@ -8,10 +8,8 @@
 {
     // apply the transform
     states.transform *= getTransform();
-
     // apply the tileset texture
     states.texture = &m_tileset;
-
     // draw the vertex array
     target.draw(m_vertices, states);
 }
@@ -24,7 +22,6 @@ bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator
     count=0;
 
     for (auto &gl : creator.getSafezones()) {
-
         this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
     }
     return true;
@@ -40,8 +37,6 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator
     for (auto &gl : creator.getTeleports()) {
 
         if(gl->isActivated()) {
-
-
             this->loading(tileSize,gl->getTileNumber(),false,true,gl->getposY(),gl->getposX());
         }
     }
@@ -57,7 +52,6 @@ bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator)
     count=0;
 
     for (auto &gl : creator.getItems()) {
-
         if(!(gl->isTaken())) {
             this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
         }
@@ -73,22 +67,12 @@ bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeon
 
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
-    //TileType control=TileType::Unused;
-    //tileNumber=0;
     tv=0;
     tu=0;
     count=0;
-    int random=1;
 
     for (unsigned int i = 0; i < width; ++i)
-        for (unsigned int j = 0; j < height; ++j)
-        {
-            random=1;
-            //control=TileType::Unused;
-            //control=map.getcell(i, j);
-            //tileNumber=0;
-
-
+        for (unsigned int j = 0; j < height; ++j){
             this->loading(tileSize,map.getTileNumber(i,j),true,false,j,i);
         }
     return true;

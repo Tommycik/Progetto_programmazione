@@ -576,6 +576,7 @@ bool Dungeonarea::getPassable(float futureX,float futureY) const {
     bool halfX = false;
     bool quarterX = false;
     bool quarterY = false;
+    //todo serve se il movimento è decimale
     float xTemp = (futureX / 0.25);
     float yTemp = (futureY / 0.25);
     int xPass = xTemp;

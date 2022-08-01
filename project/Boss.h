@@ -19,11 +19,13 @@ public:
     void run(int x, int y) override;
     int getStatIncrease() const;
     void setStatIncrease(int statIncrease);
+    int getType() const;
 
 protected:
 
    //todo implementare nel costruttore un dice che scelga quale boss spawnare
-    int statIncrease;
+   int statIncrease;
+   int type=0;
     //todo implementarlo nei salvataggi
 };
 

@@ -15,3 +15,11 @@ void FollowingEnemies::tracking() {
 void FollowingEnemies::move(int x, int y) {
     Obstacle::move(x, y);
 }
+
+FollowingEnemies::FollowingEnemies(int hp, int movements, int posX, int posY, bool fixed, int dungeonType) : Obstacle(hp, movements,
+                                                                                                     posX, posY,
+                                                                                                     fixed) {
+    this->tileNumber=dungeonType;
+    this->killable=true;
+    this->type=3;
+}

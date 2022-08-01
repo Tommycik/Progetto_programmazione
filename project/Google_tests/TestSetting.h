@@ -7,7 +7,6 @@
 
 #include "gtest/gtest.h"
 #include "../Animation.h"
-#include "../Textviewer.h"
 #include "../Menu.h"
 #include "../Events.h"
 #include "../Achievements.h"
@@ -22,7 +21,7 @@ protected:
     bool creation(std::unique_ptr<Spawner> *vectors=nullptr,std::unique_ptr<Dungeonarea> *maps=nullptr);
 
     int monsterNumber=1;
-    int objectNumber=1;
+    int objectNumber=5;
     int safezoneNumber=1;
     int bossNumber=1;
     int numberMap=2;

@@ -67,7 +67,6 @@ private:
     long oldseed=0;
     std::string name;
     std::string save;
-    //std::vector<Tile*> tiles;
     std::vector<std::unique_ptr<Tile>> tiles;
     std::ifstream ip;
     std::ofstream out;

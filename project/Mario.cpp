@@ -114,19 +114,15 @@ void Mario::move(int x, int y) {
         y = movements;
     posX += speed*x;
     if(x!=0)
-    distanceWalked+=speed/**x*/;
+    distanceWalked+=speed;
     posY += speed*y;
     if(y!=0)
-    distanceWalked+=speed/**y*/;
+    distanceWalked+=speed;
 }
 
-void Mario::behaviour() {
+void Mario::behaviour() {}
 
-}
-
-void Mario::tracking() {
-
-}
+void Mario::tracking() {}
 
 void Mario::fight() {
 
