@@ -188,7 +188,7 @@ bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf:
         for(auto &gd:enemiesTexture){//fixme
 
             if(*textureFile[count]=="0"){//todo caricare file tieniposto
-                gd->loadFromFile(*textureFile[count]);
+                gd->loadFromFile("assets/hpBar.png");
             }else{
                 gd->loadFromFile(*textureFile[count]);
             }

@@ -21,9 +21,9 @@ protected:
     bool creation(std::unique_ptr<Spawner> *vectors=nullptr,std::unique_ptr<Dungeonarea> *maps=nullptr);
 
     int monsterNumber=15;
-    int objectNumber=5;
-    int safezoneNumber=2;
-    int bossNumber=5;
+    int objectNumber=1;
+    int safezoneNumber=1;
+    int bossNumber=1;
     int numberMap=2;
     int mapIndex=0;
     int minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/3+bossNumber;
