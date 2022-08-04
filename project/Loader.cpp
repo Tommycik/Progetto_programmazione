@@ -4,14 +4,25 @@
 
 #include "Loader.h"
 
- void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
+ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
+
     // apply the transform
-    states.transform *= getTransform();
-    // apply the tileset texture
-    states.texture = &m_tileset;
-    // draw the vertex array
-    target.draw(m_vertices, states);
+
+
+
+    if(loaded){
+        for (auto &gl:enemies) {
+            target.draw(*gl);
+       }
+   }else{
+        states.transform *= getTransform();
+        // apply the tileset texture
+        states.texture = &m_tileset;
+        // draw the vertex array
+        target.draw(m_vertices, states);
+   }
+
 }
 
 bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator)
@@ -106,6 +117,122 @@ bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool telepo
     quad[2].texCoords = sf::Vector2f((tu + offset) * tileSize.x, (tv + offset) * tileSize.y);
     quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + offset) * tileSize.y);
     return true;
+}
+
+bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf::RenderWindow *window,bool change) {//todo uase quadrati (rectangleshape) per i nemici e modificare draw
+    count=0;
+    int multiplier=1;
+
+    if(loaded==false||change) {
+
+        if (!(this->enemies.empty())) {
+            enemies.clear();
+        }
+        if (!(this->textureFile.empty())) {
+            textureFile.clear();
+        }
+        if (!(this->enemiesTexture.empty())) {
+            enemiesTexture.clear();
+        }
+
+        enemies.reserve(numItem);
+        int diffTextures=0;
+        int found=false;
+        std::string pass="0";
+        count=0;
+        bool resize=false;
+
+        for(auto &gr:creator.getEnemies()){
+            if(numItem<gr->getType()){
+                numItem=gr->getType();
+                resize=true;
+            }
+        }
+        textureFile.reserve(numItem);
+        for(int i=0;i<numItem;i++){
+            auto newString = std::make_unique<std::string>("0");
+            auto itPos = textureFile.begin() + count;
+            auto newIt = textureFile.insert(itPos, std::move(newString));
+            count++;
+        }
+        for (auto &gl: creator.getEnemies()) {
+            found=false;
+            pass=gl->getTextureFile();
+            if (gl->getHp() != 0) {
+                for(auto &gc:textureFile){
+                    if(*gc==pass){
+                        found=true;
+                        break;
+                    }
+                }
+                if(!found){
+                    diffTextures++;
+                    int check=gl->getType()-1;
+                    count=0;
+                    *textureFile[check]=pass;
+                }
+            }
+        }
+        if(resize=true){
+            diffTextures=numItem;
+        }
+        enemiesTexture.reserve(diffTextures);
+        count=0;
+        for(int i=0;i<diffTextures;i++){
+            auto newTexture = std::make_unique<sf::Texture>();
+            auto itPos = enemiesTexture.begin() + count;
+            auto newIt = enemiesTexture.insert(itPos, std::move(newTexture));
+            count++;
+        }
+        count=0;
+        for(auto &gd:enemiesTexture){//fixme
+
+            if(*textureFile[count]=="0"){//todo caricare file tieniposto
+                gd->loadFromFile(*textureFile[count]);
+            }else{
+                gd->loadFromFile(*textureFile[count]);
+            }
+            count++;
+        }
+       //todo fare in modo che sia grande il giusto
+        count=0;
+        for (auto &gl: creator.getEnemies()) {
+
+            if (gl->getHp() != 0) {
+                multiplier=gl->getTextureMultiplier();
+                auto newEnemy = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
+                newEnemy->setPosition(gl->getposX()*16,gl->getposY()*16);
+                newEnemy->setTexture(&*enemiesTexture[gl->getType()-1]);
+                  textureSize=enemiesTexture[gl->getType()-1]->getSize();
+                  textureSize.x/=(enemiesTexture[gl->getType()-1]->getSize().x / (tileSize.x*multiplier));
+                  textureSize.y/=(enemiesTexture[gl->getType()-1]->getSize().y / (tileSize.y*multiplier));
+                newEnemy->setTextureRect(sf::IntRect(textureSize.x*(gl->getTileNumber()%(enemiesTexture[gl->getType()-1]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl->getTileNumber()/(enemiesTexture[gl->getType()-1]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
+                  //enemies[count]->setOrigin(1,7);
+                 // enemies[count]->setScale(1.2,1.7);
+                auto itPos = enemies.begin() + count;
+                auto newIt = enemies.insert(itPos, std::move(newEnemy));
+            }
+              count++;
+          }
+        loaded = true;
+    }else{
+        count=0;
+       for (auto &gl: creator.getEnemies()) {
+            if (gl->getHp() == 0) {
+                enemies.erase(enemies.begin()+count,enemies.begin()+count);
+               }
+            count++;
+        }
+    }
+    return true;
+}
+
+bool TileMap::loadTexture(const std::string &tileset) {
+
+            if (!m_tileset.loadFromFile(tileset))
+                return false;
+        return true;
+
 }
 
 

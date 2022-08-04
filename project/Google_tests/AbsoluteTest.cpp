@@ -85,7 +85,7 @@ TEST_F(TheClassTest,DISABLED_WorldCreation){
             player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
-            ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone), true);
+            //ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone), true);
             sf::sleep((sf::milliseconds(120)));
         }
     }
@@ -101,7 +101,7 @@ TEST_F(TheClassTest,TestMap){
     std::unique_ptr<Dungeonarea> maps[numberMap];
     std::unique_ptr<Spawner> vectors[numberMap];
     ASSERT_EQ(creation(&vectors[0],&maps[0]), true);
-    TileMap map,teleport,safezone;
+    TileMap map,teleport,safezone,obstacles;
     sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
     Hud hud(1);
@@ -113,11 +113,11 @@ TEST_F(TheClassTest,TestMap){
 
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
     ASSERT_EQ (map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()),true);
-
+    bool change=false;
     while (window.isOpen()) {
 
         while (window.isOpen()) {
-
+            change=false;
             TileMap object;
             ASSERT_EQ (object.loadTexture("assets/potions.png"), true);
             staminaUsed=0;
@@ -140,12 +140,13 @@ TEST_F(TheClassTest,TestMap){
                     hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());
                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
                     tutorialTeleport=true;
+                    change=true;
                     break;
 
                 default:
                     break;
             }
-
+            obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],&window,change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
             safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
@@ -155,7 +156,7 @@ TEST_F(TheClassTest,TestMap){
             player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
-            ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone), true);
+            ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone,obstacles), true);
             sf::sleep((sf::milliseconds(120)));
         }
     }

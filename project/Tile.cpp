@@ -43,9 +43,9 @@ void Tile::setType(TileType tile,int dungeonType){
     int random=1;
     int n=0;
     int i=0;
-    long seed = time(NULL) + oldseed;
+   /* long seed = time(NULL) + oldseed;
     this->oldseed = seed;
-    srand(seed);
+    srand(seed);*/
 
     if(tile== TileType::Unused){
         switch (dungeonType) {
@@ -67,16 +67,19 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*12+13;
                 break;
+            default:
+                tileNumber=31*17+60;
+                break;
         }
     }else if(tile== TileType::floor){
         switch (dungeonType) {
-            case 0://forest
+            case 0://forest//fixme
                 tileNumber=31*27-5;
                 break;
             case 1://cave
                 tileNumber=31+11;
                 break;
-            case 2://brick
+            case 2://brick/
                  n = 10 - 1 + 1;
                  i = rand() % n;
                 if (i < 0)
@@ -107,6 +110,9 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*16+27;
                 break;
+            default:
+                tileNumber=31*27-5;
+                break;
         }
     }else if(tile== TileType::wall){
         switch (dungeonType) {
@@ -127,6 +133,9 @@ void Tile::setType(TileType tile,int dungeonType){
                 break;
             case 5://sand
                 tileNumber=31*12+12;
+                break;
+            default:
+                tileNumber=31*17+57;
                 break;
         }
     }else if(tile== TileType::corridor){
@@ -159,6 +168,9 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*16+27;
                 break;
+            default:
+                tileNumber=31*17+55;
+                break;
         }
     }else if(tile== TileType::door){
         switch (dungeonType) {
@@ -190,6 +202,9 @@ void Tile::setType(TileType tile,int dungeonType){
                 break;
             case 5://sand
                 tileNumber=31*16+27;
+                break;
+            default:
+                tileNumber=31*17+55;
                 break;
         }
     }

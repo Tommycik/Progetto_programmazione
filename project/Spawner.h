@@ -37,6 +37,8 @@ public :
     std::vector<std::unique_ptr<Safezone>> &getSafezones();
     std::vector<std::unique_ptr<Teleport>> &getTeleports() ;
     std::vector<std::unique_ptr<Boss>> &getBosses() ;
+    int getTypesOfBosses() const;
+    int getTypesOfEnemies() const;
 
 private:
 
@@ -46,6 +48,8 @@ private:
     int objectNumber=0;
     int safezoneNumber=0;
     int bossNumber=0;
+    int typesOfBosses=6;
+    int typesOfEnemies=3;
     std::vector<std::unique_ptr<Obstacle>> enemies;
     std::vector<std::unique_ptr<Item>> items;
     std::vector<std::unique_ptr<Safezone>> safezones;

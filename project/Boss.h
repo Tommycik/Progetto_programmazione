@@ -6,7 +6,7 @@
 #define MAIN_BOSS_H
 #include "Entity.h"
 
-class Boss:public virtual Entity {
+class Boss:public  Entity {
 
 public:
 

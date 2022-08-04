@@ -4,14 +4,11 @@
 #include "Events.h"
 #include "Achievements.h"
 
- //todo implementare  line enemies
  //todo mettere effetto audio achievement e sistemare le soglie
  //todo per i vari vettori implementare erase invece di lascare i vari oggetti presi o i nemici morti;
 //todo skill e enum class per ogni abilità
 //todo ignori nemici e boss morti
 //todo implementare skills con le varie texture(stessa cosa con nemici e boss)
-//todo implementare oggetti paesaggio causali(alberi,ceppi,sassi ,pozzi,cartelli.....)
-//todo differenziare mappe in possibilità stanze e loro dimensione
 void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);

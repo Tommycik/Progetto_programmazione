@@ -10,7 +10,7 @@ class Observer {
 public:
 
     Observer() {};
-    ~Observer() {};
+    virtual ~Observer() {};
 
     virtual void update(Subject* subjectChange) = 0;
 };

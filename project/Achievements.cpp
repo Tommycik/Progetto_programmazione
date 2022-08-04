@@ -73,7 +73,7 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getDistanceWalked()>=10&&(!wanderer)){
+    if(_subject->getDistanceWalked()>=1000&&(!wanderer)){
         wanderer=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Wanderer","Walk more than 1000 meters ",window,*view,
                              false);

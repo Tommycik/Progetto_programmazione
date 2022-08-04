@@ -6,7 +6,7 @@
 #define MAIN_MARIO_H
 #include "Entity.h"
 #include "Subject.h"
-class Mario :public virtual Entity,public Subject {
+class Mario :public  Entity,public Subject {
 
 public:
 

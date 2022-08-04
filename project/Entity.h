@@ -7,8 +7,11 @@
 #include "Object.h"
 #include "Utilities.h"
 #include "Dungeonarea.h"
+#include <time.h>
+#include <iostream>
+#include <random>
 
- class Entity : public virtual Object  {
+ class Entity : public  Object  {
 
 public:
 
@@ -22,10 +25,13 @@ public:
      int getHp() const;
      void receiveDamage(int damage);
      void setHp(int hp);
+     int getTextureMultiplier() const;
 
  protected:
 
     int hp=0;
+    int textureMultiplier=1;
+     int oldseed=0;
 };
 
 

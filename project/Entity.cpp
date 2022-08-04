@@ -15,3 +15,7 @@ void Entity::setHp(int hp) {
 void Entity::receiveDamage(int damage) {
 this->hp-=damage;
 }
+
+int Entity::getTextureMultiplier() const {
+    return textureMultiplier;
+}

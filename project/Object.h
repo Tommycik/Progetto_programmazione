@@ -37,6 +37,12 @@ public:
     std::string getName()const{
         return name;
     }
+    void setTileNumber(int tileNumber) {
+        Object::tileNumber = tileNumber;
+    }
+    const std::string &getTextureFile() const{
+        return textureFile;
+    }
 
 protected:
 
@@ -45,6 +51,7 @@ protected:
     float posY=0;
     std::string name;
     int tileNumber=0;
+    std::string textureFile;
 
 };
 

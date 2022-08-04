@@ -5,9 +5,9 @@
 #include "LineEnemies.h"
 
 void LineEnemies::behaviour() {
-    if(!activated){
+    /*if(!activated){
 //if(l2Distance())
-    }
+    }*/
 }
 
 void LineEnemies::move(int x, int y) {
@@ -22,10 +22,20 @@ void LineEnemies::move(int x, int y) {
 
 }
 
-LineEnemies::LineEnemies(int hp, int movements, int posX, int posY, bool fixed,int dungeonType) : Obstacle(hp, movements, posX, posY,
-                                                                                           fixed) {
+LineEnemies::LineEnemies(int hp, int movements, int posX, int posY, bool fixed,int dungeonType){
 
-    this->tileNumber=dungeonType;
+    this->activated=false;
+    this->fixed=fixed;
+    this->hp=hp;
+    this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
+    this->tileNumber=15;
     this->killable=false;
     this->type=2;
+    this->textureFile="assets/TileSet.png";
+}
+
+void LineEnemies::tracking() {
+
 }

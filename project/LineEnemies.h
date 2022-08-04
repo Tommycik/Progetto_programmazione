@@ -14,6 +14,8 @@ public:
 
     void behaviour() override;
     void move(int x, int y) override;
+    void tracking() override;
+
 private:
 
     int dirX=0;

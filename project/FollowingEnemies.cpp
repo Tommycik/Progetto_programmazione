@@ -5,21 +5,27 @@
 #include "FollowingEnemies.h"
 
 void FollowingEnemies::behaviour() {
-    Obstacle::behaviour();
+
 }
 
 void FollowingEnemies::tracking() {
-    Obstacle::tracking();
+
 }
 
 void FollowingEnemies::move(int x, int y) {
-    Obstacle::move(x, y);
+
 }
 
-FollowingEnemies::FollowingEnemies(int hp, int movements, int posX, int posY, bool fixed, int dungeonType) : Obstacle(hp, movements,
-                                                                                                     posX, posY,
-                                                                                                     fixed) {
-    this->tileNumber=dungeonType;
+FollowingEnemies::FollowingEnemies(int hp, int movements, int posX, int posY, bool fixed, int dungeonType){
+
+    this->activated=false;
+    this->fixed=fixed;
+    this->hp=hp;
+    this->movements=movements;
+    this->posX=posX;
+    this->posY=posY;
+    this->tileNumber=20;
     this->killable=true;
-    this->type=3;
+    this->type=2;
+    this->textureFile="assets/potions.png";
 }

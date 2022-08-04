@@ -17,13 +17,13 @@ protected:
     TheClassTest();
     virtual ~TheClassTest();
     bool gameSet();
-    bool draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone);
+    bool draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles);
     bool creation(std::unique_ptr<Spawner> *vectors=nullptr,std::unique_ptr<Dungeonarea> *maps=nullptr);
 
-    int monsterNumber=1;
+    int monsterNumber=15;
     int objectNumber=5;
-    int safezoneNumber=1;
-    int bossNumber=1;
+    int safezoneNumber=2;
+    int bossNumber=5;
     int numberMap=2;
     int mapIndex=0;
     int minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/3+bossNumber;

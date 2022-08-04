@@ -4,16 +4,6 @@
 
 #include "Obstacle.h"
 
-Obstacle::Obstacle(int hp, int movements, int posX, int posY,bool fixed){
-    
-    this->activated=false;
-    this->fixed=fixed;
-    this->hp=hp;
-    this->movements=movements;
-    this->posX=posX;
-    this->posY=posY;
-}
-
 bool Obstacle::isFixed() const {
     return fixed;
 }
@@ -30,17 +20,6 @@ void Obstacle::setFixed(bool fixed) {
     Obstacle::fixed = fixed;
 }
 
-void Obstacle::tracking() {
-
-}
-
-void Obstacle::behaviour() {
-
-}
-
-void Obstacle::move(int x, int y) {
-
-}
 
 void Obstacle::fight() {
 
@@ -57,3 +36,8 @@ bool Obstacle::isKillable() const {
 int Obstacle::getType() const {
     return type;
 }
+
+Obstacle::~Obstacle() {
+
+}
+

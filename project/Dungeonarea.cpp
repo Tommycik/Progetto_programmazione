@@ -8,12 +8,13 @@
 Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,int maxRoomWidth,int maxRoomHeight,
                          int mapType, int chanceRoom, int parts, int xMin, int yMin, std::string name,
 std::string save,int minRooms) : xMax(maxLength),yMax(maxHeigth),minRoomWidth(minRoomWidth),minRoomHeight(minRoomHeight),
-chanceRoom(chanceRoom),parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(maxRoomWidth) {
+parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(maxRoomWidth) {
     this->oldseed=oldseed;
     this->name=name;
     this->save=save;
     this->rooms=minRooms;
     this->dungeonType=mapType;
+    this->chanceRoom=this->getRand(40,80);
 }
 
 

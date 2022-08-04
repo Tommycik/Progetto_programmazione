@@ -25,7 +25,7 @@ bool TheClassTest::gameSet() {
     return true;
 }
 
-bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone) {
+bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles) {
 
     window.clear();
     view1.setCenter(player.getPosition());
@@ -35,6 +35,7 @@ bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,
     window.draw(player);
     window.draw(safezone);
     window.draw(object);
+    window.draw(obstacles);
     hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
     if(!makeText){
         hero.notify();

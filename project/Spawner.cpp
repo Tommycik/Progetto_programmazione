@@ -151,7 +151,7 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
         std::getline(op, fileLine);
     }
     std::getline(op, fileLine);}
-    Dice enemyTypeDice(3);//todo fare op modo che i nemici peggio abbiano meno possibilità
+    Dice enemyTypeDice(2);//todo fare op modo che i nemici peggio abbiano meno possibilità
     for(int i=0; i<monsterNumber; i++) {
 
         int effect=1;
@@ -170,13 +170,13 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
                 newEnemy->setposY(startY);
                 enemies.emplace_back(std::move(newEnemy));
 
-            } else if(effect==2) {
+            } /*else if(effect==2) {
                 auto newEnemy = std::make_unique<LineEnemies>(5,1,8,2,true,map.getDungeonType());
                 newEnemy->setposX(startX);
                 newEnemy->setposY(startY);
                 enemies.emplace_back(std::move(newEnemy));
 
-            }else if(effect==3){
+            }*/else if(effect==2){
                 auto newEnemy = std::make_unique<FollowingEnemies>(5,1,8,2,true,map.getDungeonType());
                 newEnemy->setposX(startX);
                 newEnemy->setposY(startY);
@@ -194,11 +194,7 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
                 auto newEnemy = std::make_unique<StaticDanger>(5,1,8,2,true,map.getDungeonType());
                 enemies.emplace_back(std::move(newEnemy));
 
-            } else if(effect==2) {
-                auto newEnemy = std::make_unique<LineEnemies>(5,1,8,2,true,map.getDungeonType());
-                enemies.emplace_back(std::move(newEnemy));
-
-            }else if(effect==3){
+            }else if(effect==2){
                 auto newEnemy = std::make_unique<FollowingEnemies>(5,1,8,2,true,map.getDungeonType());
                 enemies.emplace_back(std::move(newEnemy));
             }
@@ -230,7 +226,7 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
 
     out <<-1<<"\n";
     for(auto &gc:this->bosses){
-        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getStatIncrease();
+        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getStatIncrease()<< "\n" << gc->getTileNumber();
         out << std::endl;
     }
     out <<-1<<"\n";
@@ -241,7 +237,7 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
     out <<-1<<"\n";
     for(auto &gc:this->enemies){
 
-        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" <<gc->isFixed();
+        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" <<gc->isFixed()<< "\n" << gc->getTileNumber();
         out << std::endl;
     }
     out <<-1<<"\n";
@@ -300,6 +296,8 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
                 std::getline(op, fileLine);
                 gc->setStatIncrease(std::stoi(fileLine));
                 std::getline(op, fileLine);
+                gc->setTileNumber(std::stoi(fileLine));
+                std::getline(op, fileLine);
             }
         }
         while(std::stoi(fileLine)!=-1){
@@ -338,6 +336,8 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
                 gb->setposY(std::stoi(fileLine));
                 std::getline(op, fileLine);
                 gb->setFixed(std::stoi(fileLine));
+                std::getline(op, fileLine);
+                gb->setTileNumber(std::stoi(fileLine));
                 std::getline(op, fileLine);
             }
         }
@@ -420,4 +420,12 @@ int Spawner::getBossNumber() const {
 
 void Spawner::createEnemies(int type) {
 
+}
+
+int Spawner::getTypesOfBosses() const {
+    return typesOfBosses;
+}
+
+int Spawner::getTypesOfEnemies() const {
+    return typesOfEnemies;
 }

@@ -6,15 +6,13 @@
 #define MAIN_OBSTACLE_H
 #include "Mario.h"
 
-class Obstacle: public virtual Entity {
+
+class Obstacle: public Entity {//todo check virtual ered
 
 public:
 
-    Obstacle(int hp, int movements, int posX, int posY, bool fixed);
+    virtual ~Obstacle();
 
-    void behaviour() override;
-    void tracking() override;
-    void move(int x, int y) override;
     void fight() override;//levare la completa virtualità
     bool isFixed() const;
     bool isActivated() const;
@@ -24,6 +22,7 @@ public:
     void run(int x, int y) override;
     bool isKillable() const;
     int getType() const;
+
 
 protected:
 
