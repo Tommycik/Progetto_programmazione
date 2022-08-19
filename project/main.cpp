@@ -22,11 +22,11 @@ int main() {
     if(monsterNumber<1)
         monsterNumber=1;
 
-    int objectNumber=10;
+    int objectNumber=30;
     if(objectNumber<1)
         objectNumber=1;
 
-    int safezoneNumber=3;
+    int safezoneNumber=30;
     if(safezoneNumber<1)
         safezoneNumber=1;
 
