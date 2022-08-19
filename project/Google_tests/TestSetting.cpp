@@ -57,7 +57,7 @@ bool TheClassTest::creation(std::unique_ptr<Spawner> *vectors,std::unique_ptr<Du
     try {
         for(int i=0;i<numberMap;i++){
 
-            maps[i] =std::make_unique<Dungeonarea>(oldseed, minRoomsNumber*20+1, minRoomsNumber*20+1, 15, 15,30,30, i, 70, minRoomsNumber*10, minRoomsNumber*15, minRoomsNumber*15, names[i], saves[i],minRoomsNumber);
+            maps[i] =std::make_unique<Dungeonarea>(oldseed, minRoomsNumber*20+1, minRoomsNumber*20+1, 15, 15,30,30, i, minRoomsNumber*10, minRoomsNumber*15, minRoomsNumber*15, names[i], saves[i],minRoomsNumber);
             if(!maps[i]->loadMap(saves[i],names[i])){
                 try {
                     in.open(savesVec[i].c_str());

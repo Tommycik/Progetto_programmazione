@@ -4,7 +4,9 @@
 
 #include "Skills.h"
 
-void Skills::tracking(Entity &target) {}
+void Skills::tracking(Entity &target) {
+
+}
 
 void Skills::behaviour(Entity &target) {
 
@@ -45,42 +47,43 @@ bool Skills::isTargetLost() const {
 void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector<std::unique_ptr<Obstacle>> &enemies,Entity &mario) {
 
     int minDistance=1000;
-    if(this->ostile==false){
-        for(auto &gc:enemies){
-            if(gc->isFixed()==false&&gc->getHp()>0){
-                if(minDistance>l2Distance(*this,gc->getposX(),gc->getposY())){
-                    minDistance=l2Distance(*this,gc->getposX(),gc->getposY());
-                    target=&(*gc);
+    if(this->ostile==false) {
+        for (auto &gc: enemies) {
+            if (gc->isFixed() == false && gc->getHp() > 0) {
+                if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                    minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                    target = &(*gc);
                 }
             }
 
         }
-        for(auto &gc:bosses){
+        for (auto &gc: bosses) {
 
-            if(gc->getHp()>0){
-                if(minDistance>l2Distance(*this,gc->getposX(),gc->getposY())){
-                    minDistance=l2Distance(*this,gc->getposX(),gc->getposY());
-                    target=&(*gc);
+            if (gc->getHp() > 0) {
+                if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                    minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                    target = &(*gc);
                 }
             }
 
         }
-        if(minDistance>range){
-            for(auto &gc:enemies){
-                if(gc->isFixed()==true&&gc->getHp()>0){
-                    if(minDistance>l2Distance(*this,gc->getposX(),gc->getposY())){
-                        minDistance=l2Distance(*this,gc->getposX(),gc->getposY());
-                        target=&(*gc);
+        if (minDistance > range) {
+            for (auto &gc: enemies) {
+                if (gc->isFixed() == true && gc->getHp() > 0) {
+                    if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                        minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                        target = &(*gc);
                     }
                 }
             }
         }
-        if(minDistance<=range){
-            targetFound=true;
-        }else{
-            target= nullptr;
-            damage=0;
-        }
+    }
+    if(minDistance<=range){
+        targetLost=false;
+    }else{
+        target= nullptr;
+        targetLost=true;
+        damage=0;
     }
 
 }

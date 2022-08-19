@@ -23,7 +23,7 @@ public:
      virtual void run(float x,float y)=0;
      float getHp() const;
      void receiveDamage(int damage);
-     void setHp(int hp);
+     void setHp(float hp);
      int getTextureMultiplier() const;
      float getDirectX() const;
      float getDirectY() const;
@@ -33,18 +33,20 @@ public:
      void setTimeSinceDamage(float timeSinceDamage);
      int getType() const;
      int getSkillUsed() const;
+     bool isKillable() const;
 
  protected:
 
-    int skillUsed=0;
-    float hp=0;
-    int textureMultiplier=1;
+     int skillUsed=0;
+     float hp=0;
+     int textureMultiplier=1;
      int oldseed=0;
      float directX=0;
      float directY=0;
      bool checked=false;
      float timeSinceDamage=0.00;
      int type=0;
+     bool killable=false;
 };
 
 

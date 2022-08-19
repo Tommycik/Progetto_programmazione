@@ -18,7 +18,7 @@ int main() {
     if(numberMap<1)
         numberMap=1;
 
-    int monsterNumber=15;
+    int monsterNumber=30;
     if(monsterNumber<1)
         monsterNumber=1;
 
@@ -30,14 +30,17 @@ int main() {
     if(safezoneNumber<1)
         safezoneNumber=1;
 
-    int bossNumber=10;
-    if(bossNumber<1)
+    int bossNumber=1;
+    if(bossNumber!=1)
         bossNumber=1;
-    int minRooms=(bossNumber+safezoneNumber+objectNumber+monsterNumber)/3+bossNumber+1;
 
-    if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%3!=0)
-        minRooms++;
+    int minRooms=(bossNumber+safezoneNumber+objectNumber+monsterNumber)/2+bossNumber;
+
+    if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%2!=0)
+        minRooms+=(bossNumber+monsterNumber+objectNumber+safezoneNumber)%2;
     minRooms++;
+    if(minRooms<10)
+        minRooms+=10;
     const unsigned int tilesetResolution=16;
     int mapIndex=0;
 
@@ -114,8 +117,6 @@ int main() {
                         playerTexture,tilesetResolution,&maps[0],&vectors[0])){
         return -1;
     }
-
-
     int state=0;
     bool run=false;
     float staminaUsed=0;
@@ -123,10 +124,8 @@ int main() {
     sf::Clock clock;
     float deltaTime=0.0f;
     int eventControl=0;
-
     Events events;
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
-
     if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
         return -1;
     }
@@ -135,11 +134,6 @@ int main() {
 
         while (window.isOpen()) {
 
-
-            /*if (! object.loadTexture("assets/potions.png")){
-                std::cout<<"errore caricamento oggetti";
-                return -1;
-            }*/
             change=false;
             staminaUsed=0;
             teleportText=false;
@@ -192,7 +186,7 @@ int main() {
                 default:
                     break;
             }
-            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
+            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,run,state);
             obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],&window,change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
@@ -203,6 +197,7 @@ int main() {
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
             respawn:
+
             game.notify();
             window.clear();
             view1.setCenter(player.getPosition());
@@ -222,7 +217,6 @@ int main() {
             if(previousHp!=hero->getHp()){
                 goto respawn;
             }
-
             objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
             window.display();
             sf::sleep((sf::milliseconds(120)));

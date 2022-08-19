@@ -12,17 +12,17 @@
 class SkillManager: public Observer {
 
 public:
+
     SkillManager(World &game,TileMap &skills);
     ~SkillManager();
 
     virtual void update(Subject *theChangedSubject) override;
     void draw();
 
-
 private:
+
     World *_subject;
     TileMap *skills;
-
     int skillNumber=0;
 };
 

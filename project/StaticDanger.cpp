@@ -48,7 +48,7 @@ int random=1;
                 this->tileNumber=32*62+3;
             }
             break;
-        case 2://aggiungere cristalli
+        case 2://todo aggiungere cristalli
             n = 4 - 1 + 1;
             i = rand() % n;
             if (i < 0)

@@ -96,7 +96,6 @@ void Textviewer::show(sf::RenderWindow &window,sf::View &view1, bool &makeText, 
     box.setPosition(view1.getCenter().x-(view1.getSize().x/4),view1.getCenter().y+(view1.getSize().y/6));
 
     if(makeText) {
-        //window.draw(box);
         if(itemText){
             if(tutorialItem==false){
 

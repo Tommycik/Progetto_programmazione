@@ -28,7 +28,7 @@ protected:
     int bossNumber=1;
     int numberMap=2;
     int mapIndex=0;
-    int minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/3+bossNumber;
+    int minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/2+bossNumber;
     bool playerReboot=false;
     long oldseed=0;
     const unsigned int tilesetResolution=16;

@@ -20,6 +20,7 @@ public:
 private:
 
     std::vector<Observer*> _observers;
+
 };
 
 

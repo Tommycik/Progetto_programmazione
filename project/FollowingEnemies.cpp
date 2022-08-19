@@ -59,11 +59,8 @@ void FollowingEnemies::tracking(Entity &target) {
 }
 
 void FollowingEnemies::move(float x, float y) {
-    /*if (x > movements ||x<-movements)
-        //x = movements;
-    if (y > movements||y<-movements)*/
-       // y = movements;
-    posX +=x;//movements*
+
+    posX +=x;
     posY +=y;
 }
 

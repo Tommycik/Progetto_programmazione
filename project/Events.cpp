@@ -85,14 +85,14 @@ int Events::event(sf::RenderWindow *window,std::string *names,std::string *saves
                         if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1.5&&gc->isActivated()){
 
                             if (Happen.key.code == sf::Keyboard::O){
-                                if(mapIndex==numberMap-1) {
+                                if(mapIndex>=numberMap-1) {
                                     mapIndex=0;
                                 }else{
                                     mapIndex++;
                                 }
-                            }else if (Happen.key.code == sf::Keyboard::P&&mapIndex!=0){//fixme
+                            }else if (Happen.key.code == sf::Keyboard::P){
                                 if(mapIndex==0) {
-                                    mapIndex=numberMap-1;
+                                    return 0;
                                 }else{
                                     mapIndex--;
                                 }

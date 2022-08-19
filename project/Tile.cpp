@@ -29,6 +29,7 @@ void Tile::setSpawnPlace(bool spawnPlace) {
 }
 
 void Tile::setType(TileType tile,int dungeonType){
+
     this->type=tile;
     if(this->type==TileType::Unused||this->type==TileType::wall ){
         this->passable=false;
@@ -43,9 +44,6 @@ void Tile::setType(TileType tile,int dungeonType){
     int random=1;
     int n=0;
     int i=0;
-   /* long seed = time(NULL) + oldseed;
-    this->oldseed = seed;
-    srand(seed);*/
 
     if(tile== TileType::Unused){
         switch (dungeonType) {
@@ -153,7 +151,6 @@ void Tile::setType(TileType tile,int dungeonType){
                 tileNumber=31*22+7;
                 break;
             case 4://lava
-                //get rand
                 n = 5 - 1 + 1;
                 i = rand() % n;
                 if (i < 0)
@@ -187,7 +184,6 @@ void Tile::setType(TileType tile,int dungeonType){
                 tileNumber=31*22+7;
                 break;
             case 4://lava
-                //get rand
                 n = 5 - 1 + 1;
                 i = rand() % n;
                 if (i < 0)

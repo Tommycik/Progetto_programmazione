@@ -128,7 +128,6 @@ bool Achievements::load() {
 void Achievements::saveAchievements() const {
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-    // try {
     out.open("playerSave/Achievement.txt",std::ios_base::trunc);
     out <<immortal << std::endl;
     out <<sonic<< std::endl;

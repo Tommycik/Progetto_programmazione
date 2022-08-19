@@ -43,7 +43,6 @@ public:
     const std::string &getTextureFile() const{
         return textureFile;
     }
-
     void setTextureFile(const std::string &textureFile) {
         Object::textureFile = textureFile;
     }

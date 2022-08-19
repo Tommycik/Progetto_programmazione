@@ -18,7 +18,7 @@ public:
 
 private:
 
-    bool activated=true;
+    bool activated=true;//todo poi da mettere false
 
 };
 

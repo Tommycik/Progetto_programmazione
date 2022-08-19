@@ -154,7 +154,7 @@ int index=0;
             }
         }
     }
-    if (Object3!= nullptr) {
+    if (Object3!= nullptr) {//fixme
        /* for (auto &gc : *Object3) {
             if(erased){
                 Object3->erase (Object3->begin()+index);

@@ -89,7 +89,6 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
 
         if(totalTimeMovement>=switching){
             totalTimeMovement-=switching;
-            //usando variabili float solo = renderebbe l'animazione meno fluida
 
             currentImage.x++;
             if(currentImage.x>2){

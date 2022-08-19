@@ -33,7 +33,6 @@ public :
     int getBossNumber() const;
     void setMonsterNumber(int monsterNumber);
     void setBossNumber(int bossNumber);
-    void createEnemies(int type);
     std::vector<std::unique_ptr<Obstacle>> &getEnemies() ;
     std::vector<std::unique_ptr<Item>> &getItems() ;
     std::vector<std::unique_ptr<Safezone>> &getSafezones();

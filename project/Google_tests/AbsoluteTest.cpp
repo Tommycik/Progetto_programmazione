@@ -92,7 +92,7 @@ TEST_F(TheClassTest,DISABLED_WorldCreation){
     Game.stop();
 }
 
-TEST_F(TheClassTest,TestMap){
+TEST_F(TheClassTest,TestGame){
 
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
@@ -119,8 +119,6 @@ TEST_F(TheClassTest,TestMap){
 
         while (window.isOpen()) {
             change=false;
-            //TileMap object;
-            //ASSERT_EQ (object.loadTexture("assets/potions.png"), true);
             staminaUsed=0;
             teleportText=false;
             itemText=false;
@@ -168,7 +166,7 @@ TEST_F(TheClassTest,TestMap){
                 default:
                     break;
             }
-            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
+            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,run,state);
             obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],&window,change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);

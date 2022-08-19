@@ -20,7 +20,6 @@ void Obstacle::setFixed(bool fixed) {
     Obstacle::fixed = fixed;
 }
 
-
 void Obstacle::fight() {
 
 }
@@ -28,11 +27,6 @@ void Obstacle::fight() {
 void Obstacle::run(float x, float y) {
 
 }
-
-bool Obstacle::isKillable() const {
-    return killable;
-}
-
 
 Obstacle::~Obstacle() {
 

@@ -93,10 +93,14 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
 }
 bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezoneNumber,int bossNumber ,int numberMap,long oldseed,int minRoomsNumber,int &mapIndex,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport,std::string *saves,std::string *names,std::string *savesVec, std::unique_ptr<Spawner> *vectors,std::unique_ptr<Dungeonarea> *maps) {
     bool playerReboot=false;
+    const int maxRoomX=30;
+    const int maxRoomY=30;
+    const int minRoomX=20;
+    const int minRoomY=20;
     try {
         for(int i=0;i<numberMap;i++){
 
-            maps[i] =std::make_unique<Dungeonarea>(oldseed, minRoomsNumber*20+1, minRoomsNumber*20+1, 15, 15,30,30, i, 70, minRoomsNumber*10, minRoomsNumber*15, minRoomsNumber*15, names[i], saves[i],minRoomsNumber);
+            maps[i] =std::make_unique<Dungeonarea>(oldseed, minRoomsNumber*(maxRoomX/2)+1, minRoomsNumber*(maxRoomY/2)+1, minRoomX, minRoomY,maxRoomX,maxRoomY, i, minRoomsNumber*100, minRoomsNumber*(minRoomX/2), minRoomsNumber*(minRoomY/2), names[i], saves[i],minRoomsNumber);
             if(!maps[i]->loadMap(saves[i],names[i])){
                 try {
                     in.open(savesVec[i].c_str());
@@ -155,8 +159,7 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
     return true;
 }
 
-float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
-                                 float tilesetResolution,bool &run,int &state) {
+float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,bool &run,int &state) {
 
     float decimalMove=0.25;
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
@@ -279,7 +282,7 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         skillToErase[count]=0;
         gl->setChecked(true);
         gl->targetSearch(vectors.getBosses(),vectors.getEnemies(),hero);
-        if(gl->getTarget()!= nullptr||gl->getHp()<=0){
+        if(gl->isTargetLost()==false||gl->getHp()<=0){
             gl->behaviour(*gl->getTarget());
             for(auto &gn:skill){
                 if(!gn->isChecked()&& l2Distance(*gn,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=1){
@@ -313,7 +316,6 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         gl->setChecked(false);
         count++;
     }
-
     found=false;
     count=0;
     int erased=0;

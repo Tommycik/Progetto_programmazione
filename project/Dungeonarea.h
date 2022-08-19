@@ -12,6 +12,7 @@
 #include <fstream>
 #include <memory>
 #include "GameFileException.h"
+#include <cmath>
 
 static std::string TileTypeToTileString(const TileType& tile);
 static TileType TileStringToTileType(const char& tile);
@@ -19,7 +20,7 @@ static TileType TileStringToTileType(const char& tile);
 class Dungeonarea {
 public:
 
-   Dungeonarea(long oldsees,int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int maxRoomWidth,int maxRoomHeight,int mapType,int chanceRoom,int parts,
+   Dungeonarea(long oldsees,int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int maxRoomWidth,int maxRoomHeight,int mapType,int parts,
                          int xMin,int yMin, std::string name,std::string save,int minRooms);
 
     ~Dungeonarea();
@@ -50,8 +51,8 @@ public:
     int getTileNumber(int x,int y)const;
 
 private:
-    int width;
-    int height;
+    int width=0;
+    int height=0;
     int xMin;
     int yMin;
     int xMax;

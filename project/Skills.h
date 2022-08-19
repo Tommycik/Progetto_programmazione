@@ -19,6 +19,9 @@ public:
     void fight() override;
     bool isOutOfRange(int posX, int posY,int initialX,int initialY);
     void targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector<std::unique_ptr<Obstacle>> &enemies,Entity &mario);
+    Entity *getTarget() const;
+    bool isTargetLost() const;
+    float getRadius() const;
 
     int getstartX() const{
         return startX;
@@ -34,15 +37,9 @@ public:
     int getDamage() const{
         return damage;
     }
-    Entity *getTarget() const;
-
-    bool isTargetLost() const;
-
-    float getRadius() const;
 
 protected:
 
-    bool targetFound=false;
     Entity*target;
     int damage;
     int startX;

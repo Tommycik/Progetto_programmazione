@@ -23,8 +23,6 @@ public:
 
 private:
 
-    int heigth=0;
-    int length=0;
     int textDimension=0;
     std::string font="assets/arial.ttf";
     sf::Font myTextFont;

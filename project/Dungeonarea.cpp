@@ -6,7 +6,7 @@
 
 
 Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,int maxRoomWidth,int maxRoomHeight,
-                         int mapType, int chanceRoom, int parts, int xMin, int yMin, std::string name,
+                         int mapType, int parts, int xMin, int yMin, std::string name,
 std::string save,int minRooms) : xMax(maxLength),yMax(maxHeigth),minRoomWidth(minRoomWidth),minRoomHeight(minRoomHeight),
 parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(maxRoomWidth) {
     this->oldseed=oldseed;
@@ -14,11 +14,24 @@ parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(ma
     this->save=save;
     this->rooms=minRooms;
     this->dungeonType=mapType;
-    this->chanceRoom=chanceRoom;//this->getRand(40,80);
+    int n=0;
+    int i=0;
+    int random=1;
+    n = 80 - 60 + 1;
+    i = rand() % n;
+    if (i < 0)
+        i = -i;
+
+    random=60 + i;
+    this->chanceRoom=random;
 }
 
 
 Dungeonarea::~Dungeonarea() {
+
+    if (!(this->tiles.empty())) {
+        tiles.clear();
+    }
 
 }
 
@@ -310,7 +323,12 @@ bool Dungeonarea::createDungeon() {
         height = yMax;
     else
         height = yLength;
-
+    /*float total=width*height;
+    if(total!=(parts/100)*maxRoomWidth*maxRoomHeight*2){
+        total=(parts/100)*maxRoomWidth*maxRoomHeight*2;
+        width= sqrt(total);
+        height= sqrt(total);
+    }*/
 do{
 
     this->tiles.clear();
@@ -354,12 +372,12 @@ do{
     int currentFeatures = 1; //+1 for the first room we just made
 
     //then we start the main loop
-    for (int countingTries = 0; countingTries < 100000000; countingTries++) {
+    for (int countingTries = 0; countingTries < 100000000000; countingTries++) {
         //check if we've reached our quota
         if (currentFeatures == parts) {
             return true;
         }
-        if(actualRooms==rooms)
+        if(actualRooms>=rooms)
             return true;
 
         //start with a random wall
@@ -369,7 +387,7 @@ do{
         int ymod = 0;
         int validTile = -1;
 
-        for (int testing = 0; testing < 100000000; testing++) {
+        for (int testing = 0; testing < 100000000000; testing++) {
             newx = getRand(1, width - 2);
             newy = getRand(1, height - 2);
             validTile = -1;

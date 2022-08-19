@@ -21,15 +21,12 @@ public:
     void setObstacleType(int obstacleType);
     void setActivated(bool activated);
     void run(float x, float y) override;
-    bool isKillable() const;
-
-
 
 protected:
 
     bool activated=false;
     bool fixed=true;
-    bool killable=false;
+
 
 };
 

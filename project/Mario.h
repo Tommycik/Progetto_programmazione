@@ -54,7 +54,6 @@ public:
 private:
 
     float stamina;
-
     float runningMovement;
     float maxHp=0;
     float maxStam=0;

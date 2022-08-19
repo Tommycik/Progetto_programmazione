@@ -8,6 +8,7 @@
 #include<memory.h>
 
 class Fireball:public Skills {
+
 public:
 
     Fireball( int posX, int posY,int bossKilled);

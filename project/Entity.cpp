@@ -8,7 +8,7 @@ float Entity::getHp() const {
     return hp;
 }
 
-void Entity::setHp(int hp) {
+void Entity::setHp(float hp) {
    this->hp = hp;
 }
 
@@ -50,4 +50,8 @@ int Entity::getType() const {
 
 int Entity::getSkillUsed() const {
     return skillUsed;
+}
+
+bool Entity::isKillable() const {
+        return killable;
 }

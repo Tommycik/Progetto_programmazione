@@ -22,8 +22,8 @@ public:
 
 protected:
 
-
    int statIncrease;
+
 };
 
 
