@@ -4,11 +4,7 @@
 #include "Events.h"
 #include "Achievements.h"
 
- //todo mettere effetto audio achievement e sistemare le soglie
- //todo per i vari vettori implementare erase invece di lascare i vari oggetti presi o i nemici morti;
-//todo skill e enum class per ogni abilità
-//todo ignori nemici e boss morti
-//todo implementare skills con le varie texture(stessa cosa con nemici e boss)
+
 void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
@@ -161,7 +157,7 @@ int main() {
                         return -1;
                     }
 
-                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX()); //fixme controllare teletrasporto d'arrivo
+                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());
                     hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
                     tutorialTeleport=true;
                     break;
@@ -174,7 +170,7 @@ int main() {
             safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
 
             sf::sleep((sf::milliseconds(120)));
-            staminaUsed+=game.playerMovementUpdater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
+            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
 
             hero->stamUse(staminaUsed);
             hero->recoverStam((0.5));

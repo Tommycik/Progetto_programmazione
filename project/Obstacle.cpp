@@ -25,7 +25,7 @@ void Obstacle::fight() {
 
 }
 
-void Obstacle::run(int x, int y) {
+void Obstacle::run(float x, float y) {
 
 }
 
@@ -33,9 +33,6 @@ bool Obstacle::isKillable() const {
     return killable;
 }
 
-int Obstacle::getType() const {
-    return type;
-}
 
 Obstacle::~Obstacle() {
 

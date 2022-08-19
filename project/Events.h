@@ -15,10 +15,9 @@ class Events {
 
 public:
 
-    int event(sf::RenderWindow *window,std::string *saves,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,
+    int event(sf::RenderWindow *window,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,
               bool &tutorialSafezone,bool &tutorialTeleport,int &mapIndex,int numberMap,World &game,
-              int bossNumber,int monsterNumber,int objectNumber,int safezoneNumber,sf::Music &Game,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,
-              std::unique_ptr<Spawner> *vectors=nullptr,std::unique_ptr<Dungeonarea> *maps=nullptr);
+              sf::Music &Game,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,std::unique_ptr<Spawner> *vectors=nullptr);
 
 private:
 

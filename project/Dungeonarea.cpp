@@ -14,7 +14,7 @@ parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(ma
     this->save=save;
     this->rooms=minRooms;
     this->dungeonType=mapType;
-    this->chanceRoom=this->getRand(40,80);
+    this->chanceRoom=chanceRoom;//this->getRand(40,80);
 }
 
 
@@ -441,7 +441,7 @@ do{
     }
     if(actualRooms>=rooms)
         return true;
-}while (actualRooms<rooms);//todo correrarlo al numerio di oggetti da diegnare
+}while (actualRooms<rooms);
 
 }
 
@@ -577,7 +577,6 @@ bool Dungeonarea::getPassable(float futureX,float futureY) const {
     bool halfX = false;
     bool quarterX = false;
     bool quarterY = false;
-    //todo serve se il movimento è decimale
     float xTemp = (futureX / 0.25);
     float yTemp = (futureY / 0.25);
     int xPass = xTemp;

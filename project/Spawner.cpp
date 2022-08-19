@@ -38,9 +38,7 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
     if (!(this->items.empty())) {
         items.clear();
     }
-    if (!(this->enemies.empty())) {
-        enemies.clear();
-    }
+
     if (!(this->safezones.empty())) {
         safezones.clear();
     }
@@ -59,9 +57,8 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
     for(int i=0; i<objectNumber; i++) {
 
         int effect=itemTypeDice.roll(1);
-       /* if(effect!=1&&effect!=2)
-            effect=3;*/
-        auto newItem = std::make_unique<Item>(1,1,effect,1);
+
+        auto newItem = std::make_unique<Item>(1,1,effect);
         if(!loading){
             int startX = map.getRand(0, (map.getWidth() - 2));
             int startY = map.getRand(0, (map.getHeight() - 2));
@@ -150,8 +147,16 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
     while(std::stoi(fileLine)!=-1){
         std::getline(op, fileLine);
     }
-    std::getline(op, fileLine);}
-    Dice enemyTypeDice(2);//todo fare op modo che i nemici peggio abbiano meno possibilità
+    std::getline(op, fileLine);
+    monsterNumber=std::stoi(fileLine);
+        if (!(this->enemies.empty())) {
+            enemies.clear();
+        }
+        enemies.reserve(monsterNumber);
+        std::getline(op, fileLine);
+    }
+   //todo bilanciare vita nemici e danno da collisione
+    Dice enemyTypeDice(2);
     for(int i=0; i<monsterNumber; i++) {
 
         int effect=1;
@@ -165,19 +170,13 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
                 startY = map.getRand(0, (map.getHeight() - 2));
             }
             if(effect==1) {
-                auto newEnemy = std::make_unique<StaticDanger>(5,1,8,2,true,map.getDungeonType());
+                auto newEnemy = std::make_unique<StaticDanger>(8,2,map.getDungeonType());
                 newEnemy->setposX(startX);
                 newEnemy->setposY(startY);
                 enemies.emplace_back(std::move(newEnemy));
 
-            } /*else if(effect==2) {
-                auto newEnemy = std::make_unique<LineEnemies>(5,1,8,2,true,map.getDungeonType());
-                newEnemy->setposX(startX);
-                newEnemy->setposY(startY);
-                enemies.emplace_back(std::move(newEnemy));
-
-            }*/else if(effect==2){
-                auto newEnemy = std::make_unique<FollowingEnemies>(5,1,8,2,true,map.getDungeonType());
+            } else if(effect==2){
+                auto newEnemy = std::make_unique<FollowingEnemies>(8,2,map.getDungeonType());
                 newEnemy->setposX(startX);
                 newEnemy->setposY(startY);
                 enemies.emplace_back(std::move(newEnemy));
@@ -191,11 +190,11 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
                 }
 
             if(effect==1) {
-                auto newEnemy = std::make_unique<StaticDanger>(5,1,8,2,true,map.getDungeonType());
+                auto newEnemy = std::make_unique<StaticDanger>(8,2,map.getDungeonType());
                 enemies.emplace_back(std::move(newEnemy));
 
             }else if(effect==2){
-                auto newEnemy = std::make_unique<FollowingEnemies>(5,1,8,2,true,map.getDungeonType());
+                auto newEnemy = std::make_unique<FollowingEnemies>(8,2,map.getDungeonType());
                 enemies.emplace_back(std::move(newEnemy));
             }
         }
@@ -208,16 +207,17 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
     // try {
     out.open(fileName,std::ios_base::trunc);
     out << name << std::endl;
-    out <<Bosses<< std::endl;
     out <<Items<< std::endl;
-    out <<Enemies<< std::endl;
     out <<Safezones<< std::endl;
+    out <<Bosses<< std::endl;
+
 
     for(auto &gc:this->bosses){
         out << gc->getType();
         out << std::endl;
     }
     out <<-1<<"\n";
+    out <<enemies.size()<< std::endl;
     for(auto &gc:this->enemies){
 
         out << gc->getType();
@@ -237,7 +237,7 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
     out <<-1<<"\n";
     for(auto &gc:this->enemies){
 
-        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" <<gc->isFixed()<< "\n" << gc->getTileNumber();
+        out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" <<gc->isFixed()<< "\n" << gc->getTileNumber()<<"\n" << gc->getTextureFile();
         out << std::endl;
     }
     out <<-1<<"\n";
@@ -275,7 +275,6 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
     std::getline(op, fileLine);
     std::getline(op, fileLine);
     std::getline(op, fileLine);
-    std::getline(op, fileLine);
     this->create(true,map);
 
     try {
@@ -286,13 +285,13 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
         for(auto &gc:this->bosses){
 
             if(std::stoi(fileLine)!=-1){
-                gc->setHp(std::stoi(fileLine));
+                gc->setHp(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gc->setMovements(std::stoi(fileLine));
+                gc->setMovements(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gc->setposX(std::stoi(fileLine));
+                gc->setposX(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gc->setposY(std::stoi(fileLine));
+                gc->setposY(std::stod(fileLine));
                 std::getline(op, fileLine);
                 gc->setStatIncrease(std::stoi(fileLine));
                 std::getline(op, fileLine);
@@ -307,11 +306,11 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
         for(auto &gd:this->items){
 
             if(std::stoi(fileLine)!=-1){
-                gd->setMovements(std::stoi(fileLine));
+                gd->setMovements(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gd->setposX(std::stoi(fileLine));
+                gd->setposX(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gd->setposY(std::stoi(fileLine));
+                gd->setposY(std::stod(fileLine));
                 std::getline(op, fileLine);
                 gd->setEffect(std::stoi(fileLine));
                 std::getline(op, fileLine);
@@ -326,18 +325,20 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
         for(auto &gb:this->enemies){
 
             if(std::stoi(fileLine)!=-1){
-                gb->setHp(std::stoi(fileLine));
+                gb->setHp(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gb->setMovements(std::stoi(fileLine));
+                gb->setMovements(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gb->setposX(std::stoi(fileLine));
+                gb->setposX(std::stod(fileLine));
                 std::getline(op, fileLine);
 
-                gb->setposY(std::stoi(fileLine));
+                gb->setposY(std::stod(fileLine));
                 std::getline(op, fileLine);
                 gb->setFixed(std::stoi(fileLine));
                 std::getline(op, fileLine);
                 gb->setTileNumber(std::stoi(fileLine));
+                std::getline(op, fileLine);
+                gb->setTextureFile(fileLine);
                 std::getline(op, fileLine);
             }
         }
@@ -348,11 +349,11 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
         for(auto &gv:this->safezones){
 
             if(std::stoi(fileLine)!=-1){
-                gv->setMovements(std::stoi(fileLine));
+                gv->setMovements(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gv->setposX(std::stoi(fileLine));
+                gv->setposX(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gv->setposY(std::stoi(fileLine));
+                gv->setposY(std::stod(fileLine));
                 std::getline(op, fileLine);
             }
         }
@@ -363,9 +364,9 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
         for(auto &gm:this->teleports){
 
             if(std::stoi(fileLine)!=-1){
-                gm->setposX(std::stoi(fileLine));
+                gm->setposX(std::stod(fileLine));
                 std::getline(op, fileLine);
-                gm->setposY(std::stoi(fileLine));
+                gm->setposY(std::stod(fileLine));
                 std::getline(op, fileLine);
                 gm->setActivated(std::stoi(fileLine));
                 std::getline(op, fileLine);
@@ -422,10 +423,13 @@ void Spawner::createEnemies(int type) {
 
 }
 
-int Spawner::getTypesOfBosses() const {
-    return typesOfBosses;
+
+void Spawner::setMonsterNumber(int monsterNumber) {
+    Spawner::monsterNumber += monsterNumber;
 }
 
-int Spawner::getTypesOfEnemies() const {
-    return typesOfEnemies;
+void Spawner::setBossNumber(int bossNumber) {
+    Spawner::bossNumber += bossNumber;
 }
+
+

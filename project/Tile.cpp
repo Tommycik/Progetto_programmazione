@@ -73,13 +73,13 @@ void Tile::setType(TileType tile,int dungeonType){
         }
     }else if(tile== TileType::floor){
         switch (dungeonType) {
-            case 0://forest//fixme
+            case 0://forest
                 tileNumber=31*27-5;
                 break;
             case 1://cave
                 tileNumber=31+11;
                 break;
-            case 2://brick/
+            case 2://brick
                  n = 10 - 1 + 1;
                  i = rand() % n;
                 if (i < 0)

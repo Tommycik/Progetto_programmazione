@@ -25,21 +25,28 @@ bool TheClassTest::gameSet() {
     return true;
 }
 
-bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles) {
-
+bool TheClassTest::draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles,TileMap &skill) {
+respawn:
+    game.notify();
     window.clear();
     view1.setCenter(player.getPosition());
     window.setView(view1);
     window.draw(map);
+    window.draw(skill);
     window.draw(teleport);
+    window.draw(obstacles);
     window.draw(player);
     window.draw(safezone);
     window.draw(object);
-    window.draw(obstacles);
     hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
+    float previousHp=hero.getHp();
     if(!makeText){
         hero.notify();
     }
+    if(previousHp!=hero.getHp()){
+        goto respawn;
+    }
+
     objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
     window.display();
     return true;

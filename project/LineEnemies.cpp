@@ -4,13 +4,13 @@
 
 #include "LineEnemies.h"
 
-void LineEnemies::behaviour() {
+void LineEnemies::behaviour(Entity &target) {
     /*if(!activated){
 //if(l2Distance())
     }*/
 }
 
-void LineEnemies::move(int x, int y) {
+void LineEnemies::move(float x, float y) {
     float speed=1;
     if (x > movements ||x<-movements)
         x = movements;
@@ -36,6 +36,6 @@ LineEnemies::LineEnemies(int hp, int movements, int posX, int posY, bool fixed,i
     this->textureFile="assets/TileSet.png";
 }
 
-void LineEnemies::tracking() {
+void LineEnemies::tracking(Entity &target) {
 
 }

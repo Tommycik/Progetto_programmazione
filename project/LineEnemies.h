@@ -12,9 +12,9 @@ public:
 
     LineEnemies(int hp, int movements, int posX, int posY, bool fixed,int dungeonType);
 
-    void behaviour() override;
-    void move(int x, int y) override;
-    void tracking() override;
+    void behaviour(Entity &target) override;
+    void move(float x, float y) override;
+    void tracking(Entity &target) override;
 
 private:
 

@@ -8,11 +8,11 @@
 #include <vector>
 #include "Entity.h"
 
-class Littlelight:public virtual Entity {
+class Littlelight:public  Entity {
 
 public:
 
-    virtual void move(int x, int y) override;
+    virtual void move(float x, float y) override;
 
 private:
     int status;

@@ -5,24 +5,20 @@
 #ifndef MAIN_SKILLS_H
 #define MAIN_SKILLS_H
 #include <iostream>
-#include "Entity.h"
+#include "Obstacle.h"
+#include "Boss.h"
 
-enum class skill{
-fire=0
-};
-
-//todo implementarle tramite un vettore ed usare vector erase() per cancellare le abilità a schermo da distruggere
-//todo questa srà la classe che gestisce  le abilità
-class Skills :public virtual Entity{
+class Skills :public  Entity{
 
 public:
 
-    void tracking() override;
-    void behaviour() override;
-    void move(int x, int y) override;
-    void run(int x,int y) override;
+    void tracking(Entity &target) override;
+    void behaviour(Entity &target) override;
+    void move(float x, float y) override;
+    void run(float x,float y) override;
+    void fight() override;
     bool isOutOfRange(int posX, int posY,int initialX,int initialY);
-    skill getType() const;
+    void targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector<std::unique_ptr<Obstacle>> &enemies,Entity &mario);
 
     int getstartX() const{
         return startX;
@@ -34,21 +30,28 @@ public:
         return stamConsumption;
     }
     bool isOstile() const;
-    void setType(skill type);
 
     int getDamage() const{
         return damage;
     }
+    Entity *getTarget() const;
+
+    bool isTargetLost() const;
+
+    float getRadius() const;
 
 protected:
 
+    bool targetFound=false;
+    Entity*target;
     int damage;
     int startX;
     int startY;
     int stamConsumption;
     int range;
     bool ostile;
-    skill type=skill::fire;
+    bool targetLost=false;
+    float radius=0;
 
 };
 

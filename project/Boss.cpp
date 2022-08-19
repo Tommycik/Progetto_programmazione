@@ -20,15 +20,15 @@ void Boss::setStatIncrease(int statIncrease) {
     Boss::statIncrease = statIncrease;
 }
 
-void Boss::tracking() {
+void Boss::tracking(Entity &target) {
 
 }
 
-void Boss::behaviour() {
+void Boss::behaviour(Entity &target) {
 
 }
 
-void Boss::move(int x, int y) {
+void Boss::move(float x, float y) {
 
 }
 
@@ -36,12 +36,9 @@ void Boss::fight() {
 
 }
 
-void Boss::run(int x, int y) {
+void Boss::run(float x, float y) {
 
 }
 
-int Boss::getType() const {
-    return type;
-}
 
 

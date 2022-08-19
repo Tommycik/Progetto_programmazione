@@ -4,8 +4,8 @@
 
 #include "Safezone.h"
 
-Safezone::Safezone(int posX, int posY,int moving) {
-    this->movements=moving;
+Safezone::Safezone(int posX, int posY) {
+    this->movements=0;
     this->posX=posX;
     this->posY=posY;
     this->tileNumber =42*3;

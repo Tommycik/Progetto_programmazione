@@ -10,7 +10,7 @@ class Item:public virtual Object  {
 
 public:
 
-    Item( int posX, int posY, int effect,int movements=0);
+    Item( int posX, int posY, int effect);
 
     bool isTaken() const;
     void setTaken(bool taken);

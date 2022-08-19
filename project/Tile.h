@@ -17,7 +17,6 @@ public:
 
     bool isDestructble() const;
     void unlockPassage(bool unlock);
-
     TileType getType() const;
     void setType( TileType tile,int dungeonType);
     bool isPassable() const;

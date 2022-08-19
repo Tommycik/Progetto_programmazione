@@ -4,15 +4,10 @@
 
 #include "Loader.h"
 
- void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const
-{
-
-    // apply the transform
-
-
+ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const{
 
     if(loaded){
-        for (auto &gl:enemies) {
+        for (auto &gl:figures) {
             target.draw(*gl);
        }
    }else{
@@ -22,12 +17,11 @@
         // draw the vertex array
         target.draw(m_vertices, states);
    }
-
 }
 
-bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator)
-{
+bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator){
 
+    m_vertices.clear();
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
@@ -38,10 +32,9 @@ bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator
     return true;
 }
 
-bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator)
-{
+bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator){
 
-    // resize the vertex array to fit the level size
+    m_vertices.clear();
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
@@ -54,10 +47,9 @@ bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator
     return true;
 }
 
-bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator)
-{
+bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator){
 
-    // resize the vertex array to fit the level size
+    m_vertices.clear();
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
@@ -95,7 +87,6 @@ const sf::Texture &TileMap::getMTileset() const {
 
 bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool teleport,float j,float i){
 
-
     int posX=i;
     int posY=j;
     int offset=1;
@@ -119,119 +110,182 @@ bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool telepo
     return true;
 }
 
-bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf::RenderWindow *window,bool change) {//todo uase quadrati (rectangleshape) per i nemici e modificare draw
+bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf::RenderWindow *window,bool change) {
+
     count=0;
-    int multiplier=1;
-
     if(loaded==false||change) {
-
-        if (!(this->enemies.empty())) {
-            enemies.clear();
-        }
-        if (!(this->textureFile.empty())) {
-            textureFile.clear();
-        }
-        if (!(this->enemiesTexture.empty())) {
-            enemiesTexture.clear();
-        }
-
-        enemies.reserve(numItem);
-        int diffTextures=0;
+        this->loadingChange(numItem);
         int found=false;
         std::string pass="0";
         count=0;
-        bool resize=false;
-
-        for(auto &gr:creator.getEnemies()){
-            if(numItem<gr->getType()){
-                numItem=gr->getType();
-                resize=true;
-            }
-        }
-        textureFile.reserve(numItem);
-        for(int i=0;i<numItem;i++){
-            auto newString = std::make_unique<std::string>("0");
-            auto itPos = textureFile.begin() + count;
-            auto newIt = textureFile.insert(itPos, std::move(newString));
-            count++;
-        }
         for (auto &gl: creator.getEnemies()) {
-            found=false;
-            pass=gl->getTextureFile();
-            if (gl->getHp() != 0) {
-                for(auto &gc:textureFile){
-                    if(*gc==pass){
-                        found=true;
-                        break;
-                    }
-                }
-                if(!found){
-                    diffTextures++;
-                    int check=gl->getType()-1;
-                    count=0;
-                    *textureFile[check]=pass;
+            found = false;
+            pass = gl->getTextureFile();
+            for (auto &gc: textureFile) {
+                if (*gc == pass) {
+                    found = true;
+                    break;
                 }
             }
-        }
-        if(resize=true){
-            diffTextures=numItem;
-        }
-        enemiesTexture.reserve(diffTextures);
-        count=0;
-        for(int i=0;i<diffTextures;i++){
-            auto newTexture = std::make_unique<sf::Texture>();
-            auto itPos = enemiesTexture.begin() + count;
-            auto newIt = enemiesTexture.insert(itPos, std::move(newTexture));
-            count++;
-        }
-        count=0;
-        for(auto &gd:enemiesTexture){//fixme
-
-            if(*textureFile[count]=="0"){//todo caricare file tieniposto
-                gd->loadFromFile("assets/hpBar.png");
-            }else{
-                gd->loadFromFile(*textureFile[count]);
+            if (!found) {
+                differentTextures++;
+                *textureFile[count] = pass;
+                count++;
             }
-            count++;
         }
-       //todo fare in modo che sia grande il giusto
+        this->textureLoaded();
+    }
+    if(activeSkills!=numItem||!loaded||change){
         count=0;
+        textureIndex=0;
+        if (!(this->figures.empty())) {
+            figures.clear();
+        }
+        figures.reserve(numItem);
         for (auto &gl: creator.getEnemies()) {
-
-            if (gl->getHp() != 0) {
-                multiplier=gl->getTextureMultiplier();
-                auto newEnemy = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
-                newEnemy->setPosition(gl->getposX()*16,gl->getposY()*16);
-                newEnemy->setTexture(&*enemiesTexture[gl->getType()-1]);
-                  textureSize=enemiesTexture[gl->getType()-1]->getSize();
-                  textureSize.x/=(enemiesTexture[gl->getType()-1]->getSize().x / (tileSize.x*multiplier));
-                  textureSize.y/=(enemiesTexture[gl->getType()-1]->getSize().y / (tileSize.y*multiplier));
-                newEnemy->setTextureRect(sf::IntRect(textureSize.x*(gl->getTileNumber()%(enemiesTexture[gl->getType()-1]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl->getTileNumber()/(enemiesTexture[gl->getType()-1]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
-                  //enemies[count]->setOrigin(1,7);
-                 // enemies[count]->setScale(1.2,1.7);
-                auto itPos = enemies.begin() + count;
-                auto newIt = enemies.insert(itPos, std::move(newEnemy));
+            textureIndex=0;
+            for(auto &gc:textureFile){
+                if(*gc==gl->getTextureFile()){
+                    break;
+                }else{
+                    textureIndex++;
+                }
             }
-              count++;
-          }
-        loaded = true;
-    }else{
-        count=0;
-       for (auto &gl: creator.getEnemies()) {
-            if (gl->getHp() == 0) {
-                enemies.erase(enemies.begin()+count,enemies.begin()+count);
-               }
-            count++;
+            this->figureCreation(*gl,tileSize);
+        }
+    }else {
+        count = 0;
+        if (numItem != 0) {
+            for (auto &gl: creator.getEnemies()) {
+                if (gl->getHp() != 0) {
+                    figures[count]->setPosition(sf::Vector2f(gl->getposX() * 16, gl->getposY() * 16));
+                }
+                count++;
+            }
         }
     }
+    activeSkills=numItem;
+    loaded = true;
     return true;
 }
 
 bool TileMap::loadTexture(const std::string &tileset) {
 
-            if (!m_tileset.loadFromFile(tileset))
-                return false;
-        return true;
+    if (!m_tileset.loadFromFile(tileset))
+        return false;
+    return true;
+
+}
+
+bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::unique_ptr<Skills>> &skill, bool change) {
+    count=0;
+    if(loaded==false||change) {
+        this->loadingChange(numItem);
+        count=0;
+        int found=false;
+        std::string pass="0";
+        for (auto &gl: skill) {
+            found = false;
+            pass = gl->getTextureFile();
+            for (auto &gc: textureFile) {
+                if (*gc == pass) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                differentTextures++;
+                *textureFile[count] = pass;
+                count++;
+            }
+        }
+        this->textureLoaded();
+        activeSkills=numItem;
+        loaded = true;
+    }
+    if(change){
+        count=0;
+        textureIndex=0;
+        if (!(this->figures.empty())) {
+            figures.clear();
+        }
+        figures.reserve(numItem);
+        for (auto &gl: skill) {
+            textureIndex=0;
+            for(auto &gc:textureFile){
+                if(*gc==gl->getTextureFile()){
+                    break;
+                }else{
+                    textureIndex++;
+                }
+            }
+            this->figureCreation(*gl,tileSize);
+        }
+    }else {
+        count = 0;
+        if (numItem != 0) {
+            for (auto &gl: skill) {
+                if (gl->getHp() != 0) {
+                    figures[count]->setPosition(sf::Vector2f(gl->getposX() * 16, gl->getposY() * 16));
+                }
+                count++;
+            }
+        }
+    }
+    return true;
+}
+
+void TileMap::loadingChange(int numItem) {
+    activeSkills=numItem;
+    if (!(this->figuresTexture.empty())) {
+        figuresTexture.clear();
+    }
+    if (!(this->textureFile.empty())) {
+        textureFile.clear();
+    }
+    textureFile.reserve(numItem);
+    differentTextures=0;
+    count=0;
+    for(int i=0;i<numItem;i++){
+        auto newString = std::make_unique<std::string>("0");
+        auto itPos = textureFile.begin() + count;
+        auto newIt = textureFile.insert(itPos, std::move(newString));
+        count++;
+    }
+}
+
+void TileMap::textureLoaded() {
+    figuresTexture.reserve(differentTextures);
+    count = 0;
+    for (int i = 0; i < differentTextures; i++) {
+        auto newTexture = std::make_unique<sf::Texture>();
+        auto itPos = figuresTexture.begin() + count;
+        auto newIt = figuresTexture.insert(itPos, std::move(newTexture));
+        count++;
+    }
+    count = 0;
+    for (auto &gd: figuresTexture) {
+        if (*textureFile[count] == "0") {
+            gd->loadFromFile("assets/hpBar.png");
+        } else {
+            gd->loadFromFile(*textureFile[count]);
+        }
+        count++;
+    }
+}
+
+void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize) {
+    int multiplier=gl.getTextureMultiplier();
+    auto newSkill = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
+    newSkill->setPosition(gl.getposX()*16,gl.getposY()*16);
+    newSkill->setTexture(&*figuresTexture[textureIndex]);
+    textureSize=figuresTexture[textureIndex]->getSize();
+    textureSize.x/=(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier));
+    textureSize.y/=(figuresTexture[textureIndex]->getSize().y / (tileSize.y*multiplier));
+    newSkill->setTextureRect(sf::IntRect(textureSize.x*(gl.getTileNumber()%(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl.getTileNumber()/(figuresTexture[textureIndex]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
+    auto itPos = figures.begin() + count;
+    auto newIt = figures.insert(itPos, std::move(newSkill));
+    count++;
 
 }
 

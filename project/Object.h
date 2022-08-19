@@ -16,10 +16,10 @@ public:
     int getTileNumber() const{
         return tileNumber;
     }
-    void setMovements(int variation){
+    void setMovements(float variation){
         Object::movements=variation;
     }
-    int getMovements()const{
+    float getMovements()const{
         return movements;
     }
     void setposX(int x){
@@ -44,9 +44,13 @@ public:
         return textureFile;
     }
 
+    void setTextureFile(const std::string &textureFile) {
+        Object::textureFile = textureFile;
+    }
+
 protected:
 
-    int movements=0;
+    float movements=0;
     float posX=0;
     float posY=0;
     std::string name;

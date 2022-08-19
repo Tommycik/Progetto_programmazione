@@ -5,7 +5,6 @@
 #ifndef MAIN_ENTITY_H
 #define MAIN_ENTITY_H
 #include "Object.h"
-#include "Utilities.h"
 #include "Dungeonarea.h"
 #include <time.h>
 #include <iostream>
@@ -17,21 +16,35 @@ public:
 
      virtual ~Entity() { }
 
-     virtual void behaviour()=0;
-     virtual void tracking()=0;
+     virtual void behaviour(Entity &target)=0;
+     virtual void tracking(Entity &target)=0;
      virtual void fight()=0;
-     virtual void move(int x, int y)=0;
-     virtual void run(int x,int y)=0;
+     virtual void move(float x, float y)=0;
+     virtual void run(float x,float y)=0;
      int getHp() const;
      void receiveDamage(int damage);
      void setHp(int hp);
      int getTextureMultiplier() const;
+     float getDirectX() const;
+     float getDirectY() const;
+     bool isChecked() const;
+     void setChecked(bool checked);
+     float getTimeSinceDamage() const;
+     void setTimeSinceDamage(float timeSinceDamage);
+     int getType() const;
+     int getSkillUsed() const;
 
  protected:
 
+    int skillUsed=0;
     int hp=0;
     int textureMultiplier=1;
      int oldseed=0;
+     float directX=0;
+     float directY=0;
+     bool checked=false;
+     float timeSinceDamage=0.00;
+     int type=0;
 };
 
 

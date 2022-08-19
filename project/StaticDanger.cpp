@@ -5,7 +5,7 @@
 #include "StaticDanger.h"
 
 
-StaticDanger::StaticDanger(int hp, int movements, int posX, int posY, bool fixed, int dungeonType){
+StaticDanger::StaticDanger(int posX, int posY, int dungeonType){
 int n=0;
 int i=0;
 int random=1;
@@ -132,9 +132,9 @@ int random=1;
 
     }
     this->activated=false;
-    this->fixed=fixed;
-    this->hp=hp;
-    this->movements=movements;
+    this->fixed=true;
+    this->hp=1;
+    this->movements=0;
     this->posX=posX;
     this->posY=posY;
     this->killable=true;
@@ -143,14 +143,14 @@ int random=1;
     this->textureMultiplier=2;
 }
 
-void StaticDanger::behaviour() {
+void StaticDanger::behaviour(Entity &target) {
 
 }
 
-void StaticDanger::tracking() {
+void StaticDanger::tracking(Entity &target) {
 
 }
 
-void StaticDanger::move(int x, int y) {
+void StaticDanger::move(float x, float y) {
 
 }

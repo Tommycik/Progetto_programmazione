@@ -27,10 +27,10 @@ void Item::setEffect(int effect) {
     }
 }
 
-Item::Item( int posX, int posY, int effect,int movements){
+Item::Item( int posX, int posY, int effect){
    this->taken=false;
    this->effect=effect;
-   this->movements=movements;
+   this->movements=0;
     this->posX=posX;
     this->posY=posY;
     tileNumber = 12;

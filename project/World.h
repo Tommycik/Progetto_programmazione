@@ -13,15 +13,15 @@
 #include "Hud.h"
 #include "Loader.h"
 #include "Achievements.h"
-class World {
+#include "Skills.h"
+class World :public Subject {
 
 public:
 
     void savePlayer(int map,Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*,int littleStatus*/) const;
     bool loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport);
-    bool entityUpdater();
-    int playerMovementUpdater(Mario &hero,Dungeonarea &maps,Spawner &vectors,sf::RectangleShape &player,float tilesetResolution,bool &run,int &state);
-    bool  initialize(Mario &hero,int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth,int &numberMap,TileMap &map,/*TileMap &object,*/TileMap &teleport,TileMap &safezone,Hud &hud, sf::View &view1,
+    int Updater(Mario &hero,Dungeonarea &maps,Spawner &vectors,sf::RectangleShape &player,float tilesetResolution,bool &run,int &state);
+    bool  initialize(Mario &hero,int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth,int &numberMap,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,Hud &hud, sf::View &view1,
                      sf::RectangleShape &player, sf::Texture &playerTexture,float tilesetResolution,
                      std::unique_ptr<Dungeonarea> *maps=nullptr,std::unique_ptr<Spawner> *vectors=nullptr);
 
@@ -29,11 +29,21 @@ public:
                   std::string names[],std::string savesVec[], std::unique_ptr<Spawner> *vectors,
                   std::unique_ptr<Dungeonarea> *maps);
 
+     std::vector<std::unique_ptr<Skills>> &getSkill() ;
+    int getSkillNumber() const;
+    void setSkillNumber(int skillNumber);
+    bool isNewSkillCreated() const;
+    void setNewSkillCreated(bool newSkillCreated);
+
 private:
 
     std::ifstream of;
     std::ifstream in;
     std::vector<std::string> areaSaves;
+    std::vector<std::unique_ptr<Skills>> skill;
+    int skillNumber=0;
+    bool newSkillCreated=false;
+
 };
 
 #endif //MAIN_WORLD_H

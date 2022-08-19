@@ -9,11 +9,11 @@
 class StaticDanger :public Obstacle{
 public:
 
-    StaticDanger(int hp, int movements, int posX, int posY, bool fixed, int dungeonType);
+    StaticDanger( int posX, int posY, int dungeonType);
 
-    void behaviour() override;
-    void tracking() override;
-    void move(int x, int y) override;
+    void behaviour(Entity &target) override;
+    void tracking(Entity &target) override;
+    void move(float x, float y) override;
 
 private:
 

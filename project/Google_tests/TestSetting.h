@@ -10,6 +10,8 @@
 #include "../Menu.h"
 #include "../Events.h"
 #include "../Achievements.h"
+#include "../SkillManager.h"
+
 
 class TheClassTest : public ::testing::Test {
 protected:
@@ -17,12 +19,12 @@ protected:
     TheClassTest();
     virtual ~TheClassTest();
     bool gameSet();
-    bool draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles);
+    bool draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles,TileMap &skill);
     bool creation(std::unique_ptr<Spawner> *vectors=nullptr,std::unique_ptr<Dungeonarea> *maps=nullptr);
 
-    int monsterNumber=15;
-    int objectNumber=1;
-    int safezoneNumber=1;
+    int monsterNumber=20;
+    int objectNumber=15;
+    int safezoneNumber=3;
     int bossNumber=1;
     int numberMap=2;
     int mapIndex=0;

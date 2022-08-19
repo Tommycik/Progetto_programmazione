@@ -4,11 +4,11 @@
 
 #include "Events.h"
 
-int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport,
-                  int &mapIndex,int numberMap,World &game,int bossNumber,int monsterNumber,int objectNumber,int safezoneNumber,
-                  sf::Music &Game,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,
-                  std::unique_ptr<Spawner> *vectors,std::unique_ptr<Dungeonarea> *maps) {
+int Events::event(sf::RenderWindow *window,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport,
+                  int &mapIndex,int numberMap,World &game,sf::Music &Game,TileMap &map,TileMap &object,
+                  TileMap &teleport,TileMap &safezone,std::unique_ptr<Spawner> *vectors) {
 
+    game.setNewSkillCreated(false);
     while (window->pollEvent(Happen))
     {
         cancel=false;
@@ -65,14 +65,24 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                         if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1){
 
                             hero.recoverHp(0);
+                            gc->setUsed(true);
                             tutorialSafezone=true;
                             hero.setSafezoneUsed(hero.getSafezoneUsed()+1);
                         }
                     }
                 }
+                if (Happen.key.code == sf::Keyboard::V){
+                    auto skillCreated=hero.skillUse();
+                    if(skillCreated!= nullptr){
+                        game.getSkill().reserve(game.getSkillNumber()+1);
+                        auto newSkill = game.getSkill().insert(game.getSkill().end(), std::move(skillCreated));
+                        game.setSkillNumber(1);
+                        game.setNewSkillCreated(true);
+                    }
+                }
                 if (Happen.key.code == sf::Keyboard::O||Happen.key.code == sf::Keyboard::P){
                     for(auto &gc:vectors[mapIndex]->getTeleports()){
-                        if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1&&gc->isActivated()){
+                        if(l2Distance(*gc,hero.getposX(),hero.getposY())<=1.5&&gc->isActivated()){
 
                             if (Happen.key.code == sf::Keyboard::O){
                                 if(mapIndex==numberMap-1) {
@@ -80,7 +90,7 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                                 }else{
                                     mapIndex++;
                                 }
-                            }else if (Happen.key.code == sf::Keyboard::P){
+                            }else if (Happen.key.code == sf::Keyboard::P&&mapIndex!=0){
                                 if(mapIndex==0) {
                                     mapIndex=numberMap-1;
                                 }else{
@@ -112,7 +122,7 @@ int Events::event(sf::RenderWindow *window,std::string *saves,std::string *names
                     remove(savesVec[i].c_str());
                 } catch (std::ios_base::failure& e) {}
 
-                vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
+                vectors[i]->saveVectors(savesVec[i],names[i],vectors[i]->getBossNumber(), vectors[i]->getObjectNumber(), vectors[i]->getMonsterNumber(), vectors[i]->getSafezoneNumber());
             }
             window->close();
             Game.stop();

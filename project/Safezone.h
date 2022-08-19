@@ -10,14 +10,14 @@ class Safezone:public virtual Object {
 
 public:
 
-    Safezone(int posX, int posY,int moving=0);
+    Safezone(int posX, int posY);
 
     bool isUsed() const;
     void setUsed(bool used);
 
 private:
 
-    bool used=false;//todo per trovare una safezone già usata per respawn
+    bool used=false;
 };
 
 

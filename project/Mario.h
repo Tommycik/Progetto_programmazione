@@ -6,17 +6,19 @@
 #define MAIN_MARIO_H
 #include "Entity.h"
 #include "Subject.h"
+#include "Fireball.h"
+#include "Iceslide.h"
 class Mario :public  Entity,public Subject {
 
 public:
 
     Mario(int hp, int movements, int posX, int posY, int stamina,int potioNum,int bossKill=0 );
 
-    void behaviour() override;
-    void tracking() override;
+    void behaviour(Entity &target) override;
+    void tracking(Entity &target) override;
     void fight() override;
-    void move(int x, int y) override;
-    void run(int x, int y) override;
+    void move(float x, float y) override;
+    void run(float x, float y) override;
     float getStamina() const;
     void stamUse(int stamina);
     int getMaxHp() const;
@@ -45,14 +47,18 @@ public:
     void setSafezoneUsed(int safezoneUsed);
     int getDeaths() const;
     void setDeaths(int deaths);
+    float getRunningMovement() const;
+    std::unique_ptr<Fireball> skillUse();
 
 
 private:
 
     float stamina;
-    int maxHp;
-    int maxStam;
-    int potionNum;
+
+    float runningMovement;
+    int maxHp=0;
+    int maxStam=0;
+    int potionNum=0;
     int bossKilled=0;
     float gameTime=0;
     int teleported=0;

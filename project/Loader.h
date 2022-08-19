@@ -7,6 +7,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Spawner.h"
+#include "Skills.h"
+
 
 
 
@@ -19,9 +21,14 @@
         bool loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         bool loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         bool loadEnemy(sf::Vector2u tileSize, int numItem,Spawner &creator,sf::RenderWindow *window,bool change);
+        bool loadSkill(sf::Vector2u tileSize, int numItem,std::vector<std::unique_ptr<Skills>> &skill,bool change);
         bool loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         const sf::Texture &getMTileset() const;
         bool loadTexture(const std::string& tileset);
+        void loadingChange(int numItem);
+        void textureLoaded();
+        void figureCreation(Entity &gl,sf::Vector2u tileSize);
+
 
     private:
 
@@ -32,12 +39,15 @@
         int tv=0;
         int tu=0;
         int count=0;
-        std::vector <std::unique_ptr<sf::RectangleShape>> enemies;
-        std::vector <std::unique_ptr<sf::Texture>> enemiesTexture;
+        int textureIndex=0;
+        std::vector <std::unique_ptr<sf::RectangleShape>> figures;
+        std::vector <std::unique_ptr<sf::Texture>> figuresTexture;
         std::vector <std::unique_ptr<std::string>> textureFile;
         sf::RectangleShape tries;
         sf::Vector2u textureSize;
         bool loaded=false;
+        int activeSkills=0;
+        int differentTextures=0;
 
     };
 

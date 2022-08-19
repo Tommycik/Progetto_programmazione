@@ -7,7 +7,8 @@
 Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum,int bossKill):stamina(stamina),
                                                                                                 maxHp(hp),maxStam(stamina),potionNum(potioNum){
     this->hp=hp;
-    this->movements=movements;
+    this->movements=1;
+    this->runningMovement=1.25,
     this->posX=posX;
     this->posY=posY;
     this->bossKilled=bossKill;
@@ -92,37 +93,36 @@ void Mario::setBossKilled(int bossKilled) {
     Mario::bossKilled = bossKilled;
 }
 
-void Mario::run(int x, int y) {
-    float runSpeed=2;
+void Mario::run(float x, float y) {
+   if (x > runningMovement ||x<-runningMovement)
+        x = runningMovement;
+    if (y > runningMovement||y<-runningMovement)
+        y = runningMovement;
+    posX +=x;
+    if(x!=0)
+    distanceWalked+=x;
+    posY +=y;
+    if(y!=0)
+    distanceWalked+=y;
+}
+
+void Mario::move(float x, float y) {
+    //float speed=1;
     if (x > movements ||x<-movements)
         x = movements;
     if (y > movements||y<-movements)
         y = movements;
-    posX += runSpeed*x;
+    posX += x;
     if(x!=0)
-    distanceWalked+=runSpeed;
-    posY += runSpeed*y;
+    distanceWalked+=x;
+    posY += y;
     if(y!=0)
-    distanceWalked+=runSpeed*y;
+    distanceWalked+=y;
 }
 
-void Mario::move(int x, int y) {
-    float speed=1;
-    if (x > movements ||x<-movements)
-        x = movements;
-    if (y > movements||y<-movements)
-        y = movements;
-    posX += speed*x;
-    if(x!=0)
-    distanceWalked+=speed;
-    posY += speed*y;
-    if(y!=0)
-    distanceWalked+=speed;
-}
+void Mario::behaviour(Entity &target) {}
 
-void Mario::behaviour() {}
-
-void Mario::tracking() {}
+void Mario::tracking(Entity &target) {}
 
 void Mario::fight() {
 
@@ -173,8 +173,28 @@ int Mario::getDeaths() const {
 }
 
 void Mario::setDeaths(int deaths) {
-    Mario::deaths = deaths;
+    Mario::deaths += deaths;
 }
+
+float Mario::getRunningMovement() const {
+    return runningMovement;
+}
+
+std::unique_ptr<Fireball> Mario::skillUse() {
+
+    auto newSkill = std::make_unique<Fireball>(this->getposX()+1,this->getposY(),this->bossKilled);
+    if(this->stamina>=newSkill->getStamConsumption()){
+        skillUsed=1;
+        this->stamina-=newSkill->getStamConsumption();
+    }else{
+        skillUsed=0;
+        newSkill= nullptr;
+    }
+
+    return newSkill;
+}
+
+
 
 
 

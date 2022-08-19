@@ -49,7 +49,7 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
     try {
         mapIndex=(std::stoi(fileLine));
         std::getline(of, fileLine);
-        player.setHp(std::stoi(fileLine));//fixme non riporta la vita corretta,la vita massima sì
+        player.setHp(std::stoi(fileLine));
         std::getline(of, fileLine);
         player.setStamina(std::stoi(fileLine));
         std::getline(of, fileLine);
@@ -155,11 +155,10 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
     return true;
 }
 
-int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
+int World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
                                  float tilesetResolution,bool &run,int &state) {
-    float movement=1;
+
     float decimalMove=0.25;
-    float movementRunning=2/*1.25*/;
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     bool UpKeyDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -184,86 +183,189 @@ int World::playerMovementUpdater(Mario &hero, Dungeonarea &maps, Spawner &vector
         }
     }
 
-    if (LeftKeyDown &&isLegalMove(hero,-movement,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+    if (LeftKeyDown &&isLegalMove(hero,-hero.getMovements(),0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
 
-        if(LShiftKeyDown&& isLegalMove(hero,-movementRunning,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
-            player.move(-tilesetResolution*movementRunning, 0);
+        if(LShiftKeyDown&& isLegalMove(hero,-hero.getRunningMovement(),0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
             staminaUsed=1;
-            hero.run(-1,0);
+            hero.run(-hero.getRunningMovement(),0);
         }else {
-            player.move(-tilesetResolution*movement, 0);
-            hero.move(-1,0);
+            hero.move(-hero.getMovements(),0);
         }
 
-    }else if (LeftKeyDown &&isLegalMove(hero,-decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(-tilesetResolution*decimalMove, 0);
-        hero.move(-decimalMove,0);
     }else if (LeftKeyDown &&isLegalMove(hero,-2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(-tilesetResolution*2*decimalMove, 0);
+        hero.move(-2*decimalMove,0);
+    }else if (LeftKeyDown &&isLegalMove(hero,-2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
         hero.move(-2*decimalMove,0);
     }
 
-    if (RightKeyDown&&isLegalMove(hero,movement,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+    if (RightKeyDown&&isLegalMove(hero,hero.getMovements(),0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
 
-        if(LShiftKeyDown&& isLegalMove(hero,movementRunning,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
-            player.move(tilesetResolution*movementRunning, 0);
+        if(LShiftKeyDown&& isLegalMove(hero,hero.getRunningMovement(),0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
             staminaUsed=1;
-            hero.run(1,0);
+            hero.run(hero.getRunningMovement(),0);
         }else {
-            player.move(tilesetResolution*movement, 0);
-            hero.move(1,0);
+            hero.move(hero.getMovements(),0);
         }
 
-    }else if (RightKeyDown &&isLegalMove(hero,decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(tilesetResolution*decimalMove, 0);
-        hero.move(decimalMove,0);
     }else if (RightKeyDown &&isLegalMove(hero,2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(tilesetResolution*2*decimalMove, 0);
+        hero.move(2*decimalMove,0);
+    }else if (RightKeyDown &&isLegalMove(hero,2*decimalMove,0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
         hero.move(2*decimalMove,0);
     }
 
-    if (UpKeyDown&&isLegalMove(hero,0,movement,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+    if (UpKeyDown&&isLegalMove(hero,0,hero.getMovements(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
 
-        if(LShiftKeyDown&& isLegalMove(hero,0,movementRunning,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
-            player.move(0, tilesetResolution*movementRunning);
+        if(LShiftKeyDown&& isLegalMove(hero,0,hero.getRunningMovement(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
             staminaUsed=1;
-            hero.run(0,1);
+            hero.run(0,hero.getRunningMovement());
         }else{
-            player.move(0, tilesetResolution*movement);
-            hero.move(0,1);
+            hero.move(0,hero.getMovements());
         }
 
-    }else if (UpKeyDown &&isLegalMove(hero,0,decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(0, tilesetResolution*decimalMove);
-        hero.move(0,decimalMove);
     }else if (UpKeyDown &&isLegalMove(hero,0,2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(0, tilesetResolution*2*decimalMove);
+        hero.move(0,2*decimalMove);
+    }else if (UpKeyDown &&isLegalMove(hero,0,2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
         hero.move(0,2*decimalMove);
     }
 
-    if (DownKeyDown&&isLegalMove(hero,0,-movement,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
+    if (DownKeyDown&&isLegalMove(hero,0,-hero.getMovements(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports()) ){
 
-        if(LShiftKeyDown&& isLegalMove(hero,0,-movementRunning,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(), &vectors.getTeleports())){
-            player.move(0, -tilesetResolution*movementRunning);
+        if(LShiftKeyDown&& isLegalMove(hero,0,-hero.getRunningMovement(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(), &vectors.getTeleports())){
             staminaUsed=1;
-            hero.run(0,-1);
+            hero.run(0,-hero.getRunningMovement());
         }else {
-            player.move(0, -tilesetResolution*movement);
-            hero.move(0,-1);
+            hero.move(0,-hero.getMovements());
         }
 
-    }else if (DownKeyDown &&isLegalMove(hero,0,-decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(0, -tilesetResolution*decimalMove);
-        hero.move(0,-decimalMove);
     }else if (DownKeyDown &&isLegalMove(hero,0,-2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
-        player.move(0, -tilesetResolution*2*decimalMove);
+        hero.move(0,-2*decimalMove);
+    }else if (DownKeyDown &&isLegalMove(hero,0,-2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
         hero.move(0,-2*decimalMove);
     }
-    player.setPosition(hero.getposX()*tilesetResolution,hero.getposY()*tilesetResolution);
+    legalDamage(&hero,&vectors.getEnemies(),&vectors.getBosses(),&skill);
+
+    int count=0;
+    bool found=false;
+    if(hero.getHp()<=0){
+        for(auto &gc:vectors.getSafezones()){
+            if(gc->isUsed()){
+                found=true;
+                break;
+            }
+            count++;
+        }
+        if(found){
+            hero.setposX(vectors.getSafezones()[count]->getposX());
+            hero.setposY(vectors.getSafezones()[count]->getposY());
+        }else{
+
+            int startX = maps.getRand(0, (maps.getWidth() - 2));
+            int startY = maps.getRand(0, (maps.getHeight() - 2));
+            while(!(findFreeMapTile(startX, startY, maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getSafezones()))){
+                startX = maps.getRand(0, (maps.getWidth() - 2));
+                startY = maps.getRand(0, (maps.getHeight() - 2));
+            }
+            hero.setposX(startX);
+            hero.setposY(startY);
+        }
+    }else{
+        if(hero.getTimeSinceDamage()!=0.00){
+            hero.setTimeSinceDamage(-1);
+        }
+    }
+    count=0;
+    int skillToErase[skillNumber];
+    for(auto &gl:skill){
+        skillToErase[count]=0;
+        gl->setChecked(true);
+        gl->targetSearch(vectors.getBosses(),vectors.getEnemies(),hero);
+        if(gl->getTarget()!= nullptr||gl->getHp()<=0){
+            gl->behaviour(*gl->getTarget());
+            for(auto &gn:skill){
+                if(!gn->isChecked()&& l2Distance(*gn,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=1){
+                    gn->receiveDamage(gl->getDamage());
+                    gl->receiveDamage(gn->getDamage());
+                }
+            }
+            if(gl->getHp()>0&&(l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())!=0)&&isLegalMove(*gl,gl->getDirectX(),gl->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                gl->move((gl->getDirectX()),gl->getDirectY());
+            }else{
+                if(l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                    gl->getTarget()->receiveDamage(gl->getDamage());
+                }
+                for(auto &gb:vectors.getEnemies()){
+                    if(l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                        gb->receiveDamage(gl->getDamage());
+                    }
+                }
+                for(auto &gb:vectors.getBosses()){
+                    if(l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                        gb->receiveDamage(gl->getDamage());
+                    }
+                }
+                skillToErase[count]=1;
+                skillNumber--;
+            }
+        }else{
+            skillToErase[count]=1;
+            skillNumber--;
+        }
+        gl->setChecked(false);
+        count++;
+    }
+
+    found=false;
+    count=0;
+    int erased=0;
+    for(auto gd:skillToErase){
+        if(gd==1){
+            skill.erase(skill.begin()+count-erased);
+            erased++;
+            newSkillCreated=true;
+        }
+        count++;
+    }
+
+    int enemyToErase[vectors.getMonsterNumber()];
+    count=0;
+    for(auto &gp:vectors.getEnemies()){
+
+        enemyToErase[count]=0;
+        if(gp->getHp()!=0){
+            gp->behaviour(hero);
+            if(gp->isActivated()==true){
+                gp->setChecked(true);
+                if((l2Distance(hero,gp->getposX()+gp->getDirectX(),gp->getposY()+gp->getDirectY())>=1)&&isLegalMove(*gp,gp->getDirectX(),gp->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                    gp->move((gp->getDirectX()),gp->getDirectY());
+                }else  if((l2Distance(hero,gp->getposX()+gp->getDirectX(),gp->getposY())>=1)&&isLegalMove(*gp,gp->getDirectX(),0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                    gp->move((gp->getDirectX()),0);
+                }else  if((l2Distance(hero,gp->getposX(),gp->getposY()+gp->getDirectY())>=1)&&isLegalMove(*gp,0,gp->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                    gp->move(0,gp->getDirectY());
+                }
+                gp->setChecked(false);
+            }
+        }else{
+            enemyToErase[count]=1;
+        }
+        count++;
+    }
+    count=0;
+    erased=0;
+    for(auto gd:enemyToErase){
+        if(gd==1){
+            vectors.getEnemies().erase(vectors.getEnemies().begin()+count-erased);
+            erased++;
+            vectors.setMonsterNumber(-1);
+        }
+        count++;
+    }
+
+    //todo aggiungere boss(controlare anche su spawner) controllo con skillused di entity se qualcuno usa un abilità newSkillCreated==true
+
     return staminaUsed;
 }
 
-bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth, int &numberMap, TileMap &map/*, TileMap &object*/, TileMap &teleport,
+bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth, int &numberMap, TileMap &map, TileMap &object, TileMap &teleport,
                        TileMap &safezone, Hud &hud, sf::View &view1, sf::RectangleShape &player,
                        sf::Texture &playerTexture, float tilesetResolution, std::unique_ptr<Dungeonarea> *maps,std::unique_ptr<Spawner> *vectors) {
 
@@ -288,6 +390,30 @@ bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tut
     if(!safezone.loadTexture("assets/pixelSet.png")){
         return false;
     }
+    if(!object.loadTexture("assets/potions.png")){
+        return false;
+    }
+
 
     return true;
+}
+
+ std::vector<std::unique_ptr<Skills>> &World::getSkill()  {
+    return skill;
+}
+
+int World::getSkillNumber() const {
+    return skillNumber;
+}
+
+void World::setSkillNumber(int skillNumber) {
+    World::skillNumber += skillNumber;
+}
+
+bool World::isNewSkillCreated() const {
+    return newSkillCreated;
+}
+
+void World::setNewSkillCreated(bool newSkillCreated) {
+    World::newSkillCreated = newSkillCreated;
 }
