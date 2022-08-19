@@ -4,7 +4,7 @@
 
 #include "Entity.h"
 
-int Entity::getHp() const {
+float Entity::getHp() const {
     return hp;
 }
 

@@ -94,7 +94,7 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getHp()<=0) {
+    if(_subject->getHp()==0) {
         Textviewer death(512, view->getSize().x, view->getSize().y, 255);
 
         _subject->recoverHp(0);

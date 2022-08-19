@@ -79,7 +79,7 @@ bool isLegalMove(const T &object, float dX, float dY,f  &map, u* Object1= nullpt
 
 
 template<typename T,typename u,typename c,typename d,typename s>
-bool findFreeMapTile(int &x, int &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
+bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                      s* Object4 = nullptr) {
     bool found=false;
     for (int i = x; i < map.getWidth(); i++) {

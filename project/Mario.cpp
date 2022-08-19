@@ -18,11 +18,11 @@ float Mario::getStamina() const {
     return stamina;
 }
 
-void Mario::stamUse(int stamina) {
+void Mario::stamUse(float stamina) {
     Mario::stamina -= stamina;
 }
 
-int Mario::getMaxHp() const {
+float Mario::getMaxHp() const {
     return maxHp;
 }
 
@@ -61,11 +61,11 @@ bool Mario::recoverHp(int potionUsed) {
     return true;
 }
 
-void Mario::setMaxHp(int maxHp) {
+void Mario::setMaxHp(float maxHp) {
     Mario::maxHp += maxHp;
 }
 
-void Mario::setMaxStam(int maxStam) {
+void Mario::setMaxStam(float maxStam) {
     Mario::maxStam += maxStam;
 }
 
@@ -132,7 +132,7 @@ float Mario::getGameTime() const {
     return gameTime;
 }
 
-void Mario::setGameTime(float gameTime) {
+void Mario::setGameTime(double gameTime) {
     Mario::gameTime = gameTime;
 }
 

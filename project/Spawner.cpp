@@ -60,8 +60,8 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
 
         auto newItem = std::make_unique<Item>(1,1,effect);
         if(!loading){
-            int startX = map.getRand(0, (map.getWidth() - 2));
-            int startY = map.getRand(0, (map.getHeight() - 2));
+            float startX = map.getRand(0, (map.getWidth() - 2));
+            float startY = map.getRand(0, (map.getHeight() - 2));
             while(!(findFreeMapTile(startX, startY, map,&bosses,&items,&enemies,&safezones))){
                 startX = map.getRand(0, (map.getWidth() - 2));
                 startY = map.getRand(0, (map.getHeight() - 2));
@@ -112,8 +112,8 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
 
         auto newBoss = std::make_unique<Boss>(2,1,2,2,effect);
         if(!loading) {
-            int startX = map.getRand(0, (map.getWidth() - 2));
-            int startY = map.getRand(0, (map.getHeight() - 2));
+            float startX = map.getRand(0, (map.getWidth() - 2));
+            float startY = map.getRand(0, (map.getHeight() - 2));
             while (!(findFreeMapTile(startX, startY, map, &bosses, &items, &enemies, &safezones))) {
                 startX = map.getRand(0, (map.getWidth() - 2));
                 startY = map.getRand(0, (map.getHeight() - 2));
@@ -132,8 +132,8 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
         //safezone = new Safezone(4,4);
         auto newSafezone = std::make_unique<Safezone>(4,4);
         if(!loading) {
-            int startX = map.getRand(0, (map.getWidth() - 2));
-            int startY = map.getRand(0, (map.getHeight() - 2));
+            float startX = map.getRand(0, (map.getWidth() - 2));
+            float startY = map.getRand(0, (map.getHeight() - 2));
             while (!(findFreeMapTile(startX, startY, map, &bosses, &items, &enemies, &safezones))) {
                 startX = map.getRand(0, (map.getWidth() - 2));
                 startY = map.getRand(0, (map.getHeight() - 2));
@@ -163,8 +163,8 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
 
         if(!loading) {
             effect=enemyTypeDice.roll(1);
-            int startX = map.getRand(0, (map.getWidth() - 2));
-            int startY = map.getRand(0, (map.getHeight() - 2));
+            float startX = map.getRand(0, (map.getWidth() - 2));
+            float startY = map.getRand(0, (map.getHeight() - 2));
             while (!(findFreeMapTile(startX, startY, map, &bosses, &items, &enemies, &safezones))) {
                 startX = map.getRand(0, (map.getWidth() - 2));
                 startY = map.getRand(0, (map.getHeight() - 2));

@@ -102,8 +102,8 @@ bool TheClassTest::creation(std::unique_ptr<Spawner> *vectors,std::unique_ptr<Du
     hero=std::make_unique<Mario>(100, 1, 0, 0,40,2,0);
     if(!game.loadPlayer(mapIndex,*hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
 
-        int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
-        int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
+        float startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
+        float startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
         while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
             startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
             startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));

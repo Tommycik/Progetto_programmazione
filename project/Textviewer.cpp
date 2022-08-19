@@ -12,7 +12,7 @@ void Textviewer::setFont(const std::string &font) {
     Textviewer::font = font;
 }
 
-Textviewer::Textviewer( int textDimension,int xDimension,int yDimension,int alphaOfColor) :textDimension(textDimension){
+Textviewer::Textviewer( int textDimension,float xDimension,float yDimension,int alphaOfColor) :textDimension(textDimension){
 
     box.setSize(sf::Vector2f (xDimension,yDimension));
     sf::Color color(0,0,0,alphaOfColor);

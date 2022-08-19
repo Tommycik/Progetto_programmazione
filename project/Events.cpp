@@ -90,7 +90,7 @@ int Events::event(sf::RenderWindow *window,std::string *names,std::string *saves
                                 }else{
                                     mapIndex++;
                                 }
-                            }else if (Happen.key.code == sf::Keyboard::P&&mapIndex!=0){
+                            }else if (Happen.key.code == sf::Keyboard::P&&mapIndex!=0){//fixme
                                 if(mapIndex==0) {
                                     mapIndex=numberMap-1;
                                 }else{

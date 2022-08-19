@@ -49,21 +49,21 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
     try {
         mapIndex=(std::stoi(fileLine));
         std::getline(of, fileLine);
-        player.setHp(std::stoi(fileLine));
+        player.setHp(std::stod(fileLine));
         std::getline(of, fileLine);
-        player.setStamina(std::stoi(fileLine));
+        player.setStamina(std::stod(fileLine));
         std::getline(of, fileLine);
         player.potionNumSave(std::stoi(fileLine));
         std::getline(of, fileLine);
-        player.maxHpSave(std::stoi(fileLine));
+        player.maxHpSave(std::stod(fileLine));
         std::getline(of, fileLine);
-        player.maxStamSave(std::stoi(fileLine));
+        player.maxStamSave(std::stod(fileLine));
         std::getline(of, fileLine);
-        player.setMovements(std::stoi(fileLine));
+        player.setMovements(std::stod(fileLine));
         std::getline(of, fileLine);
-        player.setposX(std::stoi(fileLine));
+        player.setposX(std::stod(fileLine));
         std::getline(of, fileLine);
-        player.setposY(std::stoi(fileLine));
+        player.setposY(std::stod(fileLine));
         std::getline(of, fileLine);
         tutorialItem=(std::stoi(fileLine));
         std::getline(of, fileLine);
@@ -75,7 +75,7 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
         std::getline(of, fileLine);
         player.setDistanceWalked((std::stoi(fileLine)));
         std::getline(of, fileLine);
-        player.setGameTime((std::stoi(fileLine)));
+        player.setGameTime((std::stod(fileLine)));
         std::getline(of, fileLine);
         player.setPotionTaken((std::stoi(fileLine)));
         std::getline(of, fileLine);
@@ -143,8 +143,8 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
 
     if(!this->loadPlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
 
-        int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
-        int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
+        float startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
+        float startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
         while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
             startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
             startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
@@ -155,7 +155,7 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
     return true;
 }
 
-int World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
+float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,
                                  float tilesetResolution,bool &run,int &state) {
 
     float decimalMove=0.25;
@@ -259,8 +259,8 @@ int World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Rectang
             hero.setposY(vectors.getSafezones()[count]->getposY());
         }else{
 
-            int startX = maps.getRand(0, (maps.getWidth() - 2));
-            int startY = maps.getRand(0, (maps.getHeight() - 2));
+            float startX = maps.getRand(0, (maps.getWidth() - 2));
+            float startY = maps.getRand(0, (maps.getHeight() - 2));
             while(!(findFreeMapTile(startX, startY, maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getSafezones()))){
                 startX = maps.getRand(0, (maps.getWidth() - 2));
                 startY = maps.getRand(0, (maps.getHeight() - 2));

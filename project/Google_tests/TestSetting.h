@@ -31,8 +31,8 @@ protected:
     int minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/3+bossNumber;
     bool playerReboot=false;
     long oldseed=0;
-    const float tilesetResolution=16;
-    const int viewHeigth = 300;
+    const unsigned int tilesetResolution=16;
+    const float viewHeigth = 300;
     std::ifstream in;
     sf::RenderWindow window;
     sf::Music Game;

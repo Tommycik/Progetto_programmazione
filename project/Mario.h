@@ -20,10 +20,10 @@ public:
     void move(float x, float y) override;
     void run(float x, float y) override;
     float getStamina() const;
-    void stamUse(int stamina);
-    int getMaxHp() const;
-    void setMaxHp(int maxHp);
-    void setMaxStam(int maxStam);
+    void stamUse(float stamina);
+    float getMaxHp() const;
+    void setMaxHp(float maxHp);
+    void setMaxStam(float maxStam);
     float getMaxStam() const;
     int getPotionNum() const;
     void potionNumSave(int potionNum);
@@ -36,7 +36,7 @@ public:
     void recoverStam();
     bool recoverHp(int potionUsed);
     float getGameTime() const;
-    void setGameTime(float gameTime);
+    void setGameTime(double gameTime);
     int getTeleported() const;
     void setTeleported(int teleported);
     int getPotionTaken() const;
@@ -56,11 +56,11 @@ private:
     float stamina;
 
     float runningMovement;
-    int maxHp=0;
+    float maxHp=0;
     float maxStam=0;
     int potionNum=0;
     int bossKilled=0;
-    float gameTime=0;
+    double gameTime=0;
     int teleported=0;
     int potionTaken=0;
     float distanceWalked=0;

@@ -13,7 +13,7 @@ class Textviewer {
 
 public:
 
-    Textviewer(int textDimension,int xDimension,int yDimension,int alphaOfColor);
+    Textviewer(int textDimension,float xDimension,float yDimension,int alphaOfColor);
 
     bool blackBox(float posX,float posY,std::string text1,std::string text2,sf::RenderWindow *window,bool death );
     bool checker(Spawner &creator,Mario &hero,bool &itemText,bool &safezoneText,bool &teleportText,bool tutorialSafezone,bool tutorialItem);

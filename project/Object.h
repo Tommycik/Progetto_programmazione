@@ -22,13 +22,13 @@ public:
     float getMovements()const{
         return movements;
     }
-    void setposX(int x){
+    void setposX(float x){
         Object::posX=x;
     }
     float getposX()const{
         return posX;
     }
-    void setposY(int y){
+    void setposY(float y){
         Object::posY=y;
     }
     float getposY()const{

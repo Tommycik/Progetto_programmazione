@@ -21,7 +21,7 @@ public:
      virtual void fight()=0;
      virtual void move(float x, float y)=0;
      virtual void run(float x,float y)=0;
-     int getHp() const;
+     float getHp() const;
      void receiveDamage(int damage);
      void setHp(int hp);
      int getTextureMultiplier() const;
@@ -37,7 +37,7 @@ public:
  protected:
 
     int skillUsed=0;
-    int hp=0;
+    float hp=0;
     int textureMultiplier=1;
      int oldseed=0;
      float directX=0;

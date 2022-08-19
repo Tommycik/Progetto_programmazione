@@ -3,7 +3,7 @@
 //
 #include "TestSetting.h"
 //fixme alcuni i mosrti dopo la morte di mario smettono di muoversi
-void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
+void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
 }
@@ -141,7 +141,7 @@ TEST_F(TheClassTest,TestMap){
                     ASSERT_EQ(map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight()),true);
 
                     for(auto &gc:vectors[mapIndex]->getTeleports()){
-                        if(!gc->isActivated()){
+                        if(gc->isActivated()){
                             found=true;
                             break;
                         }
@@ -152,8 +152,8 @@ TEST_F(TheClassTest,TestMap){
                         hero->setposY(vectors[mapIndex]->getTeleports()[count]->getposY());
                     }else{
 
-                        int startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
-                        int startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
+                        float startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
+                        float startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
                         while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
                             startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
                             startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));

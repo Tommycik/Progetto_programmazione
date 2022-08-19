@@ -20,7 +20,7 @@ public:
 
     void savePlayer(int map,Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*,int littleStatus*/) const;
     bool loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport);
-    int Updater(Mario &hero,Dungeonarea &maps,Spawner &vectors,sf::RectangleShape &player,float tilesetResolution,bool &run,int &state);
+    float Updater(Mario &hero,Dungeonarea &maps,Spawner &vectors,sf::RectangleShape &player,float tilesetResolution,bool &run,int &state);
     bool  initialize(Mario &hero,int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth,int &numberMap,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,Hud &hud, sf::View &view1,
                      sf::RectangleShape &player, sf::Texture &playerTexture,float tilesetResolution,
                      std::unique_ptr<Dungeonarea> *maps=nullptr,std::unique_ptr<Spawner> *vectors=nullptr);

@@ -3,9 +3,10 @@
 #include "Menu.h"
 #include "Events.h"
 #include "Achievements.h"
+#include "SkillManager.h"
 
 
-void ResizeView(const sf::RenderWindow &window, sf::View &view,int viewHeigth) {
+void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
 }
@@ -32,12 +33,12 @@ int main() {
     int bossNumber=10;
     if(bossNumber<1)
         bossNumber=1;
-    int minRooms=(bossNumber+safezoneNumber+objectNumber+monsterNumber)/3+bossNumber;
+    int minRooms=(bossNumber+safezoneNumber+objectNumber+monsterNumber)/3+bossNumber+1;
 
     if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%3!=0)
         minRooms++;
     minRooms++;
-    const float tilesetResolution=16;
+    const unsigned int tilesetResolution=16;
     int mapIndex=0;
 
     std::string saves[6]={
@@ -79,10 +80,10 @@ int main() {
 
     Menu menu(&window);
     if(!(menu.load())){
-        return false;
+        return -1;
     }
     if(menu.show(&window,numberMap,&saves[0],&savesVec[0])){
-        return 1;
+        return -1;
     }
     Game.play();
 
@@ -100,21 +101,20 @@ int main() {
     sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::Texture playerTexture;
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
+    TileMap map,teleport,safezone,object,skill,obstacles;
     Achievements achievements(*hero,window,view1);
     if(!achievements.load())
         return -1;
+    SkillManager skillManager(game,skill);
     Hud hud(1);
-    TileMap map,teleport,safezone;
-    Textviewer objectInteraction(window.getSize().y/5,window.getSize().x,128,viewHeigth);
+    Textviewer objectInteraction(128,view1.getSize().x,view1.getSize().y/6,128);
     int HudBarsHeigth=14;
 
-    if(!game.initialize(*hero,mapIndex,tutorialItem,tutorialSafezone,tutorialTeleport,HudBarsHeigth,numberMap,map/*,object*/,teleport,safezone,hud,view1,player,
+    if(!game.initialize(*hero,mapIndex,tutorialItem,tutorialSafezone,tutorialTeleport,HudBarsHeigth,numberMap,map,object,teleport,safezone,hud,view1,player,
                         playerTexture,tilesetResolution,&maps[0],&vectors[0])){
         return -1;
     }
-    if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
-        return false;
-    }
+
 
     int state=0;
     bool run=false;
@@ -127,15 +127,20 @@ int main() {
     Events events;
     Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
 
+    if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
+        return -1;
+    }
+    bool change=false;
     while (window.isOpen()) {
 
         while (window.isOpen()) {
 
-            TileMap object;
-            if (! object.loadTexture("assets/potions.png")){
+
+            /*if (! object.loadTexture("assets/potions.png")){
                 std::cout<<"errore caricamento oggetti";
                 return -1;
-            }
+            }*/
+            change=false;
             staminaUsed=0;
             teleportText=false;
             itemText=false;
@@ -145,51 +150,82 @@ int main() {
             deltaTime=clock.restart().asSeconds();
             hero->setGameTime(hero->getGameTime()+0.001);
             ResizeView(window,view1,viewHeigth);
-            eventControl=events.event(&window,&saves[0],&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,bossNumber,monsterNumber,objectNumber,safezoneNumber,Game,map,object,teleport,safezone,&vectors[0],&maps[0]) ;
+            eventControl=events.event(&window,&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,Game,map,object,teleport,safezone,&vectors[0]) ;
 
+            int count=0;
+            bool found=false;
             switch (eventControl) {
                 case 1:
-                    return 1;
+                    window.close();
+                    break;
 
                 case 2:
                     if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
                         std::cout<<"errore caricamento mappa";
                         return -1;
                     }
+                    for(auto &gc:vectors[mapIndex]->getTeleports()){
+                        if(gc->isActivated()){
+                            found=true;
+                            break;
+                        }
+                        count++;
+                    }
+                    if(found){
+                        hero->setposX(vectors[mapIndex]->getTeleports()[count]->getposX());
+                        hero->setposY(vectors[mapIndex]->getTeleports()[count]->getposY());
+                    }else{
 
-                    hero->setposX(vectors[mapIndex]->getTeleports()[0]->getposX());
-                    hero->setposY(vectors[mapIndex]->getTeleports()[0]->getposY());
+                        float startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
+                        float startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
+                        while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
+                            startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
+                            startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
+                        }
+                        hero->setposX(startX);
+                        hero->setposY(startY);
+                    }
                     tutorialTeleport=true;
+                    change=true;
                     break;
 
                 default:
                     break;
             }
+            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
+            obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],&window,change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
             safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
-
-            sf::sleep((sf::milliseconds(120)));
-            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,tilesetResolution,run,state);
-
             hero->stamUse(staminaUsed);
-            hero->recoverStam((0.5));
+            hero->recoverStam();
+            player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
+            respawn:
+            game.notify();
             window.clear();
             view1.setCenter(player.getPosition());
             window.setView(view1);
             window.draw(map);
+            window.draw(skill);
             window.draw(teleport);
+            window.draw(obstacles);
             window.draw(player);
             window.draw(safezone);
             window.draw(object);
             hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
+            float previousHp=hero->getHp();
             if(!makeText){
                 hero->notify();
             }
+            if(previousHp!=hero->getHp()){
+                goto respawn;
+            }
+
             objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
             window.display();
+            sf::sleep((sf::milliseconds(120)));
         }
     }
     Game.stop();
