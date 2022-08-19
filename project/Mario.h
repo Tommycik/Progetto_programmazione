@@ -24,7 +24,7 @@ public:
     int getMaxHp() const;
     void setMaxHp(int maxHp);
     void setMaxStam(int maxStam);
-    int getMaxStam() const;
+    float getMaxStam() const;
     int getPotionNum() const;
     void potionNumSave(int potionNum);
     void maxStamSave(int maxStam);
@@ -33,7 +33,7 @@ public:
     int getBossKilled() const;
     void setBossKilled(int bossKilled);
     void setPotionNum(int potionNum);
-    void recoverStam(float stamina);
+    void recoverStam();
     bool recoverHp(int potionUsed);
     float getGameTime() const;
     void setGameTime(float gameTime);
@@ -57,7 +57,7 @@ private:
 
     float runningMovement;
     int maxHp=0;
-    int maxStam=0;
+    float maxStam=0;
     int potionNum=0;
     int bossKilled=0;
     float gameTime=0;

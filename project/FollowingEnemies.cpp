@@ -71,7 +71,7 @@ FollowingEnemies::FollowingEnemies(int posX, int posY, int dungeonType){
 
     this->activated=false;
     this->fixed=false;
-    this->hp=10+5*dungeonType;
+    this->hp=10+10*dungeonType;
     int n=0;
     int i=0;
     int random=1;
