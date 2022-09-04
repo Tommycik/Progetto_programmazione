@@ -22,7 +22,8 @@ public:
     Entity *getTarget() const;
     bool isTargetLost() const;
     float getRadius() const;
-
+    bool isTargetFound() const;
+    void setTargetFound(bool targetFound);
     int getstartX() const{
         return startX;
     }
@@ -48,6 +49,7 @@ protected:
     int range;
     bool ostile;
     bool targetLost=false;
+    bool targetFound=false;
     float radius=0;
 
 };

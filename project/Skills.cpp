@@ -48,39 +48,47 @@ void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector
 
     int minDistance=1000;
     if(this->ostile==false) {
-        for (auto &gc: enemies) {
-            if (gc->isFixed() == false && gc->getHp() > 0) {
-                if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
-                    minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
-                    target = &(*gc);
-                }
-            }
-
-        }
-        for (auto &gc: bosses) {
-
-            if (gc->getHp() > 0) {
-                if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
-                    minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
-                    target = &(*gc);
-                }
-            }
-
-        }
-        if (minDistance > range) {
+        if (!(enemies.empty())) {
             for (auto &gc: enemies) {
-                if (gc->isFixed() == true && gc->getHp() > 0) {
+                if (gc->isFixed() == false && gc->getHp() > 0) {
                     if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
                         minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
                         target = &(*gc);
                     }
                 }
+
             }
         }
-        target->setTarget(true);
+        if (!(bosses.empty())) {
+
+            for (auto &gc: bosses) {
+
+                if (gc->getHp() > 0) {
+                    if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                        minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                        target = &(*gc);
+                    }
+                }
+
+            }
+        }
+        if (minDistance > range) {
+            if (!(enemies.empty())) {
+                for (auto &gc: enemies) {
+                    if (gc->isFixed() == true && gc->getHp() > 0) {
+                        if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                            minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                            target = &(*gc);
+                        }
+                    }
+                }
+            }
+        }
     }
     if(minDistance<=range){
         targetLost=false;
+        targetFound=true;
+        target->setTarget(true);
     }else{
         target= nullptr;
         targetLost=true;
@@ -91,6 +99,14 @@ void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector
 
 float Skills::getRadius() const {
     return radius;
+}
+
+bool Skills::isTargetFound() const {
+    return targetFound;
+}
+
+void Skills::setTargetFound(bool targetFound) {
+    Skills::targetFound = targetFound;
 }
 
 

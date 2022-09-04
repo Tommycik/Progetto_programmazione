@@ -311,6 +311,8 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
                 skillNumber--;
             }
         }else{
+            if(gl->isTargetFound()==false)
+                hero.setStamina(hero.getStamina()+gl->getStamConsumption());
             skillToErase[count]=1;
             skillNumber--;
         }

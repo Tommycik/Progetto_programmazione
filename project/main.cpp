@@ -18,17 +18,17 @@ int main() {
     if(numberMap<1)
         numberMap=1;
 
-    int monsterNumber=40;
-    if(monsterNumber<1)
-        monsterNumber=1;
+    int monsterNumber=20;
+    if(monsterNumber<5)
+        monsterNumber=5;
 
-    int objectNumber=1;
-    if(objectNumber<1)
-        objectNumber=1;
+    int objectNumber=15;
+    if(objectNumber<10)
+        objectNumber=10;
 
-    int safezoneNumber=1;
-    if(safezoneNumber<1)
-        safezoneNumber=1;
+    int safezoneNumber=3;
+    if(safezoneNumber<2)
+        safezoneNumber=2;
 
     int bossNumber=1;
     if(bossNumber!=1)
