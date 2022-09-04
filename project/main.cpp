@@ -18,15 +18,15 @@ int main() {
     if(numberMap<1)
         numberMap=1;
 
-    int monsterNumber=30;
+    int monsterNumber=40;
     if(monsterNumber<1)
         monsterNumber=1;
 
-    int objectNumber=30;
+    int objectNumber=1;
     if(objectNumber<1)
         objectNumber=1;
 
-    int safezoneNumber=30;
+    int safezoneNumber=1;
     if(safezoneNumber<1)
         safezoneNumber=1;
 
@@ -104,7 +104,7 @@ int main() {
     sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::Texture playerTexture;
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
-    TileMap map,teleport,safezone,object,skill,obstacles;
+    TileMap map,teleport,safezone,object,skill,obstacles,boss;
     Achievements achievements(*hero,window,view1);
     if(!achievements.load())
         return -1;
@@ -187,10 +187,11 @@ int main() {
                     break;
             }
             staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,run,state);
-            obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],&window,change);
+            obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
             safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
+            //boss.loadBoss(sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex],change);
             hero->stamUse(staminaUsed);
             hero->recoverStam();
             player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
@@ -209,6 +210,7 @@ int main() {
             window.draw(player);
             window.draw(safezone);
             window.draw(object);
+           // window.draw(boss);
             hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
             float previousHp=hero->getHp();
             if(!makeText){

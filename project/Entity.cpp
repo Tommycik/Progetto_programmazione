@@ -55,3 +55,23 @@ int Entity::getSkillUsed() const {
 bool Entity::isKillable() const {
         return killable;
 }
+
+bool Entity::isActivated() const {
+    return activated;
+}
+
+float Entity::getContactDamage() const {
+    return contactDamage;
+}
+
+void Entity::setActivated(bool activated) {
+    Entity::activated = activated;
+}
+
+bool Entity::isTarget() const {
+    return target;
+}
+
+void Entity::setTarget(bool target) {
+    Entity::target = target;
+}

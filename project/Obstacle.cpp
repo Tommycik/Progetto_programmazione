@@ -7,15 +7,6 @@
 bool Obstacle::isFixed() const {
     return fixed;
 }
-
-bool Obstacle::isActivated() const {
-    return activated;
-}
-
-void Obstacle::setActivated(bool activated) {
-    Obstacle::activated = activated;
-}
-
 void Obstacle::setFixed(bool fixed) {
     Obstacle::fixed = fixed;
 }

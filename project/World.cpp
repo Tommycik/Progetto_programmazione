@@ -297,15 +297,16 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
                     gl->getTarget()->receiveDamage(gl->getDamage());
                 }
                 for(auto &gb:vectors.getEnemies()){
-                    if(l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                    if(gb->isTarget()==false&&l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
                         gb->receiveDamage(gl->getDamage());
                     }
                 }
                 for(auto &gb:vectors.getBosses()){
-                    if(l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                    if(gb->isTarget()==false&&l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
                         gb->receiveDamage(gl->getDamage());
                     }
                 }
+                gl->getTarget()->setTarget(false);
                 skillToErase[count]=1;
                 skillNumber--;
             }

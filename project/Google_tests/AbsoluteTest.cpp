@@ -101,7 +101,7 @@ TEST_F(TheClassTest,TestGame){
     std::unique_ptr<Dungeonarea> maps[numberMap];
     std::unique_ptr<Spawner> vectors[numberMap];
     ASSERT_EQ(creation(&vectors[0],&maps[0]), true);
-    TileMap map,teleport,safezone,obstacles,skill,object;
+    TileMap map,teleport,safezone,obstacles,skill,object,boss;
     sf::RectangleShape player(sf::Vector2f(tilesetResolution, tilesetResolution));
     sf::View view1(sf::Vector2f (0.0f,0.0f),sf::Vector2f (viewHeigth,viewHeigth));
     Hud hud(1);
@@ -167,16 +167,17 @@ TEST_F(TheClassTest,TestGame){
                     break;
             }
             staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,run,state);
-            obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],&window,change);
+            obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
             safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
+            //boss.loadBoss(sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex],change);
             hero->stamUse(staminaUsed);
             hero->recoverStam();
             player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
             animationPlayer.updatePlayer(deltaTime,run,state);
             player.setTextureRect(animationPlayer.getUvRect());
-            ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone,obstacles,skill), true);
+            ASSERT_EQ (draw(*hero,view1,player,hud,objectInteraction,map,object,teleport,safezone,obstacles,skill,boss), true);
             sf::sleep((sf::milliseconds(120)));
         }
     }

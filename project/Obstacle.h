@@ -16,15 +16,12 @@ public:
 
     void fight() override;
     bool isFixed() const;
-    bool isActivated() const;
     void setFixed(bool fixed);
     void setObstacleType(int obstacleType);
-    void setActivated(bool activated);
     void run(float x, float y) override;
 
 protected:
 
-    bool activated=false;
     bool fixed=true;
 
 

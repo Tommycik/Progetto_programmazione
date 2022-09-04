@@ -34,12 +34,20 @@ public:
      int getType() const;
      int getSkillUsed() const;
      bool isKillable() const;
+     bool isActivated() const;
+     float getContactDamage() const;
+     void setActivated(bool activated);
+     bool isTarget() const;
+     void setTarget(bool target);
 
  protected:
 
      int skillUsed=0;
+     bool activated=false;
+     bool target=false;
+     float contactDamage=0;
      float hp=0;
-     int textureMultiplier=1;
+     float textureMultiplier=1;
      int oldseed=0;
      float directX=0;
      float directY=0;

@@ -58,34 +58,20 @@ void Fireball::move(float x, float y) {
 
 
 Fireball::Fireball( int posX, int posY,int bossKilled) {
-    damage=10+5*(bossKilled/3);
+    this->textureMultiplier=2;
+    damage=15+15*(bossKilled/2);
     startX=posX;
     startY=posY;
     radius=1.5;
     this->posX=posX;
     this->posY=posY;
     movements=0.5;
-    int random=1;
-    int n=0;
-    int i=0;
-    n = 3 - 1 + 1;
-    i = rand() % n;
-    if (i < 0)
-        i = -i;
     this->hp=1;
-    random=1 + i;
-    if(random==1)
-    this->textureFile="assets/potions.png";
-    if(random==2)
-        this->textureFile="assets/armours.png";
-    if(random==3)
-        this->textureFile="assets/books.png";
-
-    this->tileNumber=15;
+    this->textureFile="assets/effectsheet.png";
+    this->tileNumber=82;
     stamConsumption=10;
     range=15;
     ostile=false;
-    textureMultiplier=1;
 
 
 }

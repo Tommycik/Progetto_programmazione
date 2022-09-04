@@ -20,14 +20,15 @@
         bool loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height);
         bool loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         bool loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator);
-        bool loadEnemy(sf::Vector2u tileSize, int numItem,Spawner &creator,sf::RenderWindow *window,bool change);
+        bool loadEnemy(sf::Vector2u tileSize, int numItem,Spawner &creator,bool change);
+        bool loadBoss(sf::Vector2u tileSize, int numItem,Spawner &creator,bool change);
         bool loadSkill(sf::Vector2u tileSize, int numItem,std::vector<std::unique_ptr<Skills>> &skill,bool change);
         bool loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator);
         const sf::Texture &getMTileset() const;
         bool loadTexture(const std::string& tileset);
         void loadingChange(int numItem);
         void textureLoaded();
-        void figureCreation(Entity &gl,sf::Vector2u tileSize);
+        void figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill);
 
 
     private:
@@ -46,7 +47,7 @@
         sf::RectangleShape tries;
         sf::Vector2u textureSize;
         bool loaded=false;
-        int activeSkills=0;
+        int activeEntity=0;
         int differentTextures=0;
 
     };

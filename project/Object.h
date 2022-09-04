@@ -53,7 +53,7 @@ protected:
     float posX=0;
     float posY=0;
     std::string name;
-    int tileNumber=0;
+    float tileNumber=0;
     std::string textureFile;
 
 };

@@ -77,6 +77,7 @@ void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector
                 }
             }
         }
+        target->setTarget(true);
     }
     if(minDistance<=range){
         targetLost=false;

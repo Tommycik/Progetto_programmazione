@@ -87,8 +87,8 @@ const sf::Texture &TileMap::getMTileset() const {
 
 bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool teleport,float j,float i){
 
-    int posX=i;
-    int posY=j;
+    float posX=i;
+    float posY=j;
     int offset=1;
     if(teleport)
         offset=2;
@@ -110,7 +110,7 @@ bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool telepo
     return true;
 }
 
-bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf::RenderWindow *window,bool change) {
+bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,bool change) {
 
     count=0;
     if(loaded==false||change) {
@@ -135,7 +135,7 @@ bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf:
         }
         this->textureLoaded();
     }
-    if(activeSkills!=numItem||!loaded||change){
+    if(activeEntity!=numItem||!loaded||change){
         count=0;
         textureIndex=0;
         if (!(this->figures.empty())) {
@@ -151,7 +151,7 @@ bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf:
                     textureIndex++;
                 }
             }
-            this->figureCreation(*gl,tileSize);
+            this->figureCreation(*gl,tileSize,false);
         }
     }else {
         count = 0;
@@ -164,7 +164,7 @@ bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,sf:
             }
         }
     }
-    activeSkills=numItem;
+    activeEntity=numItem;
     loaded = true;
     return true;
 }
@@ -200,7 +200,7 @@ bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::uni
             }
         }
         this->textureLoaded();
-        activeSkills=numItem;
+        activeEntity=numItem;
         loaded = true;
     }
     if(change){
@@ -219,7 +219,7 @@ bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::uni
                     textureIndex++;
                 }
             }
-            this->figureCreation(*gl,tileSize);
+            this->figureCreation(*gl,tileSize,true);
         }
     }else {
         count = 0;
@@ -236,7 +236,7 @@ bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::uni
 }
 
 void TileMap::loadingChange(int numItem) {
-    activeSkills=numItem;
+    activeEntity=numItem;
     if (!(this->figuresTexture.empty())) {
         figuresTexture.clear();
     }
@@ -274,19 +274,82 @@ void TileMap::textureLoaded() {
     }
 }
 
-void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize) {
+void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
     int multiplier=gl.getTextureMultiplier();
-    auto newSkill = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
-    newSkill->setPosition(gl.getposX()*16,gl.getposY()*16);
-    newSkill->setTexture(&*figuresTexture[textureIndex]);
+    auto newEntity = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
+    newEntity->setPosition(gl.getposX()*16,gl.getposY()*16);
+    newEntity->setTexture(&*figuresTexture[textureIndex]);
     textureSize=figuresTexture[textureIndex]->getSize();
     textureSize.x/=(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier));
     textureSize.y/=(figuresTexture[textureIndex]->getSize().y / (tileSize.y*multiplier));
-    newSkill->setTextureRect(sf::IntRect(textureSize.x*(gl.getTileNumber()%(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl.getTileNumber()/(figuresTexture[textureIndex]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
+    newEntity->setTextureRect(sf::IntRect(textureSize.x*(gl.getTileNumber()%(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl.getTileNumber()/(figuresTexture[textureIndex]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
+    if(!skill){
+        newEntity->setOrigin(1, 7);
+        newEntity->setScale(1.2, 1.5);
+    }
     auto itPos = figures.begin() + count;
-    auto newIt = figures.insert(itPos, std::move(newSkill));
+    auto newIt = figures.insert(itPos, std::move(newEntity));
     count++;
 
+}
+
+bool TileMap::loadBoss(sf::Vector2u tileSize, int numItem, Spawner &creator, bool change) {
+
+    count=0;
+    if(loaded==false||change) {
+        this->loadingChange(numItem);
+        int found=false;
+        std::string pass="0";
+        count=0;
+        for (auto &gl: creator.getBosses()) {
+            found = false;
+            pass = gl->getTextureFile();
+            for (auto &gc: textureFile) {
+                if (*gc == pass) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                differentTextures++;
+                *textureFile[count] = pass;
+                count++;
+            }
+        }
+        this->textureLoaded();
+    }
+    if(activeEntity!=numItem||!loaded||change){
+        count=0;
+        textureIndex=0;
+        if (!(this->figures.empty())) {
+            figures.clear();
+        }
+        figures.reserve(numItem);
+        for (auto &gl: creator.getBosses()) {
+            textureIndex=0;
+            for(auto &gc:textureFile){
+                if(*gc==gl->getTextureFile()){
+                    break;
+                }else{
+                    textureIndex++;
+                }
+            }
+            this->figureCreation(*gl,tileSize,false);
+        }
+    }else {
+        count = 0;
+        if (numItem != 0) {
+            for (auto &gl: creator.getBosses()) {
+                if (gl->getHp() != 0) {
+                    figures[count]->setPosition(sf::Vector2f(gl->getposX() * 16, gl->getposY() * 16));
+                }
+                count++;
+            }
+        }
+    }
+    activeEntity=numItem;
+    loaded = true;
+    return true;
 }
 
 

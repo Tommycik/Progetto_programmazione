@@ -127,7 +127,7 @@ bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2
 template<typename T,typename u,typename c,typename d>
 int legalDamage(const T &object, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr) {
 
-float collisionDamage=15;
+//float collisionDamage=15;
 float invulnerabilityFrame=5;
 bool erased=false;
 int index=0;
@@ -137,7 +137,7 @@ int index=0;
         for (auto &gc : *Object1) {
             if (l2Distance(*gc, object->getposX(),object->getposY())<=1&&gc->getHp()>0&&!(gc->isChecked())){
                     if(object->getTimeSinceDamage()==0.00&&(!gc->isFixed())){
-                        object->receiveDamage(collisionDamage);
+                        object->receiveDamage(gc->getContactDamage());
                         object->setTimeSinceDamage(invulnerabilityFrame);
                     }
             }
@@ -148,34 +148,11 @@ int index=0;
         for (auto &gc : *Object2) {
             if (l2Distance(*gc, object->getposX(),object->getposY())<=1&&gc->getHp()>0){
                 if(object->getTimeSinceDamage()==0.00){
-                    object->receiveDamage(collisionDamage);
+                    object->receiveDamage(gc->getContactDamage());
                     object->setTimeSinceDamage(invulnerabilityFrame);
                     }
             }
         }
-    }
-    if (Object3!= nullptr) {//fixme
-       /* for (auto &gc : *Object3) {
-            if(erased){
-                Object3->erase (Object3->begin()+index);
-                erased=false;
-            }
-
-            if (l2Distance(*gc,object->getposX(),object->getposY())<=1){
-                if (!(gc->isOstile())&&( typeid(Object1[0]) == typeid(object)||typeid(Object2[0]) == typeid(object))) {
-
-                   object->receiveDamage( gc->getDamage());
-                   erased=true;
-            }else if((gc->isOstile())&&typeid(Object1[0]) != typeid(object)&&typeid(Object2[0]) != typeid(object)){
-
-                    object->receiveDamage( gc->getDamage());
-                    erased=true;
-                }
-            }
-
-
-        }
-            index++;*/
     }
 
     return 0;
