@@ -22,7 +22,6 @@ public:
 
    Dungeonarea(long oldsees,int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int maxRoomWidth,int maxRoomHeight,int mapType,int parts,
                          int xMin,int yMin, std::string name,std::string save,int minRooms);
-
     ~Dungeonarea();
 
     bool isLegalCell(int x, int y) const;

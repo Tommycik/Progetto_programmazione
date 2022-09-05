@@ -32,7 +32,6 @@ Dungeonarea::~Dungeonarea() {
     if (!(this->tiles.empty())) {
         tiles.clear();
     }
-
 }
 
 int Dungeonarea::getRand(int min, int max) {

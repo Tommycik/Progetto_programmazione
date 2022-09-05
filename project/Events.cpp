@@ -54,7 +54,6 @@ int Events::event(sf::RenderWindow *window,std::string *names,std::string *saves
                                 default:
                                     break;
                             }
-
                             tutorialItem=true;
                             hero.setPotionTaken(hero.getPotionTaken()+1);
                         }
@@ -113,7 +112,6 @@ int Events::event(sf::RenderWindow *window,std::string *names,std::string *saves
                 is.close();
                 remove("playerSave/save.txt");
             } catch (std::ios_base::failure& e) {}
-
             game.savePlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport);
             for(int i=0;i<numberMap;i++) {
                 try {
@@ -121,7 +119,6 @@ int Events::event(sf::RenderWindow *window,std::string *names,std::string *saves
                     is.close();
                     remove(savesVec[i].c_str());
                 } catch (std::ios_base::failure& e) {}
-
                 vectors[i]->saveVectors(savesVec[i],names[i],vectors[i]->getBossNumber(), vectors[i]->getObjectNumber(), vectors[i]->getMonsterNumber(), vectors[i]->getSafezoneNumber());
             }
             window->close();

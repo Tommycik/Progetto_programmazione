@@ -44,6 +44,7 @@ float Entity::getTimeSinceDamage() const {
 void Entity::setTimeSinceDamage(float timeSinceDamage) {
     Entity::timeSinceDamage += timeSinceDamage;
 }
+
 int Entity::getType() const {
     return type;
 }

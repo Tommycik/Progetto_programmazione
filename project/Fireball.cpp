@@ -5,6 +5,7 @@
 #include "Fireball.h"
 
 void Fireball::tracking(Entity &target) {
+
     float xDistance=0;
     float yDistance=0;
     xDistance=this->posX-target.getposX();
@@ -46,18 +47,21 @@ void Fireball::tracking(Entity &target) {
 }
 
 void Fireball::behaviour(Entity &target) {
+
     directX=0;
     directY=0;
     tracking(target);
 }
 
 void Fireball::move(float x, float y) {
+
     posX +=x;
     posY +=y;
 }
 
 
 Fireball::Fireball( int posX, int posY,int bossKilled) {
+
     this->textureMultiplier=2;
     damage=15+15*(bossKilled/2);
     startX=posX;
@@ -72,6 +76,4 @@ Fireball::Fireball( int posX, int posY,int bossKilled) {
     stamConsumption=10;
     range=15;
     ostile=false;
-
-
 }
