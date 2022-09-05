@@ -66,7 +66,7 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getPotionTaken()>=30&&(!cargo)){
+    if(_subject->getPotionTaken()>=2&&(!cargo)){
         cargo=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Cargo","Pick-up 30 or more potion",window,
                              false);
@@ -80,14 +80,14 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getSafezoneUsed()>=20&&(!lionheart)){
+    if(_subject->getSafezoneUsed()>=1&&(!lionheart)){
         lionheart=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Lionheart","Use a safezone 20 or more times",window,
                              false);
         window->display();
         sleep(5);
     }
-    if(_subject->getDeaths()>=100&&(!undead)){
+    if(_subject->getDeaths()>=1&&(!undead)){
         undead=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Undead","Die 100 or more times,you must be having fun",window,
                              false);
@@ -118,8 +118,7 @@ void Achievements::draw (){
 
 bool Achievements::load() {
     if (!this->achievementMusic.openFromFile("assets/menu.wav"))
-    return false;
-
+        return false;
     this->achievementMusic.setVolume(50.f);
     this->achievementMusic.setLoop(true);
     return true;
@@ -147,7 +146,6 @@ bool Achievements::loadAchievements() {
     try {
         op.open("playerSave/Achievement.txt");
     } catch (std::ios_base::failure& e) {
-
         return false;
     }
    std::getline(op, fileLine);
@@ -172,7 +170,6 @@ bool Achievements::loadAchievements() {
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
     }
-
     op.close();
     return true;
 }

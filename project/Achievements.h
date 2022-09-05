@@ -40,7 +40,6 @@ private:
     bool lionheart=false;
     bool undead=false;
 
-
 };
 
 
