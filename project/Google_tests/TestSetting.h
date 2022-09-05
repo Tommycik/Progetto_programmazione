@@ -14,7 +14,8 @@
 
 
 class TheClassTest : public ::testing::Test {
-protected:
+
+public:
 
     TheClassTest();
     virtual ~TheClassTest();
@@ -22,8 +23,10 @@ protected:
     bool draw(Mario &hero, sf::View &view1,sf::RectangleShape &player,Hud &hud, Textviewer &objectInteraction,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,TileMap &obstacles,TileMap &skill,TileMap &boss);
     bool creation(std::unique_ptr<Spawner> *vectors=nullptr,std::unique_ptr<Dungeonarea> *maps=nullptr);
 
-    int monsterNumber=20;
-    int objectNumber=10;
+protected:
+
+    int monsterNumber=10;
+    int objectNumber=5;
     int safezoneNumber=3;
     int bossNumber=1;
     int numberMap=2;

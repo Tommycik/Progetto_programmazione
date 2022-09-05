@@ -14,13 +14,11 @@ TheClassTest::TheClassTest() {
 
 bool TheClassTest::gameSet() {
     if (!Game.openFromFile("assets/gioco.wav"))
-        return false; // error
-
+        return false;
     Game.setVolume(50.f);
     Game.setLoop(true);
     if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%3!=0)
         minRoomsNumber++;
-
     minRoomsNumber++;
     return true;
 }
@@ -47,7 +45,6 @@ respawn:
     if(previousHp!=hero.getHp()){
         goto respawn;
     }
-
     objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
     window.display();
     return true;

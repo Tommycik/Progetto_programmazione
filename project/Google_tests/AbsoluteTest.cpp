@@ -2,7 +2,7 @@
 // Created by tommy on 23/07/2022.
 //
 #include "TestSetting.h"
-//fixme alcuni i mosrti dopo la morte di mario smettono di muoversi
+
 void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
@@ -17,9 +17,14 @@ TEST_F(TheClassTest,DISABLED_Menu){
 
 TEST_F(TheClassTest,DISABLED_WorldCreation){
 
-     monsterNumber=0;
-     bossNumber=0;
-     minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/2+bossNumber;
+    monsterNumber=0;
+    bossNumber=0;
+    minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/2+bossNumber;
+    if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%2!=0)
+        minRoomsNumber+=(bossNumber+monsterNumber+objectNumber+safezoneNumber)%2;
+    minRoomsNumber++;
+    if(minRoomsNumber<10)
+        minRoomsNumber+=10;
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
     ASSERT_EQ (menu.load(), true);
@@ -109,8 +114,11 @@ TEST_F(TheClassTest,DISABLED_WorldCreation){
 TEST_F(TheClassTest,mapExploration){
 
     monsterNumber=0;
-    bossNumber=0;
+    bossNumber=1;
     minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/2+bossNumber;
+    if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%2!=0)
+        minRoomsNumber+=(bossNumber+monsterNumber+objectNumber+safezoneNumber)%2;
+    minRoomsNumber++;
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
     ASSERT_EQ (menu.load(), true);
@@ -213,6 +221,11 @@ TEST_F(TheClassTest,mapExploration){
 
 TEST_F(TheClassTest,TestGame){
 
+    if((bossNumber+monsterNumber+objectNumber+safezoneNumber)%2!=0)
+        minRoomsNumber+=(bossNumber+monsterNumber+objectNumber+safezoneNumber)%2;
+    minRoomsNumber++;
+    if(minRoomsNumber<10)
+        minRoomsNumber+=10;
     ASSERT_EQ (gameSet(), true);
     Menu menu(&window);
     ASSERT_EQ (menu.load(), true);
