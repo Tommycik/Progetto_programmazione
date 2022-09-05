@@ -5,6 +5,7 @@
 #include "FollowingEnemies.h"
 
 void FollowingEnemies::behaviour(Entity &target) {
+
     if(l2Distance(*this,target.getposX(),target.getposY())<=15){
         this->activated=true;
     }else{
@@ -18,6 +19,7 @@ void FollowingEnemies::behaviour(Entity &target) {
 }
 
 void FollowingEnemies::tracking(Entity &target) {
+
     float xDistance=0;
     float yDistance=0;
     xDistance=this->posX-target.getposX();
@@ -75,7 +77,6 @@ FollowingEnemies::FollowingEnemies(int posX, int posY, int dungeonType){
     int i=0;
     int random=1;
     this->movements=1;
-
     this->posX=posX;
     this->posY=posY;
 //todo fare in modo che se i nemici si girano a destra si giri anche la texture
