@@ -5,8 +5,10 @@
 #ifndef MAIN_OBSERVER_H
 #define MAIN_OBSERVER_H
 #include "Subject.h"
+
 class Subject;
 class Observer {
+
 public:
 
     Observer() {};

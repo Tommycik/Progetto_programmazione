@@ -10,12 +10,14 @@
 
 template <typename T, typename U>
 float l1Distance(const T &p, const U &q) {
+
     float distance = abs(p.getposX() - q.getposX()) + abs(p.getposY() - q.getposY());
     return distance;
 }
 
 template <typename T>
 float l2Distance(const T &p, const float &x,const float &y) {
+
     float xDistance=0;
     float yDistance=0;
     xDistance=p.getposX() - x;
@@ -31,6 +33,7 @@ float l2Distance(const T &p, const float &x,const float &y) {
 template<typename u,typename c,typename d,typename s>
 bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullptr, d Object3= nullptr,
                          s Object4= nullptr){
+
     if (Object1!= nullptr) {
         for (auto &gc : *Object1) {
             if(gc->getHp()>0){
@@ -73,14 +76,16 @@ bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullp
 template <typename T,typename u,typename c,typename d,typename s,typename f>
 bool isLegalMove(const T &object, float dX, float dY,f  &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                  s* Object4= nullptr) {
+
     float newX = object.getposX() + dX;
     float newY = object.getposY() + dY;
-    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.getPassable(newX, newY));}
-
+    return (checkEnemyPositions(newX,newY,Object1,Object2,Object3,Object4)&&map.getPassable(newX, newY));
+}
 
 template<typename T,typename u,typename c,typename d,typename s>
 bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr,
                      s* Object4 = nullptr) {
+
     bool found=false;
     for (int i = x; i < map.getWidth(); i++) {
         for (int j = y; j < map.getHeight(); j++) {
@@ -124,14 +129,13 @@ bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2
     }
     return false;
 }
+
 template<typename T,typename u,typename c,typename d>
 int legalDamage(const T &object, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr) {
 
-//float collisionDamage=15;
 float invulnerabilityFrame=5;
 bool erased=false;
 int index=0;
-
 
     if (Object1!= nullptr&&!( typeid(Object1[0]) == typeid(object)||typeid(Object2[0]) == typeid(object))) {
         for (auto &gc : *Object1) {
@@ -141,7 +145,6 @@ int index=0;
                         object->setTimeSinceDamage(invulnerabilityFrame);
                     }
             }
-
         }
     }
     if (Object2!= nullptr&&!( typeid(Object1[0]) == typeid(object)||typeid(Object2[0]) == typeid(object))) {
@@ -154,11 +157,6 @@ int index=0;
             }
         }
     }
-
     return 0;
 }
-
-
-
-
 #endif //MAIN_UTILITIES_H

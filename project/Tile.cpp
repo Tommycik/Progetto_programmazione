@@ -7,7 +7,6 @@ bool Tile::isDestructble() const {
     return destructible;
 }
 
-
 void Tile::unlockPassage(bool unlock){
     Tile::type=TileType::corridor;
 }
@@ -65,6 +64,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*12+13;
                 break;
+
             default:
                 tileNumber=31*17+60;
                 break;
@@ -78,11 +78,10 @@ void Tile::setType(TileType tile,int dungeonType){
                 tileNumber=31+11;
                 break;
             case 2://brick
-                 n = 10 - 1 + 1;
-                 i = rand() % n;
+                n = 10 - 1 + 1;
+                i = rand() % n;
                 if (i < 0)
                     i = -i;
-
                 random=1 + i;
                 if(random<=9){
                     tileNumber=31*6+6;
@@ -94,11 +93,10 @@ void Tile::setType(TileType tile,int dungeonType){
                 tileNumber=31*22-8;
                 break;
             case 4://lava
-                 n = 5 - 1 + 1;
-                 i = rand() % n;
+                n = 5 - 1 + 1;
+                i = rand() % n;
                 if (i < 0)
                     i = -i;
-
                 random=1 + i;
                 if(random<=4){
                     tileNumber=31*14+27;
@@ -108,6 +106,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*16+27;
                 break;
+
             default:
                 tileNumber=31*27-5;
                 break;
@@ -132,6 +131,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*12+12;
                 break;
+
             default:
                 tileNumber=31*17+57;
                 break;
@@ -155,7 +155,6 @@ void Tile::setType(TileType tile,int dungeonType){
                 i = rand() % n;
                 if (i < 0)
                     i = -i;
-
                 random=1 + i;
                 if(random<=4){
                     tileNumber=31*14+27;
@@ -165,6 +164,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*16+27;
                 break;
+
             default:
                 tileNumber=31*17+55;
                 break;
@@ -188,7 +188,6 @@ void Tile::setType(TileType tile,int dungeonType){
                 i = rand() % n;
                 if (i < 0)
                     i = -i;
-
                 random=1 + i;
                 if(random<=4){
                     tileNumber=31*14+27;
@@ -199,6 +198,7 @@ void Tile::setType(TileType tile,int dungeonType){
             case 5://sand
                 tileNumber=31*16+27;
                 break;
+
             default:
                 tileNumber=31*17+55;
                 break;

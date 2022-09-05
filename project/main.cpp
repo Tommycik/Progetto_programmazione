@@ -12,7 +12,7 @@ void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth)
 }
 
 int main() {
-
+//todo togliere metodi inutili nelle varie classi
     const int viewHeigth = 300;
     int numberMap=6;
     if(numberMap<1)

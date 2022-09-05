@@ -51,7 +51,6 @@ protected:
     bool targetLost=false;
     bool targetFound=false;
     float radius=0;
-
 };
 
 

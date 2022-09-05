@@ -6,8 +6,10 @@
 #define MAIN_SUBJECT_H
 #include "Observer.h"
 #include <vector>
+
 class Observer;
 class Subject {
+
 public:
 
     Subject() {};
@@ -20,7 +22,6 @@ public:
 private:
 
     std::vector<Observer*> _observers;
-
 };
 
 

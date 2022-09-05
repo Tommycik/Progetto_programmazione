@@ -30,7 +30,6 @@ private:
     std::stringstream su,sd;
     sf::Text textOne;
     sf::Text textTwo;
-
 };
 
 

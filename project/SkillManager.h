@@ -8,7 +8,6 @@
 #include "World.h"
 #include "Loader.h"
 
-
 class SkillManager: public Observer {
 
 public:

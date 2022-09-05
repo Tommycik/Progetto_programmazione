@@ -29,21 +29,18 @@ bool Skills::isOutOfRange(int posX, int posY, int initialX, int initialY) {
 }
 
 
-void Skills::run(float x, float y) {
-
-}
+void Skills::run(float x, float y) {}
 
 Entity *Skills::getTarget() const {
     return target;
 }
 
-void Skills::fight() {
-
-}
+void Skills::fight() {}
 
 bool Skills::isTargetLost() const {
     return targetLost;
 }
+
 void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector<std::unique_ptr<Obstacle>> &enemies,Entity &mario) {
 
     int minDistance=1000;
@@ -56,20 +53,17 @@ void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector
                         target = &(*gc);
                     }
                 }
-
             }
         }
         if (!(bosses.empty())) {
 
             for (auto &gc: bosses) {
-
                 if (gc->getHp() > 0) {
                     if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
                         minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
                         target = &(*gc);
                     }
                 }
-
             }
         }
         if (minDistance > range) {
@@ -94,7 +88,6 @@ void Skills::targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector
         targetLost=true;
         damage=0;
     }
-
 }
 
 float Skills::getRadius() const {

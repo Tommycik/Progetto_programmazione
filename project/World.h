@@ -43,7 +43,6 @@ private:
     std::vector<std::unique_ptr<Skills>> skill;
     int skillNumber=0;
     bool newSkillCreated=false;
-
 };
 
 #endif //MAIN_WORLD_H

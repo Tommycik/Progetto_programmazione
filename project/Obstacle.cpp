@@ -7,19 +7,14 @@
 bool Obstacle::isFixed() const {
     return fixed;
 }
+
 void Obstacle::setFixed(bool fixed) {
     Obstacle::fixed = fixed;
 }
 
-void Obstacle::fight() {
+void Obstacle::fight() {}
 
-}
+void Obstacle::run(float x, float y) {}
 
-void Obstacle::run(float x, float y) {
-
-}
-
-Obstacle::~Obstacle() {
-
-}
+Obstacle::~Obstacle() {}
 

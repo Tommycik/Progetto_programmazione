@@ -17,6 +17,7 @@ int Item::getEffect() const {
 }
 
 void Item::setEffect(int effect) {
+
     Item::effect = effect;
     tileNumber = 12;
     if ( this->effect == 2) {
@@ -28,6 +29,7 @@ void Item::setEffect(int effect) {
 }
 
 Item::Item( int posX, int posY, int effect){
+
    this->taken=false;
    this->effect=effect;
    this->movements=0;

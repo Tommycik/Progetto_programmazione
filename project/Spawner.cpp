@@ -45,7 +45,6 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
     if (!(this->teleports.empty())) {
         teleports.clear();
     }
-
     enemies.reserve(monsterNumber);
     safezones.reserve(safezoneNumber);
     items.reserve(objectNumber);
@@ -56,7 +55,6 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
     for(int i=0; i<objectNumber; i++) {
 
         int effect=itemTypeDice.roll(1);
-
         auto newItem = std::make_unique<Item>(1,1,effect);
         if(!loading){
             float startX = map.getRand(0, (map.getWidth() - 2));
@@ -74,7 +72,6 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
     Dice BossStatIncreaseDice(3);//3 aumenta danno della palla di fuoco di mario
     Dice BossTypeDice(3);//numero tipi di boss
     //todo implementare che ogni numero crea una differente classe derivata
-
     for(int i=0; i<bossNumber; i++) {
         /* Boss* boss;
          Teleport* teleport;*/
@@ -108,7 +105,6 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
                  std::getline(op, fileLine);
              }
          }*/
-
         auto newBoss = std::make_unique<Boss>(2,1,2,2,effect);
         if(!loading) {
             float startX = map.getRand(0, (map.getWidth() - 2));
@@ -120,7 +116,6 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
             newBoss->setposX(startX);
             newBoss->setposY(startY);
         }
-
         auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
         bosses.emplace_back(std::move(newBoss));
         teleports.emplace_back(std::move(newTeleport));
@@ -141,6 +136,7 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
         }
         safezones.emplace_back(std::move(newSafezone));
     }
+
     if(loading) {
         while(std::stoi(fileLine)!=-1){
             std::getline(op, fileLine);
@@ -179,12 +175,10 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
                 enemies.emplace_back(std::move(newEnemy));
             }
         }else {
-
             if(std::stoi(fileLine)!=-1){
                 effect=std::stoi(fileLine);
                 std::getline(op, fileLine);
             }
-
             if(effect==1) {
                 auto newEnemy = std::make_unique<StaticDanger>(8,2,map.getDungeonType());
                 enemies.emplace_back(std::move(newEnemy));
@@ -217,7 +211,6 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
         out << gc->getType();
         out << std::endl;
     }
-
     out <<-1<<"\n";
     for(auto &gc:this->bosses){
         out << gc->getHp() << "\n" << gc->getMovements()<< "\n" << gc->getposX()<< "\n" << gc->getposY()<< "\n" << gc->getStatIncrease()<< "\n" << gc->getTileNumber();
@@ -265,7 +258,6 @@ bool Spawner::loadVectors(std::string fileName,std::string name,Dungeonarea &map
     std::getline(op, fileLine);
     std::getline(op, fileLine);
     this->create(true,map);
-
     try {
         while(std::stoi(fileLine)!=-1){
             std::getline(op, fileLine);

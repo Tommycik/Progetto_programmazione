@@ -8,6 +8,7 @@
 #include "Subject.h"
 #include "Fireball.h"
 #include "Iceslide.h"
+
 class Mario :public  Entity,public Subject {
 
 public:
@@ -50,7 +51,6 @@ public:
     float getRunningMovement() const;
     std::unique_ptr<Fireball> skillUse();
 
-
 private:
 
     float stamina;
@@ -65,7 +65,6 @@ private:
     float distanceWalked=0;
     int safezoneUsed=0;
     int deaths=0;
-
 };
 
 

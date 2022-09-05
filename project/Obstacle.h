@@ -6,8 +6,6 @@
 #define MAIN_OBSTACLE_H
 #include "Entity.h"
 
-
-
 class Obstacle: public Entity {
 
 public:
@@ -23,8 +21,6 @@ public:
 protected:
 
     bool fixed=true;
-
-
 };
 
 

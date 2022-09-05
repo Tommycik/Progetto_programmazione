@@ -11,7 +11,6 @@
 #include <fstream>
 #include <iostream>
 
-
 class Menu {
 
 public:

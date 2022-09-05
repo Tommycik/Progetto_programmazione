@@ -4,8 +4,6 @@
 
 #include "World.h"
 
-
-
 void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSafezone,bool tutorialTeleport/*, int littleStatus*/) const{
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
@@ -34,14 +32,12 @@ void World::savePlayer(int map, Mario &player,bool tutorialItem,bool tutorialSaf
     out.close();
 }
 
-
 bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport) {
 
     of.exceptions(std::ifstream::failbit);
     try {
         of.open("playerSave/save.txt");
     } catch (std::ios_base::failure& e) {
-
         return false;
     }
     std::string fileLine;
@@ -84,7 +80,6 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
         player.setTeleported((std::stoi(fileLine)));
         std::getline(of, fileLine);
         player.setDeaths((std::stoi(fileLine)));
-
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
     }
@@ -92,6 +87,7 @@ bool World::loadPlayer(int &mapIndex,Mario &player,bool &tutorialItem,bool &tuto
     return true;
 }
 bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezoneNumber,int bossNumber ,int numberMap,long oldseed,int minRoomsNumber,int &mapIndex,bool &tutorialItem,bool &tutorialSafezone,bool &tutorialTeleport,std::string *saves,std::string *names,std::string *savesVec, std::unique_ptr<Spawner> *vectors,std::unique_ptr<Dungeonarea> *maps) {
+
     bool playerReboot=false;
     const int maxRoomX=30;
     const int maxRoomY=30;
@@ -99,7 +95,6 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
     const int minRoomY=20;
     try {
         for(int i=0;i<numberMap;i++){
-
             maps[i] =std::make_unique<Dungeonarea>(oldseed, minRoomsNumber*(maxRoomX/2)+1, minRoomsNumber*(maxRoomY/2)+1, minRoomX, minRoomY,maxRoomX,maxRoomY, i, minRoomsNumber*100, minRoomsNumber*(minRoomX/2), minRoomsNumber*(minRoomY/2), names[i], saves[i],minRoomsNumber);
             if(!maps[i]->loadMap(saves[i],names[i])){
                 try {
@@ -107,7 +102,6 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
                     in.close();
                     remove(savesVec[i].c_str());
                 } catch (std::ios_base::failure& e) {}
-
                 maps[i]->createDungeon();
                 playerReboot=true;
                 oldseed=maps[i]->getOldseed()+maps[i]->getRand(0,1000);
@@ -127,16 +121,13 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
         std::cerr << e.what() << std::endl;
         abort();
     }
-
     for(int i=0;i<numberMap;i++) {
         vectors[i]=std::make_unique<Spawner>(false,*maps[i],monsterNumber,objectNumber,safezoneNumber,bossNumber);
         if ((!vectors[i]->loadVectors(savesVec[i],names[i],*maps[i]))) {
-
             playerReboot=true;
             vectors[i]->saveVectors(savesVec[i],names[i],bossNumber, objectNumber, monsterNumber, safezoneNumber);
         }
     }
-
     if(playerReboot){
         try {
             in.open("playerSave/save.txt");
@@ -144,9 +135,7 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
             remove("playerSave/save.txt");
         } catch (std::ios_base::failure& e) {}
     }
-
     if(!this->loadPlayer(mapIndex,hero,tutorialItem,tutorialSafezone,tutorialTeleport)) {
-
         float startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
         float startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
         while(!(findFreeMapTile(startX, startY, *maps[mapIndex],&vectors[mapIndex]->getBosses(),&vectors[mapIndex]->getItems(),&vectors[mapIndex]->getEnemies(),&vectors[mapIndex]->getSafezones()))){
@@ -172,11 +161,9 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     run=false;
 
     if(RightKeyDown||UpKeyDown||DownKeyDown||LeftKeyDown){
-
         if(LShiftKeyDown){
             if(hero.getStamina()<=0)
                 LShiftKeyDown = false;
-
             run=true;
         }
         if(LeftKeyDown){
@@ -245,11 +232,13 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     }else if (DownKeyDown &&isLegalMove(hero,0,-2*decimalMove,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())) {
         hero.move(0,-2*decimalMove);
     }
-    legalDamage(&hero,&vectors.getEnemies(),&vectors.getBosses(),&skill);
 
+    legalDamage(&hero,&vectors.getEnemies(),&vectors.getBosses(),&skill);
     int count=0;
     bool found=false;
+
     if(hero.getHp()<=0){
+
         for(auto &gc:vectors.getSafezones()){
             if(gc->isUsed()){
                 found=true;
@@ -257,11 +246,11 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
             }
             count++;
         }
+
         if(found){
             hero.setposX(vectors.getSafezones()[count]->getposX());
             hero.setposY(vectors.getSafezones()[count]->getposY());
         }else{
-
             float startX = maps.getRand(0, (maps.getWidth() - 2));
             float startY = maps.getRand(0, (maps.getHeight() - 2));
             while(!(findFreeMapTile(startX, startY, maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getSafezones()))){
@@ -278,11 +267,13 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     }
     count=0;
     int skillToErase[skillNumber];
+
     for(auto &gl:skill){
         skillToErase[count]=0;
         gl->setChecked(true);
         gl->targetSearch(vectors.getBosses(),vectors.getEnemies(),hero);
         if(gl->isTargetLost()==false||gl->getHp()<=0){
+
             gl->behaviour(*gl->getTarget());
             for(auto &gn:skill){
                 if(!gn->isChecked()&& l2Distance(*gn,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=1){
@@ -290,6 +281,7 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
                     gl->receiveDamage(gn->getDamage());
                 }
             }
+
             if(gl->getHp()>0&&(l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())!=0)&&isLegalMove(*gl,gl->getDirectX(),gl->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
                 gl->move((gl->getDirectX()),gl->getDirectY());
             }else{
@@ -310,7 +302,9 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
                 skillToErase[count]=1;
                 skillNumber--;
             }
+
         }else{
+
             if(gl->isTargetFound()==false)
                 hero.setStamina(hero.getStamina()+gl->getStamConsumption());
             skillToErase[count]=1;
@@ -334,7 +328,6 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     int enemyToErase[vectors.getMonsterNumber()];
     count=0;
     for(auto &gp:vectors.getEnemies()){
-
         enemyToErase[count]=0;
         if(gp->getHp()!=0){
             gp->behaviour(hero);
@@ -364,16 +357,13 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         }
         count++;
     }
-
     //todo aggiungere boss(controlare anche su spawner) controllo con skillused di entity se qualcuno usa un abilità newSkillCreated==true
-
     return staminaUsed;
 }
 
 bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport,int &HudBarsHeigth, int &numberMap, TileMap &map, TileMap &object, TileMap &teleport,
                        TileMap &safezone, Hud &hud, sf::View &view1, sf::RectangleShape &player,
                        sf::Texture &playerTexture, float tilesetResolution, std::unique_ptr<Dungeonarea> *maps,std::unique_ptr<Spawner> *vectors) {
-
 
 
     if(!playerTexture.loadFromFile("assets/mario.png")){
@@ -398,12 +388,10 @@ bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tut
     if(!object.loadTexture("assets/potions.png")){
         return false;
     }
-
-
     return true;
 }
 
- std::vector<std::unique_ptr<Skills>> &World::getSkill()  {
+std::vector<std::unique_ptr<Skills>> &World::getSkill()  {
     return skill;
 }
 

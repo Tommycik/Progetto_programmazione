@@ -5,6 +5,7 @@
 #include "Hud.h"
 
 bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth) {
+
     if(!this->hpBar.loadFromFile("assets/hpBar.png"))
         return false;
     if(!this->staminaBar.loadFromFile("assets/green.png"))
@@ -20,19 +21,16 @@ bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth) {
     this->life.setTexture(&this->hpBar);
     this->stamina.setTexture(&this->staminaBar);
     this->potionIcon.setTexture(&this->potion);
-
     sf::Vector2u textureSize=this->potion.getSize();
     textureSize.x/=21;
     textureSize.y/=15;
     this-> potionIcon.setTextureRect(sf::IntRect(textureSize.x*12,textureSize.y*0,textureSize.x,textureSize.y));
-
     this->Potion.setFont(this->myFont);
     this->Potion.setFillColor(sf::Color::White);
     this->Potion.setCharacterSize(128);
     this->Potion.setScale(sf::Vector2f(0.1,0.1));
     this->Potion.setOutlineColor(sf::Color::Black);
     this->Potion.setOutlineThickness(thickness);
-
     if (!this->myFont.loadFromFile("assets/arial.ttf"))
     {
         return false;

@@ -45,7 +45,6 @@ void Mario::recoverStam() {
 
 bool Mario::recoverHp(int potionUsed) {
 
-
     if(potionUsed!=0){
         if(Mario::hp<Mario::maxHp){
             if(Mario::hp<=Mario::maxHp-Mario::maxHp/5){

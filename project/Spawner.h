@@ -52,7 +52,6 @@ private:
     std::vector<std::unique_ptr<Safezone>> safezones;
     std::vector<std::unique_ptr<Teleport>> teleports;
     std::vector<std::unique_ptr<Boss>> bosses;
-
 };
 
 

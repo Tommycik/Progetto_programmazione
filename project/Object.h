@@ -12,7 +12,6 @@ public:
 
     virtual ~Object() { }
 
-
     int getTileNumber() const{
         return tileNumber;
     }
@@ -55,7 +54,6 @@ protected:
     std::string name;
     float tileNumber=0;
     std::string textureFile;
-
 };
 
 #endif //MAIN_OBJECT_H

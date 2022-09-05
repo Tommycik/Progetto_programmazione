@@ -4,20 +4,18 @@
 
 #include "StaticDanger.h"
 
-
 StaticDanger::StaticDanger(int posX, int posY, int dungeonType){
+
 int n=0;
 int i=0;
 int random=1;
     switch (dungeonType) {
 
-        case 0://
-
+        case 0:
             n = 5 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*66+4;//32*66+4;
@@ -31,12 +29,12 @@ int random=1;
                 this->tileNumber=32*86+4;
             }
              break;
+
         case 1:
             n = 4 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*62+7;//32*66+4;
@@ -48,12 +46,12 @@ int random=1;
                 this->tileNumber=32*62+3;
             }
             break;
+
         case 2://todo aggiungere cristalli
             n = 4 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*90+12;//32*90+12;
@@ -65,12 +63,12 @@ int random=1;
                 this->tileNumber=32*68+21;//32*68+21
             }
             break;
+
         case 3:
             n = 3 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*100+30;//32*100+30;
@@ -80,12 +78,12 @@ int random=1;
                 this->tileNumber=32*96+29;//32*96+29
             }
             break;
+
         case 4:
             n = 3 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*118+26;//32*118+26;
@@ -95,12 +93,12 @@ int random=1;
                 this->tileNumber=32*122+17;//32*122+17
             }
             break;
+
         case 5:
             n = 3 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*118+15;;//32*118+15;
@@ -110,12 +108,12 @@ int random=1;
                 this->tileNumber=32*110+3;//32*110+3
             }
             break;
+
         default :
             n = 5 - 1 + 1;
             i = rand() % n;
             if (i < 0)
                 i = -i;
-
             random=1 + i;
             if(random==1){
                 this->tileNumber=32*66+4;//32*66+4;
@@ -129,7 +127,6 @@ int random=1;
                 this->tileNumber=32*86+4;
             }
             break;
-
     }
     this->activated=false;
     this->fixed=true;

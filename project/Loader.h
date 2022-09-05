@@ -9,9 +9,6 @@
 #include "Spawner.h"
 #include "Skills.h"
 
-
-
-
     class TileMap : public sf::Drawable, public sf::Transformable {
 
     public:
@@ -29,7 +26,6 @@
         void loadingChange(int numItem);
         void textureLoaded();
         void figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill);
-
 
     private:
 
@@ -49,7 +45,6 @@
         bool loaded=false;
         int activeEntity=0;
         int differentTextures=0;
-
     };
 
 

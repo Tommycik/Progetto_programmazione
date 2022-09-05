@@ -4,19 +4,19 @@
 
 #include "Loader.h"
 
- void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const{
+void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const{
 
     if(loaded){
         for (auto &gl:figures) {
             target.draw(*gl);
-       }
-   }else{
+        }
+    }else{
         states.transform *= getTransform();
         // apply the tileset texture
         states.texture = &m_tileset;
         // draw the vertex array
         target.draw(m_vertices, states);
-   }
+    }
 }
 
 bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator){
@@ -25,7 +25,6 @@ bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
-
     for (auto &gl : creator.getSafezones()) {
         this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
     }
@@ -53,7 +52,6 @@ bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator){
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
-
     for (auto &gl : creator.getItems()) {
         if(!(gl->isTaken())) {
             this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
@@ -73,7 +71,6 @@ bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeon
     tv=0;
     tu=0;
     count=0;
-
     for (unsigned int i = 0; i < width; ++i)
         for (unsigned int j = 0; j < height; ++j){
             this->loading(tileSize,map.getTileNumber(i,j),true,false,j,i);
@@ -174,10 +171,10 @@ bool TileMap::loadTexture(const std::string &tileset) {
     if (!m_tileset.loadFromFile(tileset))
         return false;
     return true;
-
 }
 
 bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::unique_ptr<Skills>> &skill, bool change) {
+
     count=0;
     if(loaded==false||change) {
         this->loadingChange(numItem);
@@ -236,6 +233,7 @@ bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::uni
 }
 
 void TileMap::loadingChange(int numItem) {
+
     activeEntity=numItem;
     if (!(this->figuresTexture.empty())) {
         figuresTexture.clear();
@@ -255,6 +253,7 @@ void TileMap::loadingChange(int numItem) {
 }
 
 void TileMap::textureLoaded() {
+
     figuresTexture.reserve(differentTextures);
     count = 0;
     for (int i = 0; i < differentTextures; i++) {
@@ -275,6 +274,7 @@ void TileMap::textureLoaded() {
 }
 
 void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
+
     int multiplier=gl.getTextureMultiplier();
     auto newEntity = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
     newEntity->setPosition(gl.getposX()*16,gl.getposY()*16);
