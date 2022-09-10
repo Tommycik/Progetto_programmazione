@@ -64,16 +64,32 @@ Fireball::Fireball( int posX, int posY,int bossKilled) {
 
     this->textureMultiplier=2;
     damage=15+15*(bossKilled/2);
-    startX=posX;
-    startY=posY;
     radius=1.5;
-    this->posX=posX;
-    this->posY=posY;
-    movements=0.5;
+    int random=1;
+    int n=0;
+    int i=0;
+    n = 2 -0 + 1;
+    i = rand() % n;
+    if (i < 0)
+        i = -i;
+    random= -1 + i;
+    if(random==0){
+        random++;
+    }
+    this->posX=posX+random;
+    i = rand() % n;
+    if (i < 0)
+        i = -i;
+    random=-1+ i;
+    if(random==0){
+        random++;
+    }
+    this->posY=posY+random;
+    movements=1;
     this->hp=1;
     this->textureFile="assets/effectsheet.png";
     this->tileNumber=82;
-    stamConsumption=10;
+    stamConsumption=15;
     range=15;
-    ostile=false;
+    ostile= false;
 }

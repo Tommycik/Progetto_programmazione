@@ -8,6 +8,7 @@
 #include "Subject.h"
 #include "Fireball.h"
 #include "Iceslide.h"
+#include "CrystalWall.h"
 
 class Mario :public  Entity,public Subject {
 
@@ -17,7 +18,6 @@ public:
 
     void behaviour(Entity &target) override;
     void tracking(Entity &target) override;
-    void fight() override;
     void move(float x, float y) override;
     void run(float x, float y) override;
     float getStamina() const;
@@ -34,7 +34,6 @@ public:
     int getBossKilled() const;
     void setBossKilled(int bossKilled);
     void setPotionNum(int potionNum);
-    void recoverStam();
     bool recoverHp(int potionUsed);
     float getGameTime() const;
     void setGameTime(double gameTime);
@@ -49,14 +48,13 @@ public:
     int getDeaths() const;
     void setDeaths(int deaths);
     float getRunningMovement() const;
-    std::unique_ptr<Fireball> skillUse();
+    std::unique_ptr<Skills> skillUse();
+    void statIncrease(int stat);
 
 private:
 
-    float stamina;
     float runningMovement;
     float maxHp=0;
-    float maxStam=0;
     int potionNum=0;
     int bossKilled=0;
     double gameTime=0;

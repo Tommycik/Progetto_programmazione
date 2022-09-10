@@ -36,7 +36,7 @@ respawn:
     window.draw(player);
     window.draw(safezone);
     window.draw(object);
-   // window.draw(boss);
+    window.draw(boss);
     hud.hudSow(hero,&window,tilesetResolution,HudBarsHeigth,view1);
     float previousHp=hero.getHp();
     if(!makeText){

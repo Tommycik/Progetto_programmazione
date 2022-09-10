@@ -45,6 +45,7 @@
         bool loaded=false;
         int activeEntity=0;
         int differentTextures=0;
+        bool boss=false;
     };
 
 

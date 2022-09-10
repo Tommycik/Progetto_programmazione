@@ -68,57 +68,72 @@ void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei bo
         }
         items.emplace_back(std::move(newItem));
     }
+    if(loading) {
 
-    Dice BossStatIncreaseDice(3);//3 aumenta danno della palla di fuoco di mario
+        bossNumber=std::stoi(fileLine);
+        if (!(this->bosses.empty())) {
+            bosses.clear();
+        }
+        bosses.reserve(bossNumber);
+        std::getline(op, fileLine);
+    }
+
     Dice BossTypeDice(3);//numero tipi di boss
-    //todo implementare che ogni numero crea una differente classe derivata
     for(int i=0; i<bossNumber; i++) {
-        /* Boss* boss;
-         Teleport* teleport;*/
-        int effect=BossStatIncreaseDice.roll(1);
-        //int bossType=BossTypeDice.roll(1);
-        /*if(effect==1) {
-            boss = new Boss(2,1,2,2,1);
-        } else if(effect==2) {
-            boss = new Boss(2,1,2,2,1);
-        }else if(effect==3){
-            boss = new Boss(2,1,2,2,1);
-        }else if(effect==4){
-            boss = new Boss(2,1,2,2,1);
-        }else if(effect==5){
-            boss = new Boss(2,1,2,2,1);
-        }else if(effect==6){
-            boss = new Boss(2,1,2,2,1);
-        }*/
-        /* for(auto &gc:this->bosses){
-
-             if(std::stoi(fileLine)!=-1){
-                 gc->setHp(std::stoi(fileLine));
-                 std::getline(op, fileLine);
-                 gc->setMovements(std::stoi(fileLine));
-                 std::getline(op, fileLine);
-                 gc->setposX(std::stoi(fileLine));
-                 std::getline(op, fileLine);
-                 gc->setposY(std::stoi(fileLine));
-                 std::getline(op, fileLine);
-                 gc->setStatIncrease(std::stoi(fileLine));
-                 std::getline(op, fileLine);
-             }
-         }*/
-        auto newBoss = std::make_unique<Boss>(2,1,2,2,effect);
+        int effect=1;
         if(!loading) {
+            effect=BossTypeDice.roll(1);
             float startX = map.getRand(0, (map.getWidth() - 2));
             float startY = map.getRand(0, (map.getHeight() - 2));
             while (!(findFreeMapTile(startX, startY, map, &bosses, &items, &enemies, &safezones))) {
                 startX = map.getRand(0, (map.getWidth() - 2));
                 startY = map.getRand(0, (map.getHeight() - 2));
             }
-            newBoss->setposX(startX);
-            newBoss->setposY(startY);
+            if(effect==1) {
+                auto newBoss = std::make_unique<Dreadgen>(8,2,map.getDungeonType());
+                newBoss->setposX(startX);
+                newBoss->setposY(startY);
+                auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
+                teleports.emplace_back(std::move(newTeleport));
+                bosses.emplace_back(std::move(newBoss));
+
+            } else if(effect==2){
+                auto newBoss = std::make_unique<Dreadgen>(8,2,map.getDungeonType());
+                newBoss->setposX(startX);
+                newBoss->setposY(startY);
+                auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
+                teleports.emplace_back(std::move(newTeleport));
+                bosses.emplace_back(std::move(newBoss));
+            } else if(effect==3){
+                auto newBoss = std::make_unique<Dreadgen>(8,2,map.getDungeonType());
+                newBoss->setposX(startX);
+                newBoss->setposY(startY);
+                auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
+                teleports.emplace_back(std::move(newTeleport));
+                bosses.emplace_back(std::move(newBoss));
+            }
+        }else {
+            if(std::stoi(fileLine)!=-1){
+                effect=std::stoi(fileLine);
+                std::getline(op, fileLine);
+            }
+            if(effect==1) {
+                auto newBoss = std::make_unique<Dreadgen>(8,2,map.getDungeonType());
+                auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
+                teleports.emplace_back(std::move(newTeleport));
+                bosses.emplace_back(std::move(newBoss));
+            }else if(effect==2){
+                auto newBoss = std::make_unique<Dreadgen>(8,2,map.getDungeonType());
+                auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
+                teleports.emplace_back(std::move(newTeleport));
+                bosses.emplace_back(std::move(newBoss));
+            }else if(effect==3){
+                auto newBoss = std::make_unique<Dreadgen>(8,2,map.getDungeonType());
+                auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
+                teleports.emplace_back(std::move(newTeleport));
+                bosses.emplace_back(std::move(newBoss));
+            }
         }
-        auto newTeleport = std::make_unique<Teleport>(newBoss->getposX(),newBoss->getposY());
-        bosses.emplace_back(std::move(newBoss));
-        teleports.emplace_back(std::move(newTeleport));
     }
 
     for(int i=0; i<safezoneNumber; i++) {
@@ -200,6 +215,7 @@ void Spawner::saveVectors(std::string fileName,std::string name,int Bosses,int I
     out <<Safezones<< std::endl;
     out <<Bosses<< std::endl;
 
+    out<<bosses.size()<<std::endl;
     for(auto &gc:this->bosses){
         out << gc->getType();
         out << std::endl;

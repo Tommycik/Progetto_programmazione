@@ -10,7 +10,7 @@ class FollowingEnemies: public Obstacle{
 
 public:
 
-    FollowingEnemies( int posX, int posY, int dungeonType);
+    FollowingEnemies(int posX,int posY,int dungeonType);
 
      void behaviour(Entity &target) override;
      void tracking(Entity &target) override;

@@ -285,7 +285,12 @@ void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
     newEntity->setTextureRect(sf::IntRect(textureSize.x*(gl.getTileNumber()%(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl.getTileNumber()/(figuresTexture[textureIndex]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
     if(!skill){
         newEntity->setOrigin(1, 7);
-        newEntity->setScale(1.2, 1.5);
+        if(boss){
+            newEntity->setScale(2, 2.5);
+        }else{
+            newEntity->setScale(1.2, 1.5);
+        }
+
     }
     auto itPos = figures.begin() + count;
     auto newIt = figures.insert(itPos, std::move(newEntity));
@@ -294,7 +299,7 @@ void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
 }
 
 bool TileMap::loadBoss(sf::Vector2u tileSize, int numItem, Spawner &creator, bool change) {
-
+    boss=true;
     count=0;
     if(loaded==false||change) {
         this->loadingChange(numItem);

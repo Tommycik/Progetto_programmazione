@@ -83,7 +83,7 @@ FollowingEnemies::FollowingEnemies(int posX, int posY, int dungeonType){
     this->textureFile="assets/enemies.png";
     this->killable=true;
     this->type=2;
-    n = 1 - 20+ 1;
+    n = 20-1+ 1;
     i = rand() % n;
     if (i < 0)
         i = -i;

@@ -4,26 +4,21 @@
 
 #ifndef MAIN_BOSS_H
 #define MAIN_BOSS_H
-#include "Entity.h"
+#include "Skills.h"
 
 class Boss:public  Entity {
 
 public:
 
-    Boss(int hp, int movements, int posX, int posY, int statIncrease);
-
-   void tracking(Entity &target) override;
-    void behaviour(Entity &target) override;
-    void fight() override;
-    void move(float x, float y) override;
     void run(float x, float y) override;
     int getStatIncrease() const;
     void setStatIncrease(int statIncrease);
-
+    virtual std::unique_ptr<Skills> skillUse()=0;
 protected:
 
-   int statIncrease;
-
+    int statIncrease;
+    int skillType=0;
+    int dungeonNumber=0;
 };
 
 

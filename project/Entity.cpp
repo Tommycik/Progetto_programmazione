@@ -76,3 +76,16 @@ bool Entity::isTarget() const {
 void Entity::setTarget(bool target) {
     Entity::target = target;
 }
+
+bool Entity::isAbilityUsed() const {
+    return abilityUsed;
+}
+
+void Entity::setAbilityUsed(bool abilityUsed) {
+    Entity::abilityUsed = abilityUsed;
+}
+
+void Entity::recoverStam() {
+    if(this->stamina<=this->maxStam-(this->maxStam/80))
+        this->stamina += (this->maxStam/80);
+}

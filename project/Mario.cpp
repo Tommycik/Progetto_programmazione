@@ -4,8 +4,11 @@
 
 #include "Mario.h"
 
-Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum,int bossKill):stamina(stamina),
-                                                                                                maxHp(hp),maxStam(stamina),potionNum(potioNum){
+Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum,int bossKill):potionNum(potioNum){
+
+    this->maxHp=hp;
+    this->maxStam=stamina;
+    this->stamina=stamina;
     this->hp=hp;
     this->movements=1;
     this->runningMovement=1.25,
@@ -36,11 +39,6 @@ int Mario::getPotionNum() const {
 
 void Mario::setPotionNum(int potionNum) {
     Mario::potionNum += potionNum;
-}
-
-void Mario::recoverStam() {
-    if(Mario::stamina<=Mario::maxStam-(Mario::maxStam/80))
-        Mario::stamina += (Mario::maxStam/80);
 }
 
 bool Mario::recoverHp(int potionUsed) {
@@ -123,10 +121,6 @@ void Mario::behaviour(Entity &target) {}
 
 void Mario::tracking(Entity &target) {}
 
-void Mario::fight() {
-
-}
-
 float Mario::getGameTime() const {
     return gameTime;
 }
@@ -179,9 +173,10 @@ float Mario::getRunningMovement() const {
     return runningMovement;
 }
 
-std::unique_ptr<Fireball> Mario::skillUse() {
+std::unique_ptr<Skills> Mario::skillUse() {
 
-    auto newSkill = std::make_unique<Fireball>(this->getposX()+1,this->getposY(),this->bossKilled);
+    auto newSkill = std::make_unique<Fireball>(this->getposX(),this->getposY(),this->bossKilled);
+    //auto newSkill = std::make_unique<CrystalWall>(this->getposX()+1, this->getposY(), bossKilled);
     if(this->stamina>=newSkill->getStamConsumption()){
         skillUsed=1;
         this->stamina-=newSkill->getStamConsumption();
@@ -191,6 +186,27 @@ std::unique_ptr<Fireball> Mario::skillUse() {
     }
 
     return newSkill;
+}
+
+void Mario::statIncrease(int stat) {
+
+    switch(stat){
+
+        case 1:
+
+            this->hp+=hp/4;
+            break;
+
+        case 2:
+
+            this->stamina+=stamina/4;
+            break;
+
+        default:
+
+            this->hp+=hp/4;
+            break;
+    }
 }
 
 

@@ -148,8 +148,9 @@ bool World::creation(Mario &hero,int monsterNumber,int objectNumber,int safezone
     return true;
 }
 
-float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,bool &run,int &state) {
+float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::RectangleShape &player,sf::View &view1,sf::RenderWindow &window,bool &run,int &state) {
 
+    Textviewer death(512, view1.getSize().x, view1.getSize().y, 255);
     float decimalMove=0.25;
     bool LeftKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool RightKeyDown =sf::Keyboard::isKeyPressed(sf::Keyboard::D);
@@ -271,41 +272,47 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     for(auto &gl:skill){
         skillToErase[count]=0;
         gl->setChecked(true);
-        gl->targetSearch(vectors.getBosses(),vectors.getEnemies(),hero);
+        gl->targetSearch(vectors.getEnemies(),hero,&vectors.getBosses());
         if(gl->isTargetLost()==false||gl->getHp()<=0){
 
             gl->behaviour(*gl->getTarget());
-            for(auto &gn:skill){
+            /*for(auto &gn:skill){
                 if(!gn->isChecked()&& l2Distance(*gn,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=1){
                     gn->receiveDamage(gl->getDamage());
                     gl->receiveDamage(gn->getDamage());
                 }
-            }
+            }*/
 
             if(gl->getHp()>0&&(l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())!=0)&&isLegalMove(*gl,gl->getDirectX(),gl->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
                 gl->move((gl->getDirectX()),gl->getDirectY());
             }else{
-                if(l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
-                    gl->getTarget()->receiveDamage(gl->getDamage());
-                }
-                for(auto &gb:vectors.getEnemies()){
-                    if(gb->isTarget()==false&&l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
-                        gb->receiveDamage(gl->getDamage());
-                    }
-                }
-                for(auto &gb:vectors.getBosses()){
-                    if(gb->isTarget()==false&&l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
-                        gb->receiveDamage(gl->getDamage());
-                    }
-                }
-                gl->getTarget()->setTarget(false);
-                skillToErase[count]=1;
-                skillNumber--;
-            }
 
+                if(gl->isOstile()){
+                    if(l2Distance(hero,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                        hero.receiveDamage(gl->getDamage());
+                    }
+                }else{
+                    if((!gl->isOstile())&&l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                        gl->getTarget()->receiveDamage(gl->getDamage());
+                    }
+                    for(auto &gb:vectors.getEnemies()){
+                        if((!gl->isOstile())&&gb->isTarget()==false&&l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                            gb->receiveDamage(gl->getDamage());
+                        }
+                    }
+                    for(auto &gb:vectors.getBosses()){
+                        if((!gl->isOstile())&&gb->isTarget()==false&&l2Distance(*gb,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=gl->getRadius()){
+                            gb->receiveDamage(gl->getDamage());
+                        }
+                    }
+                }
+                    gl->getTarget()->setTarget(false);
+                    skillToErase[count]=1;
+                    skillNumber--;
+            }
         }else{
 
-            if(gl->isTargetFound()==false)
+            if(gl->isTargetFound()==false&&(!gl->isOstile()))
                 hero.setStamina(hero.getStamina()+gl->getStamConsumption());
             skillToErase[count]=1;
             skillNumber--;
@@ -357,7 +364,64 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         }
         count++;
     }
-    //todo aggiungere boss(controlare anche su spawner) controllo con skillused di entity se qualcuno usa un abilità newSkillCreated==true
+    int bossToErase[vectors.getBossNumber()];
+    count=0;
+    for(auto &gp:vectors.getBosses()){
+        bossToErase[count]=0;
+        if(gp->getHp()!=0){
+            gp->behaviour(hero);
+            if(gp->isAbilityUsed()){
+                auto skillCreated=gp->skillUse();
+                if(skillCreated!= nullptr){
+                   this->getSkill().reserve(this->getSkillNumber()+1);
+                    auto newSkill = this->getSkill().insert(this->getSkill().end(), std::move(skillCreated));
+                    this->setSkillNumber(1);
+                    this->setNewSkillCreated(true);
+                }
+            }else if(gp->isActivated()==true){
+                gp->setChecked(true);
+                if((l2Distance(hero,gp->getposX()+gp->getDirectX(),gp->getposY()+gp->getDirectY())>=1)&&isLegalMove(*gp,gp->getDirectX(),gp->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                    gp->move((gp->getDirectX()),gp->getDirectY());
+                }else  if((l2Distance(hero,gp->getposX()+gp->getDirectX(),gp->getposY())>=1)&&isLegalMove(*gp,gp->getDirectX(),0,maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                    gp->move((gp->getDirectX()),0);
+                }else  if((l2Distance(hero,gp->getposX(),gp->getposY()+gp->getDirectY())>=1)&&isLegalMove(*gp,0,gp->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
+                    gp->move(0,gp->getDirectY());
+                }
+                gp->setChecked(false);
+            }
+        }else{
+            bossToErase[count]=1;
+        }
+        count++;
+    }
+    count=0;
+    erased=0;
+    Teleport *unlockable;
+    float minDistance=1000;
+    for(auto gd:bossToErase){
+        if(gd==1){
+            if (!( vectors.getTeleports().empty())) {
+                for (auto &gc:  vectors.getTeleports()) {
+
+                    if (minDistance > l2Distance(*vectors.getBosses()[count-erased], gc->getposX(), gc->getposY())){
+                        minDistance = l2Distance(*vectors.getBosses()[count-erased], gc->getposX(), gc->getposY());
+                        unlockable = &(*gc);
+                    }
+                }
+                unlockable->setActivated(true);
+            }
+            hero.statIncrease(vectors.getBosses()[count-erased]->getStatIncrease());
+            vectors.getBosses().erase(vectors.getBosses().begin()+count-erased);
+            death.blackBox(view1.getCenter().x - (view1.getSize().x / 2), view1.getCenter().y - (view1.getSize().y / 2),
+                           " BOSS SLAIN", "", &window,
+                           true);
+            window.display();
+            sleep(3);
+            erased++;
+            vectors.setBossNumber(-1);
+        }
+        count++;
+    }
     return staminaUsed;
 }
 

@@ -13,26 +13,27 @@ void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth)
 
 int main() {
 //todo togliere metodi inutili nelle varie classi
+//todo inizializzare variabili nelle classi
     const int viewHeigth = 300;
     int numberMap=6;
     if(numberMap<1)
         numberMap=1;
 
-    int monsterNumber=20;
-    if(monsterNumber<5)
-        monsterNumber=5;
+    int monsterNumber=10;
+   /* if(monsterNumber<5)
+        monsterNumber=5;*/
 
-    int objectNumber=15;
-    if(objectNumber<10)
-        objectNumber=10;
+    int objectNumber=1;
+   /* if(objectNumber<10)
+        objectNumber=10;*/
 
-    int safezoneNumber=3;
+    int safezoneNumber=2;
     if(safezoneNumber<2)
         safezoneNumber=2;
 
-    int bossNumber=1;
-    if(bossNumber!=1)
-        bossNumber=1;
+    int bossNumber=3;
+   /* if(bossNumber!=1)
+        bossNumber=1;*/
 
     int minRooms=(bossNumber+safezoneNumber+objectNumber+monsterNumber)/2+bossNumber;
 
@@ -72,7 +73,7 @@ int main() {
     };
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try"/*,sf::Style::Fullscreen*/);
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(30);
 
     sf::Music Game;
     if (!Game.openFromFile("assets/gioco.wav"))
@@ -129,19 +130,29 @@ int main() {
     if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
         return -1;
     }
+    Game.stop();//todo
     bool change=false;
     while (window.isOpen()) {
 
         while (window.isOpen()) {
 
+         /*   sf::Time dt = clock.restart();
+
+            // Convert to seconds to do the maths
+            float dtAsSeconds = dt.asSeconds();
+
+            // For debuging, print the time to the terminal
+            // It illustrates the differences
+            std::cout << "Time step: " << dtAsSeconds << '\n';*/
             change=false;
             staminaUsed=0;
             teleportText=false;
             itemText=false;
             makeText=objectInteraction.checker(*vectors[mapIndex],*hero,itemText,safezoneText,teleportText,tutorialSafezone,
                                                tutorialItem);
-
+            game.setNewSkillCreated(false);
             deltaTime=clock.restart().asSeconds();
+            std::cout << "Time step: " << deltaTime << '\n';
             hero->setGameTime(hero->getGameTime()+0.001);
             ResizeView(window,view1,viewHeigth);
             eventControl=events.event(&window,&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,Game,map,object,teleport,safezone,&vectors[0]) ;
@@ -186,12 +197,12 @@ int main() {
                 default:
                     break;
             }
-            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,run,state);
+            staminaUsed+=game.Updater(*hero,*maps[mapIndex],*vectors[mapIndex],player,view1,window,run,state);
             obstacles.loadEnemy( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getMonsterNumber(),*vectors[mapIndex],change);
             object.loaditem( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getObjectNumber(),*vectors[mapIndex]);
             teleport.loadTeleport( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex]);
             safezone.loadSafezone( sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getSafezoneNumber(),*vectors[mapIndex]);
-            //boss.loadBoss(sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex],change);
+            boss.loadBoss(sf::Vector2u(tilesetResolution, tilesetResolution),vectors[mapIndex]->getBossNumber(),*vectors[mapIndex],change);
             hero->stamUse(staminaUsed);
             hero->recoverStam();
             player.setPosition(hero->getposX()*tilesetResolution,hero->getposY()*tilesetResolution);
@@ -210,17 +221,18 @@ int main() {
             window.draw(player);
             window.draw(safezone);
             window.draw(object);
-           // window.draw(boss);
+            window.draw(boss);
             hud.hudSow(*hero,&window,tilesetResolution,HudBarsHeigth,view1);
             float previousHp=hero->getHp();
             if(!makeText){
                 hero->notify();
+            }else{
+                objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
             }
             if(previousHp!=hero->getHp()){
                 goto respawn;
             }
-            objectInteraction.show(window,view1,makeText,itemText,tutorialItem,safezoneText,tutorialSafezone,teleportText,tutorialTeleport);
-            window.display();
+           window.display();
             sf::sleep((sf::milliseconds(120)));
         }
     }

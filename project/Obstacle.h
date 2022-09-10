@@ -12,7 +12,6 @@ public:
 
     virtual ~Obstacle();
 
-    void fight() override;
     bool isFixed() const;
     void setFixed(bool fixed);
     void setObstacleType(int obstacleType);

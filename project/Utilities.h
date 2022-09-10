@@ -37,8 +37,11 @@ bool checkEnemyPositions(float &x, float &y,u Object1= nullptr, c Object2= nullp
     if (Object1!= nullptr) {
         for (auto &gc : *Object1) {
             if(gc->getHp()>0){
-                if (abs(gc->getposY() -y)<1 && abs(gc->getposX() -x)<1)
-                    return false;
+                if (abs(gc->getposY() -y)<1 && abs(gc->getposX() -x)<1){
+                    if(!gc->isChecked()){
+                        return false;
+                    }
+                }
             }
         }
     }
@@ -149,7 +152,7 @@ int index=0;
     }
     if (Object2!= nullptr&&!( typeid(Object1[0]) == typeid(object)||typeid(Object2[0]) == typeid(object))) {
         for (auto &gc : *Object2) {
-            if (l2Distance(*gc, object->getposX(),object->getposY())<=1&&gc->getHp()>0){
+            if (l2Distance(*gc, object->getposX(),object->getposY())<=2&&gc->getHp()>0){
                 if(object->getTimeSinceDamage()==0.00){
                     object->receiveDamage(gc->getContactDamage());
                     object->setTimeSinceDamage(invulnerabilityFrame);

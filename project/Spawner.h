@@ -9,7 +9,7 @@
 #include "StaticDanger.h"
 #include "LineEnemies.h"
 #include "FollowingEnemies.h"
-#include "Boss.h"
+#include "Dreadgen.h"
 #include "Safezone.h"
 #include "Dice.h"
 #include "Item.h"

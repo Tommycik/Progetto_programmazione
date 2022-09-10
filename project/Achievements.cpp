@@ -29,7 +29,7 @@ void Achievements::update (Subject *theChangedSubject)
 }
 
 void Achievements::draw (){
-
+    Textviewer death(512, view->getSize().x, view->getSize().y, 255);
     Textviewer Achievement(128,view->getSize().x/2,view->getSize().y/6,128);
     if(_subject->getMaxHp()>=1000&&(!immortal)){
         immortal=true;
@@ -95,7 +95,6 @@ void Achievements::draw (){
         sleep(5);
     }
     if(_subject->getHp()==0) {
-        Textviewer death(512, view->getSize().x, view->getSize().y, 255);
 
         _subject->recoverHp(0);
         _subject->setDeaths(1);
@@ -103,15 +102,8 @@ void Achievements::draw (){
                        "GAME OVER", "", window,
                        true);
         window->display();
-        bool wait = false;
         sleep(3);
-        while (!wait) {
-            sf::Event event;
-            while (window->pollEvent(event)){
-                if (event.type == sf::Event::KeyPressed)
-                    wait = true;
-            }
-        }
+
     }
     this->saveAchievements();
 }

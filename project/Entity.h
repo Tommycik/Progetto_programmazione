@@ -18,7 +18,6 @@ public:
 
      virtual void behaviour(Entity &target)=0;
      virtual void tracking(Entity &target)=0;
-     virtual void fight()=0;
      virtual void move(float x, float y)=0;
      virtual void run(float x,float y)=0;
      float getHp() const;
@@ -39,6 +38,9 @@ public:
      void setActivated(bool activated);
      bool isTarget() const;
      void setTarget(bool target);
+     bool isAbilityUsed() const;
+     void setAbilityUsed(bool abilityUsed);
+     void recoverStam();
 
  protected:
 
@@ -55,6 +57,9 @@ public:
      float timeSinceDamage=0.00;
      int type=0;
      bool killable=false;
+     bool abilityUsed=false;
+     float stamina;
+     float maxStam=0;
 };
 
 

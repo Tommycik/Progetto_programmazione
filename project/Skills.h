@@ -6,7 +6,7 @@
 #define MAIN_SKILLS_H
 #include <iostream>
 #include "Obstacle.h"
-#include "Boss.h"
+
 
 class Skills :public  Entity{
 
@@ -16,9 +16,62 @@ public:
     void behaviour(Entity &target) override;
     void move(float x, float y) override;
     void run(float x,float y) override;
-    void fight() override;
     bool isOutOfRange(int posX, int posY,int initialX,int initialY);
-    void targetSearch(std::vector<std::unique_ptr<Boss>> &bosses,std::vector<std::unique_ptr<Obstacle>> &enemies,Entity &mario);
+    template <typename T>
+    void targetSearch(std::vector<std::unique_ptr<Obstacle>> &enemies,Entity &mario,T* bosses=nullptr) {
+
+        float minDistance=1000;
+        if(this->ostile==false) {
+            if (!(enemies.empty())) {
+                for (auto &gc: enemies) {
+                    if (gc->isFixed() == false && gc->getHp() > 0) {
+                        if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                            minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                            target = &(*gc);
+                        }
+                    }
+                }
+            }
+            if (!(bosses->empty())) {
+
+                for (auto &gc: *bosses) {
+                    if (gc->getHp() > 0) {
+                        if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                            minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                            target = &(*gc);
+                        }
+                    }
+                }
+            }
+            if (minDistance > range) {
+                if (!(enemies.empty())) {
+                    for (auto &gc: enemies) {
+                        if (gc->isFixed() == true && gc->getHp() > 0) {
+                            if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
+                                minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
+                                target = &(*gc);
+                            }
+                        }
+                    }
+                }
+            }
+        }else if (this->isOstile()){
+            if (minDistance > l2Distance(*this, mario.getposX(), mario.getposY())) {
+                minDistance = l2Distance(*this, mario.getposX(), mario.getposY());
+                target = &mario;
+            }
+
+        }
+        if(minDistance<=range){
+            targetLost=false;
+            targetFound=true;
+            target->setTarget(true);
+        }else{
+            target= nullptr;
+            targetLost=true;
+            damage=0;
+        }
+    }
     Entity *getTarget() const;
     bool isTargetLost() const;
     float getRadius() const;
@@ -38,6 +91,9 @@ public:
     int getDamage() const{
         return damage;
     }
+    void setOstile(bool ostile);
+    Entity *getUser() const;
+    void setUser(Entity *user);
 
 protected:
 
@@ -51,6 +107,8 @@ protected:
     bool targetLost=false;
     bool targetFound=false;
     float radius=0;
+    Entity*user;
+
 };
 
 
