@@ -22,12 +22,12 @@ private:
 
     sf::Vector2u imageCount;
     sf::Vector2u currentImage;
-    float switchTime;
-    float totalTimeIdle;
-    float totalTime;
-    float totalTimeMovement;
-    bool turn;
-    float switching;
+    float switchTime=0;
+    float totalTimeIdle=0;
+    float totalTime=0;
+    float totalTimeMovement=0;
+    bool turn=false;
+    float switching=0;
     sf::IntRect uvRect;
 };
 

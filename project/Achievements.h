@@ -21,7 +21,6 @@ public:
     void saveAchievements() const;
     bool loadAchievements();
 
-
 private:
 
     std::string fileLine;
@@ -39,7 +38,6 @@ private:
     bool wanderer=false;
     bool lionheart=false;
     bool undead=false;
-
 };
 
 
