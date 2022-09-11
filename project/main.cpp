@@ -12,7 +12,7 @@ void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth)
 }
 
 int main() {
-//todo togliere metodi inutili nelle varie classi
+//todo togliere metodi inutili nelle varie classi e ripulire da main in poi
 //todo inizializzare variabili nelle classi
 
     const int viewHeigth = 300;
