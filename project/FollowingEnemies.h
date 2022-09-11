@@ -7,7 +7,6 @@
 #include "Obstacle.h"
 
 class FollowingEnemies: public Obstacle{
-
 public:
 
     FollowingEnemies(int posX,int posY,int dungeonType);
@@ -15,10 +14,6 @@ public:
      void behaviour(Entity &target) override;
      void tracking(Entity &target) override;
      void move(float x, float y) override;
-
-private:
-
 };
-
 
 #endif //MAIN_FOLLOWINGENEMIES_H

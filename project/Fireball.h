@@ -8,7 +8,6 @@
 #include<memory.h>
 
 class Fireball:public Skills {
-
 public:
 
     Fireball( int posX, int posY,int bossKilled);
@@ -16,8 +15,6 @@ public:
     void tracking(Entity &target) override;
     void behaviour(Entity &target) override;
     void move(float x, float y) override;
-
 };
-
 
 #endif //MAIN_FIREBALL_H

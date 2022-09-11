@@ -5,7 +5,6 @@
 #ifndef MAIN_WORLD_H
 #define MAIN_WORLD_H
 #include "Mario.h"
-#include "Littlelight.h"
 #include <fstream>
 #include "Spawner.h"
 #include <SFML/Window.hpp>

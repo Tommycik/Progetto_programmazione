@@ -11,9 +11,8 @@
 #include <sstream>
 #include <iostream>
 
-class Hud {
-
-public :
+class Hud{
+public:
 
     Hud(int thickness=1);
 
@@ -22,7 +21,7 @@ public :
 
 private:
 
-    int thickness;
+    int thickness=1;
     std::stringstream ss;
     sf::RectangleShape life;
     sf::RectangleShape stamina;

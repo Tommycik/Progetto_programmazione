@@ -4,8 +4,7 @@
 
 #include "Hud.h"
 
-bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth) {
-
+bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth){
     if(!this->hpBar.loadFromFile("assets/hpBar.png"))
         return false;
     if(!this->staminaBar.loadFromFile("assets/green.png"))
@@ -31,18 +30,16 @@ bool Hud::hudSetter(Mario &player,int tilesetResolution,int &HudBarsHeigth) {
     this->Potion.setScale(sf::Vector2f(0.1,0.1));
     this->Potion.setOutlineColor(sf::Color::Black);
     this->Potion.setOutlineThickness(thickness);
-    if (!this->myFont.loadFromFile("assets/arial.ttf"))
-    {
+
+    if (!this->myFont.loadFromFile("assets/arial.ttf")){
         return false;
     }
     return true;
 }
 
- Hud::Hud(int thickness) : thickness(thickness) {
-}
+Hud::Hud(int thickness) : thickness(thickness){}
 
-bool Hud::hudSow(Mario &player, sf::RenderWindow *window,int tilesetResolution,int &HudBarsHeigth,sf::View &view1) {
-
+bool Hud::hudSow(Mario &player, sf::RenderWindow *window,int tilesetResolution,int &HudBarsHeigth,sf::View &view1){
     stamina.setSize(sf::Vector2f (player.getStamina()/10*tilesetResolution, HudBarsHeigth));
     life.setSize(sf::Vector2f (player.getHp()/10*tilesetResolution, HudBarsHeigth));
     ss << player.getPotionNum();
@@ -51,11 +48,13 @@ bool Hud::hudSow(Mario &player, sf::RenderWindow *window,int tilesetResolution,i
     life.setPosition(player.getposX()*tilesetResolution-view1.getSize().x/2,player.getposY()*tilesetResolution-view1.getSize().y/2);
     stamina.setPosition(life.getPosition().x+2,life.getPosition().y+8);
     Potion.setPosition(life.getPosition().x+3, stamina.getPosition().y+8);
+
     if(player.getPotionNum()<10){
         potionIcon.setPosition(Potion.getPosition().x+7, Potion.getPosition().y);
     }else{
         potionIcon.setPosition(Potion.getPosition().x+14, Potion.getPosition().y);
     }
+
     window->draw(life);
     window->draw(stamina);
     window->draw(Potion);

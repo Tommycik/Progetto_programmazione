@@ -7,7 +7,6 @@
 #include "Entity.h"
 #include "Subject.h"
 #include "Fireball.h"
-#include "Iceslide.h"
 #include "CrystalWall.h"
 
 class Mario :public  Entity,public Subject {

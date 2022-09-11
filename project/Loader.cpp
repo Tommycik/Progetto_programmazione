@@ -7,9 +7,11 @@
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const{
 
     if(loaded){
-        for (auto &gl:figures) {
+
+        for (auto &gl:figures){
             target.draw(*gl);
         }
+
     }else{
         states.transform *= getTransform();
         // apply the tileset texture
@@ -17,52 +19,57 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states)const{
         // draw the vertex array
         target.draw(m_vertices, states);
     }
+
 }
 
 bool TileMap::loadSafezone ( sf::Vector2u tileSize, int numItem,Spawner &creator){
-
     m_vertices.clear();
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
-    for (auto &gl : creator.getSafezones()) {
+
+    for (auto &gl : creator.getSafezones()){
         this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
     }
+
     return true;
 }
 
 bool TileMap::loadTeleport ( sf::Vector2u tileSize, int numItem,Spawner &creator){
-
     m_vertices.clear();
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
-    for (auto &gl : creator.getTeleports()) {
 
-        if(gl->isActivated()) {
+    for (auto &gl : creator.getTeleports()){
+
+        if(gl->isActivated()){
             this->loading(tileSize,gl->getTileNumber(),false,true,gl->getposY(),gl->getposX());
         }
+
     }
+
     return true;
 }
 
 bool TileMap::loaditem ( sf::Vector2u tileSize, int numItem,Spawner &creator){
-
     m_vertices.clear();
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize( numItem* 4);
     count=0;
-    for (auto &gl : creator.getItems()) {
-        if(!(gl->isTaken())) {
+
+    for (auto &gl : creator.getItems()){
+
+        if(!(gl->isTaken())){
             this->loading(tileSize,gl->getTileNumber(),false,false,gl->getposY(),gl->getposX());
         }
+
     }
+
     return true;
 }
 
-bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height)
-{
-
+bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeonarea &map, unsigned int width, unsigned int height){
     if (!m_tileset.loadFromFile(tileset))
         return false;
 
@@ -71,19 +78,23 @@ bool TileMap::loadMap(const std::string& tileset, sf::Vector2u tileSize, Dungeon
     tv=0;
     tu=0;
     count=0;
-    for (unsigned int i = 0; i < width; ++i)
+
+    for (unsigned int i = 0; i < width; ++i){
+
         for (unsigned int j = 0; j < height; ++j){
-            this->loading(tileSize,map.getTileNumber(i,j),true,false,j,i);
+            this->loading(tileSize, map.getTileNumber(i, j), true, false, j, i);
         }
+
+    }
+
     return true;
 }
 
-const sf::Texture &TileMap::getMTileset() const {
+const sf::Texture &TileMap::getMTileset() const{
     return m_tileset;
 }
 
 bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool teleport,float j,float i){
-
     float posX=i;
     float posY=j;
     int offset=1;
@@ -107,142 +118,188 @@ bool TileMap::loading (sf::Vector2u tileSize,int tileNumber,bool map,bool telepo
     return true;
 }
 
-bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,bool change) {
-
+bool TileMap::loadEnemy(sf::Vector2u tileSize, int numItem, Spawner &creator,bool change){
     count=0;
-    if(loaded==false||change) {
+
+    if(loaded==false||change){
         this->loadingChange(numItem);
         int found=false;
         std::string pass="0";
         count=0;
-        for (auto &gl: creator.getEnemies()) {
+
+        for (auto &gl: creator.getEnemies()){
             found = false;
             pass = gl->getTextureFile();
-            for (auto &gc: textureFile) {
+
+            for (auto &gc: textureFile){
+
                 if (*gc == pass) {
                     found = true;
                     break;
                 }
+
             }
-            if (!found) {
+
+            if (!found){
                 differentTextures++;
                 *textureFile[count] = pass;
                 count++;
             }
+
         }
+
         this->textureLoaded();
     }
+
     if(activeEntity!=numItem||!loaded||change){
         count=0;
         textureIndex=0;
-        if (!(this->figures.empty())) {
+
+        if (!(this->figures.empty())){
             figures.clear();
         }
+
         figures.reserve(numItem);
-        for (auto &gl: creator.getEnemies()) {
+        for (auto &gl: creator.getEnemies()){
             textureIndex=0;
+
             for(auto &gc:textureFile){
+
                 if(*gc==gl->getTextureFile()){
                     break;
                 }else{
                     textureIndex++;
                 }
+
             }
+
             this->figureCreation(*gl,tileSize,false);
         }
-    }else {
+
+    }else{
         count = 0;
-        if (numItem != 0) {
-            for (auto &gl: creator.getEnemies()) {
-                if (gl->getHp() != 0) {
+
+        if (numItem != 0){
+
+            for (auto &gl: creator.getEnemies()){
+
+                if (gl->getHp() != 0){
                     figures[count]->setPosition(sf::Vector2f(gl->getposX() * 16, gl->getposY() * 16));
                 }
+
                 count++;
             }
+
         }
+
     }
+
     activeEntity=numItem;
     loaded = true;
     return true;
 }
 
-bool TileMap::loadTexture(const std::string &tileset) {
-
+bool TileMap::loadTexture(const std::string &tileset){
     if (!m_tileset.loadFromFile(tileset))
         return false;
     return true;
 }
 
-bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::unique_ptr<Skills>> &skill, bool change) {
-
+bool TileMap::loadSkill(sf::Vector2u tileSize, int numItem, std::vector<std::unique_ptr<Skills>> &skill, bool change){
     count=0;
-    if(loaded==false||change) {
+
+    if(loaded==false||change){
         this->loadingChange(numItem);
         count=0;
         int found=false;
         std::string pass="0";
-        for (auto &gl: skill) {
+
+        for (auto &gl: skill){
             found = false;
             pass = gl->getTextureFile();
-            for (auto &gc: textureFile) {
-                if (*gc == pass) {
+
+            for (auto &gc: textureFile){
+
+                if (*gc == pass){
                     found = true;
                     break;
                 }
+
             }
-            if (!found) {
+
+            if (!found){
                 differentTextures++;
                 *textureFile[count] = pass;
                 count++;
             }
+
         }
+
         this->textureLoaded();
         activeEntity=numItem;
         loaded = true;
     }
+
     if(change){
         count=0;
         textureIndex=0;
-        if (!(this->figures.empty())) {
+
+        if (!(this->figures.empty())){
             figures.clear();
         }
+
         figures.reserve(numItem);
-        for (auto &gl: skill) {
+        for (auto &gl: skill){
             textureIndex=0;
+
             for(auto &gc:textureFile){
+
                 if(*gc==gl->getTextureFile()){
                     break;
                 }else{
                     textureIndex++;
                 }
+
             }
+
             this->figureCreation(*gl,tileSize,true);
         }
-    }else {
+
+    }else{
         count = 0;
-        if (numItem != 0) {
-            for (auto &gl: skill) {
-                if (gl->getHp() != 0) {
+
+        if (numItem != 0){
+
+            for (auto &gl: skill){
+
+                if (gl->getHp() != 0){
                     figures[count]->setPosition(sf::Vector2f(gl->getposX() * 16, gl->getposY() * 16));
                 }
+
                 count++;
             }
+
         }
+
     }
+
     return true;
 }
 
-void TileMap::loadingChange(int numItem) {
-
+void TileMap::loadingChange(int numItem){
     activeEntity=numItem;
-    if (!(this->figuresTexture.empty())) {
+
+    if (!(this->figuresTexture.empty())){
         figuresTexture.clear();
     }
-    if (!(this->textureFile.empty())) {
+
+    if (!(this->textureFile.empty())){
         textureFile.clear();
     }
+
     textureFile.reserve(numItem);
     differentTextures=0;
+
     count=0;
     for(int i=0;i<numItem;i++){
         auto newString = std::make_unique<std::string>("0");
@@ -250,31 +307,35 @@ void TileMap::loadingChange(int numItem) {
         auto newIt = textureFile.insert(itPos, std::move(newString));
         count++;
     }
+
 }
 
-void TileMap::textureLoaded() {
-
+void TileMap::textureLoaded(){
     figuresTexture.reserve(differentTextures);
+
     count = 0;
-    for (int i = 0; i < differentTextures; i++) {
+    for (int i = 0; i < differentTextures; i++){
         auto newTexture = std::make_unique<sf::Texture>();
         auto itPos = figuresTexture.begin() + count;
         auto newIt = figuresTexture.insert(itPos, std::move(newTexture));
         count++;
     }
+
     count = 0;
-    for (auto &gd: figuresTexture) {
+    for (auto &gd: figuresTexture){
+
         if (*textureFile[count] == "0") {
             gd->loadFromFile("assets/hpBar.png");
         } else {
             gd->loadFromFile(*textureFile[count]);
         }
+
         count++;
     }
+
 }
 
-void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
-
+void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill){
     int multiplier=gl.getTextureMultiplier();
     auto newEntity = std::make_unique<sf::RectangleShape>(sf::Vector2f(16.0f,16.0f));
     newEntity->setPosition(gl.getposX()*16,gl.getposY()*16);
@@ -283,8 +344,10 @@ void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
     textureSize.x/=(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier));
     textureSize.y/=(figuresTexture[textureIndex]->getSize().y / (tileSize.y*multiplier));
     newEntity->setTextureRect(sf::IntRect(textureSize.x*(gl.getTileNumber()%(figuresTexture[textureIndex]->getSize().x / (tileSize.x*multiplier))),textureSize.y*(gl.getTileNumber()/(figuresTexture[textureIndex]->getSize().y / (tileSize.x*multiplier))),textureSize.x,textureSize.y));//
+
     if(!skill){
         newEntity->setOrigin(1, 7);
+
         if(boss){
             newEntity->setScale(3, 3.5);
         }else{
@@ -292,66 +355,89 @@ void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
         }
 
     }
+
     auto itPos = figures.begin() + count;
     auto newIt = figures.insert(itPos, std::move(newEntity));
     count++;
-
 }
 
-bool TileMap::loadBoss(sf::Vector2u tileSize, int numItem, Spawner &creator, bool change) {
+bool TileMap::loadBoss(sf::Vector2u tileSize, int numItem, Spawner &creator, bool change){
     boss=true;
     count=0;
-    if(loaded==false||change) {
+
+    if(loaded==false||change){
         this->loadingChange(numItem);
         int found=false;
         std::string pass="0";
         count=0;
-        for (auto &gl: creator.getBosses()) {
+
+        for (auto &gl: creator.getBosses()){
             found = false;
             pass = gl->getTextureFile();
-            for (auto &gc: textureFile) {
-                if (*gc == pass) {
+
+            for (auto &gc: textureFile){
+
+                if (*gc == pass){
                     found = true;
                     break;
                 }
+
             }
-            if (!found) {
+
+            if (!found){
                 differentTextures++;
                 *textureFile[count] = pass;
                 count++;
             }
+
         }
+
         this->textureLoaded();
     }
+
     if(activeEntity!=numItem||!loaded||change){
         count=0;
         textureIndex=0;
-        if (!(this->figures.empty())) {
+
+        if (!(this->figures.empty())){
             figures.clear();
         }
+
         figures.reserve(numItem);
-        for (auto &gl: creator.getBosses()) {
+        for (auto &gl: creator.getBosses()){
             textureIndex=0;
+
             for(auto &gc:textureFile){
+
                 if(*gc==gl->getTextureFile()){
                     break;
                 }else{
                     textureIndex++;
                 }
+
             }
+
             this->figureCreation(*gl,tileSize,false);
         }
-    }else {
+
+    }else{
         count = 0;
-        if (numItem != 0) {
-            for (auto &gl: creator.getBosses()) {
-                if (gl->getHp() != 0) {
+
+        if (numItem != 0){
+
+            for (auto &gl: creator.getBosses()){
+
+                if (gl->getHp() != 0){
                     figures[count]->setPosition(sf::Vector2f(gl->getposX() * 16, gl->getposY() * 16));
                 }
+
                 count++;
             }
+
         }
+
     }
+
     activeEntity=numItem;
     loaded = true;
     return true;

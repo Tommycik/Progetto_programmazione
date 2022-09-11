@@ -4,8 +4,7 @@
 
 #include "Fireball.h"
 
-void Fireball::tracking(Entity &target) {
-
+void Fireball::tracking(Entity &target){
     float xDistance=0;
     float yDistance=0;
     xDistance=this->posX-target.getposX();
@@ -38,30 +37,29 @@ void Fireball::tracking(Entity &target) {
         }else if((this->posX-target.getposX())<0){
             directX=movements*1;
         }
+
         if((this->posY-target.getposY())>0){
             directY=-movements*1;
         }else if((this->posY-target.getposY())<0){
             directY=movements*1;
         }
+
     }
 }
 
-void Fireball::behaviour(Entity &target) {
-
+void Fireball::behaviour(Entity &target){
     directX=0;
     directY=0;
     tracking(target);
 }
 
-void Fireball::move(float x, float y) {
-
+void Fireball::move(float x, float y){
     posX +=x;
     posY +=y;
 }
 
 
-Fireball::Fireball( int posX, int posY,int bossKilled) {
-
+Fireball::Fireball( int posX, int posY,int bossKilled){
     this->textureMultiplier=2;
     damage=15+15*(bossKilled/2);
     radius=1.5;
@@ -69,6 +67,7 @@ Fireball::Fireball( int posX, int posY,int bossKilled) {
     int n=0;
     int i=0;
     n = 2 -0 + 1;
+
     i = rand() % n;
     if (i < 0)
         i = -i;
@@ -77,6 +76,7 @@ Fireball::Fireball( int posX, int posY,int bossKilled) {
         random++;
     }
     this->posX=posX+random;
+
     i = rand() % n;
     if (i < 0)
         i = -i;
@@ -85,6 +85,7 @@ Fireball::Fireball( int posX, int posY,int bossKilled) {
         random++;
     }
     this->posY=posY+random;
+
     movements=1;
     this->hp=1;
     this->textureFile="assets/effectsheet.png";

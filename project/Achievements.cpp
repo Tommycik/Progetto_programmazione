@@ -4,7 +4,6 @@
 
 #include "Achievements.h"
 
-
 Achievements::Achievements (Mario &hero,sf::RenderWindow &window,sf::View &view1){
     this->window=&window;
     this->view=&view1;

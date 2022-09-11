@@ -19,7 +19,7 @@ Dreadgen::Dreadgen(int posX,int posY,int dungeonType){
     this->textureFile="assets/enemies.png";
     this->killable=true;
     this->type=1;
-    this->tileNumber = 97;
+    this->tileNumber=97;
 }
 
 void Dreadgen::behaviour(Entity &target){

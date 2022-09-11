@@ -7,7 +7,6 @@
 
 #include <vector>
 #include "StaticDanger.h"
-#include "LineEnemies.h"
 #include "FollowingEnemies.h"
 #include "Dreadgen.h"
 #include "Safezone.h"
