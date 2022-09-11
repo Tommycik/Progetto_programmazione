@@ -4,15 +4,15 @@
 
 #include "Boss.h"
 
-int Boss::getStatIncrease()const{
+int Boss::getStatIncrease() const {
     return statIncrease;
 }
 
-void Boss::setStatIncrease(int statIncrease){
+void Boss::setStatIncrease(int statIncrease) {
     Boss::statIncrease = statIncrease;
 }
 
-void Boss::run(float x, float y){}
+void Boss::run(float x, float y) {}
 
 
 

@@ -4,6 +4,7 @@
 
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
+
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -18,7 +19,8 @@ public:
     Menu(sf::RenderWindow *window);
 
     bool load();
-    bool show(sf::RenderWindow *window,int &numberMap,std::string *saves,std::string *savesVec);
+
+    bool show(sf::RenderWindow *window, int &numberMap, std::string *saves, std::string *savesVec);
 
 private:
 
@@ -26,7 +28,7 @@ private:
     sf::RectangleShape quit;
     sf::RectangleShape newGame;
     sf::RectangleShape play;
-    sf::Texture resume,restart,exit,back;
+    sf::Texture resume, restart, exit, back;
     sf::Music menu;
     std::ifstream on;
 };

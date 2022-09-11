@@ -6,10 +6,10 @@
 
 Safezone::Safezone(int posX, int posY) {
 
-    this->movements=0;
-    this->posX=posX;
-    this->posY=posY;
-    this->tileNumber =42*3;
+    this->movements = 0;
+    this->posX = posX;
+    this->posY = posY;
+    this->tileNumber = 42 * 3;
 }
 
 bool Safezone::isUsed() const {

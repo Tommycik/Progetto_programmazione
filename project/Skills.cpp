@@ -22,7 +22,7 @@ bool Skills::isOstile() const {
 
 bool Skills::isOutOfRange(int posX, int posY, int initialX, int initialY) {
 
-    if (abs(posX - startX) +(abs(posY - startY) >= this->range))
+    if (abs(posX - startX) + (abs(posY - startY) >= this->range))
         return true;
 
     return false;

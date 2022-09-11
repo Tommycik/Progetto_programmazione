@@ -4,22 +4,26 @@
 
 #ifndef MAIN_OBSTACLE_H
 #define MAIN_OBSTACLE_H
+
 #include "Entity.h"
 
-class Obstacle: public Entity {
+class Obstacle : public Entity {
 
 public:
 
     virtual ~Obstacle();
 
     bool isFixed() const;
+
     void setFixed(bool fixed);
+
     void setObstacleType(int obstacleType);
+
     void run(float x, float y) override;
 
 protected:
 
-    bool fixed=true;
+    bool fixed = true;
 };
 
 

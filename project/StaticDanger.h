@@ -4,16 +4,19 @@
 
 #ifndef MAIN_STATICDANGER_H
 #define MAIN_STATICDANGER_H
+
 #include "Obstacle.h"
 
-class StaticDanger :public Obstacle{
+class StaticDanger : public Obstacle {
 
 public:
 
-    StaticDanger( int posX, int posY, int dungeonType);
+    StaticDanger(int posX, int posY, int dungeonType);
 
     void behaviour(Entity &target) override;
+
     void tracking(Entity &target) override;
+
     void move(float x, float y) override;
 
 private:

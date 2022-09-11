@@ -4,24 +4,29 @@
 
 #ifndef MAIN_SUBJECT_H
 #define MAIN_SUBJECT_H
+
 #include "Observer.h"
 #include <vector>
 
 class Observer;
+
 class Subject {
 
 public:
 
     Subject() {};
+
     virtual ~Subject() {};
 
-    virtual void attach(Observer* newObserver);
-    virtual void detach(Observer* newObserver);
+    virtual void attach(Observer *newObserver);
+
+    virtual void detach(Observer *newObserver);
+
     virtual void notify();
 
 private:
 
-    std::vector<Observer*> _observers;
+    std::vector<Observer *> _observers;
 };
 
 
