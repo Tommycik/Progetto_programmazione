@@ -5,7 +5,6 @@
 #include "Achievements.h"
 #include "SkillManager.h"
 
-
 void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(viewHeigth * aspectRatio, viewHeigth);
