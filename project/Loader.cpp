@@ -286,7 +286,7 @@ void TileMap::figureCreation(Entity &gl,sf::Vector2u tileSize,bool skill) {
     if(!skill){
         newEntity->setOrigin(1, 7);
         if(boss){
-            newEntity->setScale(2, 2.5);
+            newEntity->setScale(3, 3.5);
         }else{
             newEntity->setScale(1.2, 1.5);
         }

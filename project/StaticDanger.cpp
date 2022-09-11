@@ -47,7 +47,7 @@ int random=1;
             }
             break;
 
-        case 2://todo aggiungere cristalli
+        case 2:
             n = 4 - 1 + 1;
             i = rand() % n;
             if (i < 0)

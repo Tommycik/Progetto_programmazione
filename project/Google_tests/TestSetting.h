@@ -25,10 +25,10 @@ public:
 
 protected:
 
-    int monsterNumber=10;
+    int monsterNumber=2;
     int objectNumber=5;
     int safezoneNumber=3;
-    int bossNumber=1;
+    int bossNumber=3;
     int numberMap=2;
     int mapIndex=0;
     int minRoomsNumber=(bossNumber+monsterNumber+objectNumber+safezoneNumber)/2+bossNumber;

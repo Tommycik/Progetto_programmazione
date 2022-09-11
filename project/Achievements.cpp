@@ -52,7 +52,7 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getGameTime()>10&&(!oldMan)){
+    if(_subject->getGameTime()>600&&(!oldMan)){
         oldMan=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,OldMan","You have played for quite a while",window,
                              false);
@@ -66,7 +66,7 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getPotionTaken()>=2&&(!cargo)){
+    if(_subject->getPotionTaken()>=30&&(!cargo)){
         cargo=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Cargo","Pick-up 30 or more potion",window,
                              false);
@@ -80,14 +80,14 @@ void Achievements::draw (){
         window->display();
         sleep(5);
     }
-    if(_subject->getSafezoneUsed()>=1&&(!lionheart)){
+    if(_subject->getSafezoneUsed()>=20&&(!lionheart)){
         lionheart=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Lionheart","Use a safezone 20 or more times",window,
                              false);
         window->display();
         sleep(5);
     }
-    if(_subject->getDeaths()>=1&&(!undead)){
+    if(_subject->getDeaths()>=100&&(!undead)){
         undead=true;
         Achievement.blackBox(view->getCenter().x-(view->getSize().x/4),view->getCenter().y+(view->getSize().y/6),"Achievement unlocked,Undead","Die 100 or more times,you must be having fun",window,
                              false);

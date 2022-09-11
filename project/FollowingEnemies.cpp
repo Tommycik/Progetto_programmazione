@@ -79,7 +79,6 @@ FollowingEnemies::FollowingEnemies(int posX, int posY, int dungeonType){
     this->movements=1;
     this->posX=posX;
     this->posY=posY;
-//todo fare in modo che se i nemici si girano a destra si giri anche la texture
     this->textureFile="assets/enemies.png";
     this->killable=true;
     this->type=2;

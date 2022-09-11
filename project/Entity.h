@@ -28,8 +28,8 @@ public:
      float getDirectY() const;
      bool isChecked() const;
      void setChecked(bool checked);
-     float getTimeSinceDamage() const;
-     void setTimeSinceDamage(float timeSinceDamage);
+     double getTimeSinceDamage() const;
+     void setTimeSinceDamage(double timeDamage);
      int getType() const;
      int getSkillUsed() const;
      bool isKillable() const;
@@ -54,13 +54,18 @@ public:
      float directX=0;
      float directY=0;
      bool checked=false;
-     float timeSinceDamage=0.00;
+     double timeSinceDamage=0;
      int type=0;
      bool killable=false;
      bool abilityUsed=false;
      float stamina;
      float maxStam=0;
-};
+     float invulnerabilityFrame=0.5;
+ public:
+     float getInvulnerabilityFrame() const;
+
+     void setInvulnerabilityFrame(float invulnerabilityFrame);
+ };
 
 
 #endif //MAIN_ENTITY_H

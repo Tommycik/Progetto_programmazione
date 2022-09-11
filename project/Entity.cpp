@@ -37,12 +37,12 @@ bool Entity::isChecked() const {
 void Entity::setChecked(bool checked) {
     Entity::checked = checked;
 }
-float Entity::getTimeSinceDamage() const {
+double Entity::getTimeSinceDamage() const {
     return timeSinceDamage;
 }
 
-void Entity::setTimeSinceDamage(float timeSinceDamage) {
-    Entity::timeSinceDamage += timeSinceDamage;
+void Entity::setTimeSinceDamage(double timeDamage) {
+    this->timeSinceDamage = timeDamage;
 }
 
 int Entity::getType() const {
@@ -88,4 +88,12 @@ void Entity::setAbilityUsed(bool abilityUsed) {
 void Entity::recoverStam() {
     if(this->stamina<=this->maxStam-(this->maxStam/80))
         this->stamina += (this->maxStam/80);
+}
+
+float Entity::getInvulnerabilityFrame() const {
+    return invulnerabilityFrame;
+}
+
+void Entity::setInvulnerabilityFrame(float invulnerabilityFrame) {
+    Entity::invulnerabilityFrame = invulnerabilityFrame;
 }

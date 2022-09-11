@@ -261,10 +261,6 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
             hero.setposX(startX);
             hero.setposY(startY);
         }
-    }else{
-        if(hero.getTimeSinceDamage()!=0.00){
-            hero.setTimeSinceDamage(-1);
-        }
     }
     count=0;
     int skillToErase[skillNumber];
@@ -276,12 +272,12 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         if(gl->isTargetLost()==false||gl->getHp()<=0){
 
             gl->behaviour(*gl->getTarget());
-            /*for(auto &gn:skill){
+            for(auto &gn:skill){
                 if(!gn->isChecked()&& l2Distance(*gn,gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())<=1){
                     gn->receiveDamage(gl->getDamage());
                     gl->receiveDamage(gn->getDamage());
                 }
-            }*/
+            }
 
             if(gl->getHp()>0&&(l2Distance(*gl->getTarget(),gl->getposX()+gl->getDirectX(),gl->getposY()+gl->getDirectY())!=0)&&isLegalMove(*gl,gl->getDirectX(),gl->getDirectY(),maps,&vectors.getBosses(),&vectors.getItems(),&vectors.getEnemies(),&vectors.getTeleports())){
                 gl->move((gl->getDirectX()),gl->getDirectY());
@@ -403,7 +399,7 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
             if (!( vectors.getTeleports().empty())) {
                 for (auto &gc:  vectors.getTeleports()) {
 
-                    if (minDistance > l2Distance(*vectors.getBosses()[count-erased], gc->getposX(), gc->getposY())){
+                    if (minDistance > l2Distance(*vectors.getBosses()[count-erased], gc->getposX(), gc->getposY())&&!(gc->isActivated())){
                         minDistance = l2Distance(*vectors.getBosses()[count-erased], gc->getposX(), gc->getposY());
                         unlockable = &(*gc);
                     }

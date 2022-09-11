@@ -30,7 +30,7 @@ std::vector<std::unique_ptr<Boss>> &Spawner::getBosses()  {
     return bosses;
 }
 
-void Spawner::create(bool loading ,Dungeonarea &map) {//todo la creazione dei boss dipende da mapIndex
+void Spawner::create(bool loading ,Dungeonarea &map) {
 
     if (!(this->bosses.empty())) {
         bosses.clear();

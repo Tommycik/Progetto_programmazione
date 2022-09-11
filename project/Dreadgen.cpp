@@ -67,7 +67,7 @@ void Dreadgen::behaviour(Entity &target) {
                 default:
 
                     abilityUsed= true;
-                    skillType=2;
+                    skillType=1;
                     break;
             }
         }
@@ -130,20 +130,20 @@ std::unique_ptr<Skills> Dreadgen::skillUse() {
             auto newSkill = std::make_unique<Fireball>(this->getposX(), this->getposY(), dungeonNumber*2);
             newSkill->setOstile(true);
             newSkill->setUser(this);
-            this->stamina-=newSkill->getStamConsumption()*2;
+            this->stamina-=newSkill->getStamConsumption();
             return newSkill;
         }
         case 2:{
             auto newSkill = std::make_unique<CrystalWall>(this->getposX(), this->getposY(), dungeonNumber);
             newSkill->setUser(this);
-            this->stamina-=newSkill->getStamConsumption()*2;
+            this->stamina-=newSkill->getStamConsumption();
             return newSkill;
         };
         default:{
             auto newSkill = std::make_unique<Fireball>(this->getposX(), this->getposY(), dungeonNumber*2);
             newSkill->setUser(this);
             newSkill->setOstile(true);
-            this->stamina-=newSkill->getStamConsumption()*2;
+            this->stamina-=newSkill->getStamConsumption();
             return newSkill;
         }
     }

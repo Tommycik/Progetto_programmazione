@@ -7,6 +7,7 @@
 //#include <cstdlib>
 #include <cmath>
 #include <typeinfo>
+#include <SFML/System.hpp>
 
 template <typename T, typename U>
 float l1Distance(const T &p, const U &q) {
@@ -101,7 +102,7 @@ bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2
 
                     if (Object1!= nullptr) {
                         for (auto &gc : *Object1) {
-                            if (l2Distance(*gc, x,y)<30)
+                            if (l2Distance(*gc, x,y)<45)
                                 found=false;
                         }
                     }
@@ -113,7 +114,7 @@ bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2
                     }
                     if (Object3!= nullptr) {
                         for (auto &gc : *Object3) {
-                            if (l2Distance(*gc, x,y)<10)
+                            if (l2Distance(*gc, x,y)<20)
                                 found=false;
                         }
                     }
@@ -136,26 +137,26 @@ bool findFreeMapTile(float &x, float &y, T &map, u* Object1= nullptr, c* Object2
 template<typename T,typename u,typename c,typename d>
 int legalDamage(const T &object, u* Object1= nullptr, c* Object2= nullptr, d* Object3= nullptr) {
 
-float invulnerabilityFrame=5;
-bool erased=false;
-int index=0;
+    bool erased=false;
+    int index=0;
+
 
     if (Object1!= nullptr&&!( typeid(Object1[0]) == typeid(object)||typeid(Object2[0]) == typeid(object))) {
         for (auto &gc : *Object1) {
-            if (l2Distance(*gc, object->getposX(),object->getposY())<=1&&gc->getHp()>0&&!(gc->isChecked())){
-                    if(object->getTimeSinceDamage()==0.00&&(!gc->isFixed())){
+            if (l2Distance(*gc, object->getposX(),object->getposY())<=1.5&&gc->getHp()>0&&!(gc->isChecked())){
+                    if(object->getTimeSinceDamage()>=object->getInvulnerabilityFrame()&&(!gc->isFixed())){
                         object->receiveDamage(gc->getContactDamage());
-                        object->setTimeSinceDamage(invulnerabilityFrame);
+                        object->setTimeSinceDamage(0);
                     }
             }
         }
     }
     if (Object2!= nullptr&&!( typeid(Object1[0]) == typeid(object)||typeid(Object2[0]) == typeid(object))) {
         for (auto &gc : *Object2) {
-            if (l2Distance(*gc, object->getposX(),object->getposY())<=2&&gc->getHp()>0){
-                if(object->getTimeSinceDamage()==0.00){
+            if (l2Distance(*gc, object->getposX(),object->getposY())<=3.5&&gc->getHp()>0){
+                if(object->getTimeSinceDamage()>=object->getInvulnerabilityFrame()){
                     object->receiveDamage(gc->getContactDamage());
-                    object->setTimeSinceDamage(invulnerabilityFrame);
+                    object->setTimeSinceDamage(0);
                     }
             }
         }

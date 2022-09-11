@@ -14,16 +14,17 @@ void ResizeView(const sf::RenderWindow &window, sf::View &view,float viewHeigth)
 int main() {
 //todo togliere metodi inutili nelle varie classi
 //todo inizializzare variabili nelle classi
+
     const int viewHeigth = 300;
     int numberMap=6;
     if(numberMap<1)
         numberMap=1;
 
-    int monsterNumber=10;
+    int monsterNumber=15;
    /* if(monsterNumber<5)
         monsterNumber=5;*/
 
-    int objectNumber=1;
+    int objectNumber=20;
    /* if(objectNumber<10)
         objectNumber=10;*/
 
@@ -31,7 +32,7 @@ int main() {
     if(safezoneNumber<2)
         safezoneNumber=2;
 
-    int bossNumber=3;
+    int bossNumber=1;
    /* if(bossNumber!=1)
         bossNumber=1;*/
 
@@ -73,7 +74,8 @@ int main() {
     };
 
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try"/*,sf::Style::Fullscreen*/);
-    window.setFramerateLimit(30);
+    //window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(120);
 
     sf::Music Game;
     if (!Game.openFromFile("assets/gioco.wav"))
@@ -126,24 +128,15 @@ int main() {
     float deltaTime=0.0f;
     int eventControl=0;
     Events events;
-    Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.2);
+    Animation animationPlayer(&playerTexture,sf::Vector2u (4,4),0.20);
     if (!map.loadMap("assets/Textures-16.png", sf::Vector2u(tilesetResolution, tilesetResolution), *maps[mapIndex], maps[mapIndex]->getWidth(), maps[mapIndex]->getHeight())){
         return -1;
     }
-    Game.stop();//todo
     bool change=false;
     while (window.isOpen()) {
 
         while (window.isOpen()) {
 
-         /*   sf::Time dt = clock.restart();
-
-            // Convert to seconds to do the maths
-            float dtAsSeconds = dt.asSeconds();
-
-            // For debuging, print the time to the terminal
-            // It illustrates the differences
-            std::cout << "Time step: " << dtAsSeconds << '\n';*/
             change=false;
             staminaUsed=0;
             teleportText=false;
@@ -151,9 +144,10 @@ int main() {
             makeText=objectInteraction.checker(*vectors[mapIndex],*hero,itemText,safezoneText,teleportText,tutorialSafezone,
                                                tutorialItem);
             game.setNewSkillCreated(false);
-            deltaTime=clock.restart().asSeconds();
             std::cout << "Time step: " << deltaTime << '\n';
-            hero->setGameTime(hero->getGameTime()+0.001);
+            hero->setGameTime(hero->getGameTime()+deltaTime);
+            hero->setTimeSinceDamage(hero->getTimeSinceDamage()+deltaTime);
+            deltaTime=clock.restart().asSeconds();
             ResizeView(window,view1,viewHeigth);
             eventControl=events.event(&window,&names[0],&savesVec[0],*hero,tutorialItem,tutorialSafezone,tutorialTeleport,mapIndex,numberMap,game,Game,map,object,teleport,safezone,&vectors[0]) ;
 
