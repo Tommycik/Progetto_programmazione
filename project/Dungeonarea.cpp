@@ -4,7 +4,6 @@
 
 #include "Dungeonarea.h"
 
-
 Dungeonarea::Dungeonarea(long oldseed,int maxLength, int maxHeigth, int minRoomWidth, int minRoomHeight,int maxRoomWidth,int maxRoomHeight,
                          int mapType, int parts, int xMin, int yMin, std::string name,
 std::string save,int minRooms) : xMax(maxLength),yMax(maxHeigth),minRoomWidth(minRoomWidth),minRoomHeight(minRoomHeight),
@@ -21,15 +20,13 @@ parts(parts), xMin(xMin),yMin(yMin),maxRoomHeight(maxRoomHeight),maxRoomWidth(ma
     i = rand() % n;
     if (i < 0)
         i = -i;
-
     random=60 + i;
     this->chanceRoom=random;
 }
 
 
 Dungeonarea::~Dungeonarea() {
-
-    if (!(this->tiles.empty())) {
+    if (!(this->tiles.empty())){
         tiles.clear();
     }
 }
@@ -37,7 +34,6 @@ Dungeonarea::~Dungeonarea() {
 int Dungeonarea::getRand(int min, int max) {
     long seed = time(NULL) + oldseed;
     this->oldseed = seed;
-
     srand(seed);
     int n = max - min + 1;
     int i = rand() % n; // 0 < i < n
@@ -322,12 +318,6 @@ bool Dungeonarea::createDungeon() {
         height = yMax;
     else
         height = yLength;
-    /*float total=width*height;
-    if(total!=(parts/100)*maxRoomWidth*maxRoomHeight*2){
-        total=(parts/100)*maxRoomWidth*maxRoomHeight*2;
-        width= sqrt(total);
-        height= sqrt(total);
-    }*/
 do{
 
     this->tiles.clear();
@@ -462,7 +452,7 @@ do{
 
 }
 
-TileType Dungeonarea::getcell(int x, int y) const {
+TileType Dungeonarea::getcell(int x, int y) const{
     return tiles[x + width * y]->getType();
 }
 
@@ -471,62 +461,61 @@ bool Dungeonarea::isLegalCell(int x, int y) const{
 
 }
 
-const std::string &Dungeonarea::getName() const {
+const std::string &Dungeonarea::getName() const{
     return name;
 }
 
-void Dungeonarea::setName(const std::string &name) {
+void Dungeonarea::setName(const std::string &name){
     this->name = name;
 }
 
-const std::string &Dungeonarea::getSave() const {
+const std::string &Dungeonarea::getSave() const{
     return save;
 }
 
-void Dungeonarea::setSave(const std::string &save) {
+void Dungeonarea::setSave(const std::string &save){
     this->save = save;
 }
 
-void Dungeonarea::saveMap(std::string mapSaveName) {
+void Dungeonarea::saveMap(std::string mapSaveName){
 
-   out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-   // try {
-        out.open(mapSaveName,std::ios_base::trunc);
-        out << name << std::endl;
-        out << width << "\n" << height << "\n"<<dungeonType<< "\n"<<rooms<< "\n"<<maxRoomHeight<< "\n"<<maxRoomWidth<<std::endl;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                out << TileTypeToTileString(this->getcell(x, y));
-            }
-            out << std::endl;
+    out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+    out.open(mapSaveName,std::ios_base::trunc);
+    out << name << std::endl;
+    out << width << "\n" << height << "\n"<<dungeonType<< "\n"<<rooms<< "\n"<<maxRoomHeight<< "\n"<<maxRoomWidth<<std::endl;
+
+    for (int y = 0; y < height; y++){
+
+        for (int x = 0; x < width; x++){
+            out << TileTypeToTileString(this->getcell(x, y));
         }
-        out.close();
-    //}
+
+        out << std::endl;
+    }
+    out.close();
 }
 
-void Dungeonarea::setcell(int x, int y, TileType type) const {
+void Dungeonarea::setcell(int x, int y, TileType type) const{
     tiles[x + width * y]->setType(type,this->dungeonType);
 }
 
-bool Dungeonarea::loadMap(std::string fileName,std::string name) {
-
+bool Dungeonarea::loadMap(std::string fileName,std::string name){
     ip.exceptions(std::ifstream::failbit);
-    try {
-        ip.open(fileName);
-    } catch (std::ios_base::failure& e) {
 
-       return false;
+    try{
+        ip.open(fileName);
+    } catch (std::ios_base::failure& e){
+        return false;
     }
+
     std::string fileLine=" ";
     std::getline(ip, fileLine);
     if (fileLine.compare(name) != 0)
         throw GameFileException("Map file is ip wrong format", fileName, true);
 
     std::getline(ip, fileLine);
-
     width = std::stoi(fileLine);
     std::getline(ip, fileLine);
-
     height = std::stoi(fileLine);
     std::getline(ip, fileLine);
     dungeonType = std::stoi(fileLine);
@@ -539,33 +528,37 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
     std::getline(ip, fileLine);
     int y = 0;
     char c;
-
     this->tiles.clear();
     this->tiles.reserve(width * height);
+
     for(int i=0;i<width * height;i++){
         auto newTile = std::make_unique<Tile>();
         tiles.emplace_back(std::move(newTile));
     }
 
-    while(!ip.eof() /*&& std::getline(ip, fileLine)*/) {
-        for (int x = 0; x < width; x++) {
-            try {
+    while(!ip.eof()){
 
+        for (int x = 0; x < width; x++){
+
+            try{
                 c=fileLine.at(x);
                 TileType cellType = TileStringToTileType(c);
                 tiles[x+width*y]->setType(cellType,this->dungeonType);
-
-            } catch (std::out_of_range &e) {
+            } catch (std::out_of_range &e){
                 throw std::out_of_range("Can not set map tile at x: " + std::to_string(x)+" - y: " + std::to_string(y));
             }
+
         }
 
         y++;
         if(y==height){
             break;
         }else{
-        std::getline(ip, fileLine);}
+            std::getline(ip, fileLine);
+        }
+
     }
+
     if (y!=height)
         throw std::runtime_error("Map height size wrong. Expected "+std::to_string(height)+" but read: " + std::to_string(y));
 
@@ -573,23 +566,23 @@ bool Dungeonarea::loadMap(std::string fileName,std::string name) {
     return true;
 }
 
-long Dungeonarea::getOldseed() const {
+long Dungeonarea::getOldseed() const{
     return oldseed;
 }
 
-void Dungeonarea::setOldseed(long oldseed) {
+void Dungeonarea::setOldseed(long oldseed){
     this->oldseed = oldseed;
 }
 
-int Dungeonarea::getDungeonType() const {
+int Dungeonarea::getDungeonType() const{
     return dungeonType;
 }
 
-int Dungeonarea::getRooms() const {
+int Dungeonarea::getRooms() const{
     return rooms;
 }
 
-bool Dungeonarea::getPassable(float futureX,float futureY) const {
+bool Dungeonarea::getPassable(float futureX,float futureY) const{
     bool halfY = false;
     bool halfX = false;
     bool quarterX = false;
@@ -602,74 +595,74 @@ bool Dungeonarea::getPassable(float futureX,float futureY) const {
     int passingY = yPass % 4;
     float finalX = 0;
     float finalY = 0;
-    if (passingX * 0.25 != 0) {
-        if (passingX * 0.25 <= 0.25) {
+
+    if(passingX * 0.25 != 0){
+
+        if(passingX * 0.25 <= 0.25){
             quarterX = true;
-            //futureX=futureX-passingX*0.25;
-        } else if (passingX * 0.25 >= 0.75) {
+        }else if(passingX * 0.25 >= 0.75){
             finalX = 1 - passingX * 0.25;
             futureX = futureX + finalX;
-        } else if (passingX * 0.25 == 0.50) {
+        }else if (passingX * 0.25 == 0.50){
             halfX = true;
         }
+
     }
 
-        if (passingY * 0.25 != 0) {
-            if (passingY * 0.25 <= 0.25) {
-                quarterY = true;
+    if(passingY * 0.25 != 0){
 
-            } else if (passingY * 0.25 >= 0.75) {
-                finalY = 1 - passingY * 0.25;
-                futureY = futureY + finalY;
-            } else if (passingY * 0.25 == 0.50) {
-                halfY = true;
-
-            }
-
+        if(passingY * 0.25 <= 0.25){
+            quarterY = true;
+        }else if (passingY * 0.25 >= 0.75){
+            finalY = 1 - passingY * 0.25;
+            futureY = futureY + finalY;
+        }else if (passingY * 0.25 == 0.50){
+            halfY = true;
         }
 
-        if (halfX == false && halfY == false) {
+    }
 
-            if (quarterX == true && quarterY == false) {
-                return (tiles[futureX + 0.25 + width * (futureY)]->isPassable() &&
-                        tiles[futureX - 0.25 + width * (futureY)]->isPassable());
-            } else if (quarterX == false && quarterY == true) {
-                return (tiles[futureX + width * (futureY + 0.25)]->isPassable() &&
-                        tiles[futureX + width * (futureY - 0.25)]->isPassable());
-            } else if (quarterX == true && quarterY == true) {
-                return (tiles[futureX + 0.25 + width * (futureY + 0.25)]->isPassable() &&
-                        tiles[futureX - 0.25 + width * (futureY - 0.25)]->isPassable() &&
-                        tiles[futureX + 0.25 + width * (futureY - 0.25)]->isPassable() &&
-                        tiles[futureX - 0.25 + width * (futureY + 0.25)]->isPassable());
+    if(halfX == false && halfY == false){
 
-            }
-            return tiles[futureX + width * futureY]->isPassable();
-        } else if (halfX == true && halfY == false) {
-
-            if (quarterY == true) {
-                return (tiles[futureX + 0.5 + width * (futureY + 0.25)]->isPassable() &&
-                        tiles[futureX - 0.5 + width * (futureY - 0.25)]->isPassable());
-            }
-
-            return (tiles[futureX + 0.5 + width * (futureY)]->isPassable() &&
-                    tiles[futureX - 0.5 + width * (futureY)]->isPassable());
-
-        } else if (halfX == false && halfY == true) {
-
-            if (quarterX == true) {
-                return (tiles[futureX + 0.25 + width * (futureY + 0.5)]->isPassable() &&
-                        tiles[futureX - 0.25 + width * (futureY - 0.5)]->isPassable());
-            }
-            return (tiles[futureX + width * (futureY + 0.5)]->isPassable() &&
-                    tiles[futureX + width * (futureY - 0.5)]->isPassable());
-        } else if (halfX == true && halfY == true) {
-            return (tiles[futureX + 0.5 + width * (futureY + 0.5)]->isPassable() &&
-                    tiles[futureX - 0.5 + width * (futureY - 0.5)]->isPassable() &&
-                    tiles[futureX + 0.5 + width * (futureY - 0.5)]->isPassable() &&
-                    tiles[futureX - 0.5 + width * (futureY + 0.5)]->isPassable());
-
+        if(quarterX == true && quarterY == false){
+            return (tiles[futureX + 0.25 + width * (futureY)]->isPassable() &&
+                    tiles[futureX - 0.25 + width * (futureY)]->isPassable());
+        } else if(quarterX == false && quarterY == true){
+            return (tiles[futureX + width * (futureY + 0.25)]->isPassable() &&
+                    tiles[futureX + width * (futureY - 0.25)]->isPassable());
+        } else if(quarterX == true && quarterY == true){
+            return (tiles[futureX + 0.25 + width * (futureY + 0.25)]->isPassable() &&
+                    tiles[futureX - 0.25 + width * (futureY - 0.25)]->isPassable() &&
+                    tiles[futureX + 0.25 + width * (futureY - 0.25)]->isPassable() &&
+                    tiles[futureX - 0.25 + width * (futureY + 0.25)]->isPassable());
         }
+        return tiles[futureX + width * futureY]->isPassable();
 
+    }else if(halfX == true && halfY == false){
+
+        if(quarterY == true){
+            return (tiles[futureX + 0.5 + width * (futureY + 0.25)]->isPassable() &&
+                    tiles[futureX - 0.5 + width * (futureY - 0.25)]->isPassable());
+        }
+        return (tiles[futureX + 0.5 + width * (futureY)]->isPassable() &&
+                tiles[futureX - 0.5 + width * (futureY)]->isPassable());
+
+    }else if(halfX == false && halfY == true){
+
+        if (quarterX == true) {
+            return (tiles[futureX + 0.25 + width * (futureY + 0.5)]->isPassable() &&
+                    tiles[futureX - 0.25 + width * (futureY - 0.5)]->isPassable());
+        }
+        return (tiles[futureX + width * (futureY + 0.5)]->isPassable() &&
+                tiles[futureX + width * (futureY - 0.5)]->isPassable());
+
+    }else if(halfX == true && halfY == true){
+        return (tiles[futureX + 0.5 + width * (futureY + 0.5)]->isPassable() &&
+                tiles[futureX - 0.5 + width * (futureY - 0.5)]->isPassable() &&
+                tiles[futureX + 0.5 + width * (futureY - 0.5)]->isPassable() &&
+                tiles[futureX - 0.5 + width * (futureY + 0.5)]->isPassable());
+
+    }
 }
 
 bool Dungeonarea::getSpawnPlace(int x ,int y) const{
@@ -701,10 +694,10 @@ TileType TileStringToTileType(const char &tile){
             return TileType::pebble;
         default:
             return TileType::Unused;
-    };
+    }
 }
 
-std::string TileTypeToTileString(const TileType &tile)  {
+std::string TileTypeToTileString(const TileType &tile){
     switch (tile) {
         case TileType::Unused:
             return "u";
@@ -724,5 +717,5 @@ std::string TileTypeToTileString(const TileType &tile)  {
             return ">";
         default:
             return "u";
-    };
+    }
 }

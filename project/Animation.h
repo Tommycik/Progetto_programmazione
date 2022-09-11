@@ -9,7 +9,6 @@
 #include "Dungeonarea.h"
 
 class Animation{
-
 public:
 
     Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime);
@@ -30,6 +29,5 @@ private:
     float switching=0;
     sf::IntRect uvRect;
 };
-
 
 #endif //MAIN_ANIMATION_H

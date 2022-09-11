@@ -10,11 +10,10 @@
 #include <iostream>
 #include <random>
 
- class Entity : public  Object  {
-
+ class Entity : public  Object{
 public:
 
-     virtual ~Entity() { }
+     virtual ~Entity(){}
 
      virtual void behaviour(Entity &target)=0;
      virtual void tracking(Entity &target)=0;
@@ -41,6 +40,8 @@ public:
      bool isAbilityUsed() const;
      void setAbilityUsed(bool abilityUsed);
      void recoverStam();
+     float getInvulnerabilityFrame() const;
+     void setInvulnerabilityFrame(float invulnerabilityFrame);
 
  protected:
 
@@ -58,14 +59,9 @@ public:
      int type=0;
      bool killable=false;
      bool abilityUsed=false;
-     float stamina;
+     float stamina=0;
      float maxStam=0;
      float invulnerabilityFrame=0.5;
- public:
-     float getInvulnerabilityFrame() const;
-
-     void setInvulnerabilityFrame(float invulnerabilityFrame);
  };
-
 
 #endif //MAIN_ENTITY_H

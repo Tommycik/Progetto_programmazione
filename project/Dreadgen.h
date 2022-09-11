@@ -8,8 +8,7 @@
 #include "Fireball.h"
 #include "CrystalWall.h"
 
-class Dreadgen: public Boss {
-
+class Dreadgen: public Boss{
 public:
 
     Dreadgen(int posX,int posY,int dungeonType);
@@ -18,8 +17,6 @@ public:
     void behaviour(Entity &target) override;
     void move(float x, float y) override;
     std::unique_ptr<Skills> skillUse() override;
-
 };
-
 
 #endif //MAIN_DREADGEN_H

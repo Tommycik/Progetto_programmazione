@@ -9,13 +9,11 @@
 
 int Dice::numRolls = 0;
 
-Dice::Dice(int f) : faces(f) {
-
+Dice::Dice(int f) : faces(f){
     srand(time(0));
 }
 
-
-int Dice::roll(int r) {
+int Dice::roll(int r){
     int result = 0;
 
     if ((numRolls % maxRolls) == 0)

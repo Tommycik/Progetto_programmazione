@@ -5,7 +5,6 @@
 #include "Dreadgen.h"
 
 Dreadgen::Dreadgen(int posX,int posY,int dungeonType){
-
     this->hp=150+30*dungeonType;
     this->maxStam=100;
     this->stamina=this->maxStam/2;
@@ -23,8 +22,7 @@ Dreadgen::Dreadgen(int posX,int posY,int dungeonType){
     this->tileNumber = 97;
 }
 
-void Dreadgen::behaviour(Entity &target) {
-
+void Dreadgen::behaviour(Entity &target){
     if(l2Distance(*this,target.getposX(),target.getposY())<=20){
         this->activated=true;
         if(stamina<=maxStam-maxStam/200)
@@ -34,7 +32,6 @@ void Dreadgen::behaviour(Entity &target) {
     }
 
     if(activated){
-
         directX=0;
         directY=0;
         abilityUsed=false;
@@ -53,29 +50,26 @@ void Dreadgen::behaviour(Entity &target) {
             switch(random){
 
                 case 1:
-
                     abilityUsed= true;
                     skillType=1;
                     break;
 
                 case 2:
-
                     abilityUsed= true;
                     skillType=2;
                     break;
 
                 default:
-
                     abilityUsed= true;
                     skillType=1;
                     break;
             }
         }
+
     }
 }
 
-void Dreadgen::tracking(Entity &target) {
-
+void Dreadgen::tracking(Entity &target){
     float xDistance=0;
     float yDistance=0;
     xDistance=this->posX-target.getposX();
@@ -108,22 +102,22 @@ void Dreadgen::tracking(Entity &target) {
         }else if((this->posX-target.getposX())<0){
             directX=movements;
         }
+
         if((this->posY-target.getposY())>0){
             directY=-movements;
         }else if((this->posY-target.getposY())<0){
             directY=movements;
         }
+
     }
 }
 
-void Dreadgen::move(float x, float y) {
-
+void Dreadgen::move(float x, float y){
     posX +=x;
     posY +=y;
 }
 
-std::unique_ptr<Skills> Dreadgen::skillUse() {
-
+std::unique_ptr<Skills> Dreadgen::skillUse(){
     switch (skillType) {
 
         case 1: {
@@ -138,7 +132,7 @@ std::unique_ptr<Skills> Dreadgen::skillUse() {
             newSkill->setUser(this);
             this->stamina-=newSkill->getStamConsumption();
             return newSkill;
-        };
+        }
         default:{
             auto newSkill = std::make_unique<Fireball>(this->getposX(), this->getposY(), dungeonNumber*2);
             newSkill->setUser(this);

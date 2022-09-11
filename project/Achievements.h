@@ -9,6 +9,7 @@
 #include "Textviewer.h"
 #include <SFML/Audio.hpp>
 #include <unistd.h>
+
 class Achievements: public Observer{
 public:
 
@@ -39,6 +40,5 @@ private:
     bool lionheart=false;
     bool undead=false;
 };
-
 
 #endif //MAIN_ACHIEVEMENTS_H

@@ -100,7 +100,7 @@ void Achievements::draw (){
         sleep(5);
     }
 
-    if(_subject->getHp()==0) {
+    if(_subject->getHp()==0){
         _subject->recoverHp(0);
         _subject->setDeaths(1);
         death.blackBox(view->getCenter().x - (view->getSize().x / 2), view->getCenter().y - (view->getSize().y / 2),
@@ -113,15 +113,15 @@ void Achievements::draw (){
     this->saveAchievements();
 }
 
-bool Achievements::load() {
-    if (!this->achievementMusic.openFromFile("assets/menu.wav"))
+bool Achievements::load(){
+    if(!this->achievementMusic.openFromFile("assets/menu.wav"))
         return false;
     this->achievementMusic.setVolume(50.f);
     this->achievementMusic.setLoop(true);
     return true;
 }
 
-void Achievements::saveAchievements() const {
+void Achievements::saveAchievements() const{
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     out.open("playerSave/Achievement.txt",std::ios_base::trunc);
@@ -137,16 +137,16 @@ void Achievements::saveAchievements() const {
     out.close();
 }
 
-bool Achievements::loadAchievements() {
+bool Achievements::loadAchievements(){
     op.exceptions(std::ifstream::failbit);
-    try {
+    try{
         op.open("playerSave/Achievement.txt");
-    } catch (std::ios_base::failure& e) {
+    }catch (std::ios_base::failure& e){
         return false;
     }
 
    std::getline(op, fileLine);
-    try {
+    try{
         immortal=std::stoi(fileLine);
         std::getline(op, fileLine);
         sonic=std::stoi(fileLine);
@@ -164,7 +164,7 @@ bool Achievements::loadAchievements() {
         lionheart=std::stoi(fileLine);
         std::getline(op, fileLine);
         undead=std::stoi(fileLine);
-    } catch (std::out_of_range &e) {
+    }catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
     }
 

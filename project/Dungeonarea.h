@@ -17,7 +17,7 @@
 static std::string TileTypeToTileString(const TileType& tile);
 static TileType TileStringToTileType(const char& tile);
 
-class Dungeonarea {
+class Dungeonarea{
 public:
 
    Dungeonarea(long oldsees,int maxlength,int maxheigth,int minRoomWidth,int minRoomHeight,int maxRoomWidth,int maxRoomHeight,int mapType,int parts,
@@ -32,13 +32,13 @@ public:
     void setWidth(int xSixe);
     int getHeight() const;
     void setHeight(int ySize);
-    int getRand(int min, int max)  ;
+    int getRand(int min, int max);
     const std::string &getName() const;
     void setName(const std::string &name);
     const std::string &getSave() const;
     void setSave(const std::string &save);
-    TileType getcell(int x,int y) const ;
-    void setcell(int x,int y,TileType type) const ;
+    TileType getcell(int x,int y) const;
+    void setcell(int x,int y,TileType type) const;
     void saveMap(std::string mapSaveName);
     bool loadMap(std::string fileName,std::string name);
     long getOldseed() const;
@@ -50,13 +50,14 @@ public:
     int getTileNumber(int x,int y)const;
 
 private:
+
     int width=0;
     int height=0;
     int xMin;
     int yMin;
     int xMax;
     int yMax;
-    int parts;
+    int parts=0;
     int minRoomWidth;
     int minRoomHeight;
     int maxRoomWidth;
@@ -71,6 +72,5 @@ private:
     std::ifstream ip;
     std::ofstream out;
 };
-
 
 #endif //MAIN_DUNGEONAREA_H

@@ -12,7 +12,6 @@
 #include "World.h"
 
 class Events {
-
 public:
 
     int event(sf::RenderWindow *window,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,
@@ -25,6 +24,5 @@ private:
     std::ifstream is;
     bool cancel=false;
 };
-
 
 #endif //MAIN_EVENTS_H

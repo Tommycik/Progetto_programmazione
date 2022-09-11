@@ -4,7 +4,7 @@
 
 #include "Animation.h"
 
-Animation::Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime) {
+Animation::Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTime){
     this->imageCount=imageCount;//imageCount è il numero di texture totali nel file
     this->switchTime=switchTime;
     this->turn= false;
@@ -17,7 +17,7 @@ Animation::Animation(sf::Texture* texture,sf::Vector2u imageCount,float switchTi
     this->uvRect.height=texture->getSize().y/float(imageCount.y);
 }
 
-void Animation::update(int row,float deltaTime,bool faceRight) {
+void Animation::update(int row,float deltaTime,bool faceRight){
     currentImage.y=row;
     totalTime+=deltaTime;
 
@@ -39,7 +39,7 @@ void Animation::update(int row,float deltaTime,bool faceRight) {
     }
 }
 
-void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
+void Animation::updatePlayer(float deltaTime, bool running,unsigned int state){
     if(state==0){
         totalTimeMovement=0;
         totalTimeIdle+=deltaTime;
@@ -59,6 +59,7 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
                 uvRect.width=-abs(uvRect.width);
                 turn=false;
             }
+
         }else{
 
             if( turn==false){
@@ -68,6 +69,7 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
                 uvRect.left=(currentImage.x+1)*abs(uvRect.width);
                 uvRect.width=-abs(uvRect.width);
             }
+
         }
     }else{
         totalTimeMovement+=deltaTime;
@@ -97,10 +99,11 @@ void Animation::updatePlayer(float deltaTime, bool running,unsigned int state) {
             uvRect.left=(currentImage.x+1)*abs(uvRect.width);
             uvRect.width=-abs(uvRect.width);
         }
+
     }
 }
 
-const sf::IntRect &Animation::getUvRect() const {
+const sf::IntRect &Animation::getUvRect() const{
     return uvRect;
 }
 

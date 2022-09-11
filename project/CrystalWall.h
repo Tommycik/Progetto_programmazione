@@ -7,8 +7,7 @@
 #include "Skills.h"
 #include<memory.h>
 
-class CrystalWall:public Skills  {
-
+class CrystalWall:public Skills {
 public:
 
     CrystalWall( int posX, int posY,int damageMultiplier);
@@ -17,6 +16,5 @@ public:
     void behaviour(Entity &target) override;
     void move(float x, float y) override;
 };
-
 
 #endif //MAIN_CRYSTALWALL_H

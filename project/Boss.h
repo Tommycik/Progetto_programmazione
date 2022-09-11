@@ -6,21 +6,19 @@
 #define MAIN_BOSS_H
 #include "Skills.h"
 
-class Boss:public  Entity {
-
+class Boss:public  Entity{
 public:
 
     void run(float x, float y) override;
     int getStatIncrease() const;
     void setStatIncrease(int statIncrease);
     virtual std::unique_ptr<Skills> skillUse()=0;
+
 protected:
 
-    int statIncrease;
+    int statIncrease=1;
     int skillType=0;
     int dungeonNumber=0;
 };
-
-
 
 #endif //MAIN_BOSS_H
