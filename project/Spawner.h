@@ -17,7 +17,6 @@
 #include <memory>
 
 class Spawner {
-
 public :
 
     Spawner(bool loading, Dungeonarea &map, int monsterNumber, int objectNumber, int safezoneNumber,
@@ -67,6 +66,5 @@ private:
     std::vector<std::unique_ptr<Teleport>> teleports;
     std::vector<std::unique_ptr<Boss>> bosses;
 };
-
 
 #endif //MAIN_SPAWNER_H

@@ -13,7 +13,6 @@
 #include <iostream>
 
 class Menu {
-
 public:
 
     Menu(sf::RenderWindow *window);
@@ -32,6 +31,5 @@ private:
     sf::Music menu;
     std::ifstream on;
 };
-
 
 #endif //MAIN_MENU_H

@@ -9,6 +9,7 @@ Achievements::Achievements(Mario &hero, sf::RenderWindow &window, sf::View &view
     this->view = &view1;
     _subject = &hero;
     _subject->attach(this);
+
     if (!loadAchievements()) {
         saveAchievements();
     }
@@ -47,11 +48,11 @@ void Achievements::draw() {
         sleep(5);
     }
 
-    if (_subject->getBossKilled() >= 5 && (!godSlayer)) {
+    if (_subject->getBossKilled() >= 3 && (!godSlayer)) {
         godSlayer = true;
         Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
                              view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,GodSlayer",
-                             "Kill 10 or more bosses", window,
+                             "Kill 3 or more bosses", window,
                              false);
         window->display();
         sleep(5);
@@ -156,6 +157,7 @@ void Achievements::saveAchievements() const {
 
 bool Achievements::loadAchievements() {
     op.exceptions(std::ifstream::failbit);
+
     try {
         op.open("playerSave/Achievement.txt");
     } catch (std::ios_base::failure &e) {

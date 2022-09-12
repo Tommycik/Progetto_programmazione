@@ -10,7 +10,6 @@
 
 
 class Skills : public Entity {
-
 public:
 
     void tracking(Entity &target) override;
@@ -27,47 +26,73 @@ public:
     void targetSearch(std::vector<std::unique_ptr<Obstacle>> &enemies, Entity &mario, T *bosses = nullptr) {
 
         float minDistance = 1000;
+
         if (this->ostile == false) {
+
             if (!(enemies.empty())) {
+
                 for (auto &gc: enemies) {
+
                     if (gc->isFixed() == false && gc->getHp() > 0) {
+
                         if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
                             minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
                             target = &(*gc);
                         }
+
                     }
+
                 }
+
             }
+
             if (!(bosses->empty())) {
 
                 for (auto &gc: *bosses) {
+
                     if (gc->getHp() > 0) {
+
                         if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
                             minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
                             target = &(*gc);
                         }
+
                     }
+
                 }
+
             }
+
             if (minDistance > range) {
+
                 if (!(enemies.empty())) {
+
                     for (auto &gc: enemies) {
+
                         if (gc->isFixed() == true && gc->getHp() > 0) {
+
                             if (minDistance > l2Distance(*this, gc->getposX(), gc->getposY())) {
                                 minDistance = l2Distance(*this, gc->getposX(), gc->getposY());
                                 target = &(*gc);
                             }
+
                         }
+
                     }
+
                 }
+
             }
+
         } else if (this->isOstile()) {
+
             if (minDistance > l2Distance(*this, mario.getposX(), mario.getposY())) {
                 minDistance = l2Distance(*this, mario.getposX(), mario.getposY());
                 target = &mario;
             }
 
         }
+
         if (minDistance <= range) {
             targetLost = false;
             targetFound = true;
@@ -77,6 +102,7 @@ public:
             targetLost = true;
             damage = 0;
         }
+
     }
 
     Entity *getTarget() const;
@@ -128,6 +154,5 @@ protected:
     Entity *user;
 
 };
-
 
 #endif //MAIN_SKILLS_H

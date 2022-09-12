@@ -8,12 +8,11 @@
 #include "Mario.h"
 
 class Teleport : public virtual Object {
-
 public:
 
     Teleport(int posX, int posY);
 
-    void teleportation(Mario &hero, int finalX, int finalY);
+    void teleportation(Mario &hero);
 
     bool isActivated() const;
 
@@ -23,6 +22,5 @@ private:
 
     bool activated = false;
 };
-
 
 #endif //MAIN_TELEPORT_H

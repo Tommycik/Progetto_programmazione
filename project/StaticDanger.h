@@ -8,7 +8,6 @@
 #include "Obstacle.h"
 
 class StaticDanger : public Obstacle {
-
 public:
 
     StaticDanger(int posX, int posY, int dungeonType);
@@ -19,8 +18,6 @@ public:
 
     void move(float x, float y) override;
 
-private:
 };
-
 
 #endif //MAIN_STATICDANGER_H

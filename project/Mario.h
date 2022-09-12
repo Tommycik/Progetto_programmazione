@@ -11,7 +11,6 @@
 #include "CrystalWall.h"
 
 class Mario : public Entity, public Subject {
-
 public:
 
     Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum, int bossKill = 0);
@@ -86,7 +85,7 @@ public:
 
 private:
 
-    float runningMovement;
+    float runningMovement=0;
     float maxHp = 0;
     int potionNum = 0;
     int bossKilled = 0;
@@ -97,6 +96,5 @@ private:
     int safezoneUsed = 0;
     int deaths = 0;
 };
-
 
 #endif //MAIN_MARIO_H

@@ -11,7 +11,6 @@
 class Observer;
 
 class Subject {
-
 public:
 
     Subject() {};
@@ -28,6 +27,5 @@ private:
 
     std::vector<Observer *> _observers;
 };
-
 
 #endif //MAIN_SUBJECT_H

@@ -18,7 +18,7 @@ Teleport::Teleport(int posX, int posY) {
     this->posY = posY;
 }
 
-void teleportation(Mario &hero, int finalX, int finalY) {
-    hero.setposX(finalX);
-    hero.setposY(finalY);
+void Teleport::teleportation(Mario &hero) {
+    hero.setposX(this->getposX());
+    hero.setposY(this->getposY());
 }

@@ -4,14 +4,12 @@
 
 #include "World.h"
 
-void World::savePlayer(int map, Mario &player, bool tutorialItem, bool tutorialSafezone,
-                       bool tutorialTeleport/*, int littleStatus*/) const {
+void World::savePlayer(int map, Mario &player, bool tutorialItem, bool tutorialSafezone,bool tutorialTeleport) const {
+
     std::ofstream out;
     out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-    // try {
     out.open("playerSave/save.txt", std::ios_base::trunc);
     out << map << std::endl;
-    //out << littleStatus << std::endl;
     out << player.getHp() << std::endl;
     out << player.getStamina() << std::endl;
     out << player.getPotionNum() << std::endl;
@@ -35,15 +33,17 @@ void World::savePlayer(int map, Mario &player, bool tutorialItem, bool tutorialS
 
 bool
 World::loadPlayer(int &mapIndex, Mario &player, bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport) {
-
     of.exceptions(std::ifstream::failbit);
+
     try {
         of.open("playerSave/save.txt");
     } catch (std::ios_base::failure &e) {
         return false;
     }
+
     std::string fileLine;
     std::getline(of, fileLine);
+
     try {
         mapIndex = (std::stoi(fileLine));
         std::getline(of, fileLine);
@@ -85,81 +85,103 @@ World::loadPlayer(int &mapIndex, Mario &player, bool &tutorialItem, bool &tutori
     } catch (std::out_of_range &e) {
         throw std::out_of_range("Can not set vector tile at x: ");
     }
+
     of.close();
     return true;
 }
 
-bool
-World::creation(Mario &hero, int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber, int numberMap,
-                long oldseed, int minRoomsNumber, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone,
-                bool &tutorialTeleport, std::string *saves, std::string *names, std::string *savesVec,
-                std::unique_ptr<Spawner> *vectors, std::unique_ptr<Dungeonarea> *maps) {
+bool World::creation(Mario &hero, int monsterNumber, int objectNumber, int safezoneNumber, int bossNumber, int numberMap,
+                     long oldseed, int minRoomsNumber, int &mapIndex, bool &tutorialItem, bool &tutorialSafezone,
+                     bool &tutorialTeleport, std::string *saves, std::string *names, std::string *savesVec,
+                     std::unique_ptr<Spawner> *vectors, std::unique_ptr<Dungeonarea> *maps) {
 
     bool playerReboot = false;
-    const int maxRoomX = 30;
-    const int maxRoomY = 30;
-    const int minRoomX = 20;
-    const int minRoomY = 20;
+    const int maxRoomX = 45;
+    const int maxRoomY = 45;
+    const int minRoomX = 30;
+    const int minRoomY = 30;
+
     try {
+
         for (int i = 0; i < numberMap; i++) {
+
             maps[i] = std::make_unique<Dungeonarea>(oldseed, minRoomsNumber * (maxRoomX / 2) + 1,
                                                     minRoomsNumber * (maxRoomY / 2) + 1, minRoomX, minRoomY, maxRoomX,
                                                     maxRoomY, i, minRoomsNumber * 100, minRoomsNumber * (minRoomX / 2),
                                                     minRoomsNumber * (minRoomY / 2), names[i], saves[i],
                                                     minRoomsNumber);
+
             if (!maps[i]->loadMap(saves[i], names[i])) {
+
                 try {
                     in.open(savesVec[i].c_str());
                     in.close();
                     remove(savesVec[i].c_str());
                 } catch (std::ios_base::failure &e) {}
+
                 maps[i]->createDungeon();
                 playerReboot = true;
                 oldseed = maps[i]->getOldseed() + maps[i]->getRand(0, 1000);
                 maps[i]->saveMap(saves[i]);
             }
+
         }
+
     } catch (GameFileException &e) {
         std::cerr << e.what() << std::endl;
         e.printError();
         if (e.isFatal())
             abort();
+
     } catch (std::runtime_error &e) {
         std::cerr << "std::runtime_error" << std::endl;
         std::cerr << e.what() << std::endl;
         abort();
+
     } catch (std::out_of_range &e) {
         std::cerr << "std::out_of_range" << std::endl;
         std::cerr << e.what() << std::endl;
         abort();
     }
+
     for (int i = 0; i < numberMap; i++) {
+
         vectors[i] = std::make_unique<Spawner>(false, *maps[i], monsterNumber, objectNumber, safezoneNumber,
                                                bossNumber);
+
         if ((!vectors[i]->loadVectors(savesVec[i], names[i], *maps[i]))) {
             playerReboot = true;
             vectors[i]->saveVectors(savesVec[i], names[i], bossNumber, objectNumber, monsterNumber, safezoneNumber);
         }
+
     }
+
     if (playerReboot) {
+
         try {
             in.open("playerSave/save.txt");
             in.close();
             remove("playerSave/save.txt");
         } catch (std::ios_base::failure &e) {}
+
     }
+
     if (!this->loadPlayer(mapIndex, hero, tutorialItem, tutorialSafezone, tutorialTeleport)) {
         float startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
         float startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
+
         while (!(findFreeMapTile(startX, startY, *maps[mapIndex], &vectors[mapIndex]->getBosses(),
                                  &vectors[mapIndex]->getItems(), &vectors[mapIndex]->getEnemies(),
                                  &vectors[mapIndex]->getSafezones()))) {
+
             startX = maps[mapIndex]->getRand(0, (maps[mapIndex]->getWidth() - 2));
             startY = maps[mapIndex]->getRand(0, (maps[mapIndex]->getHeight() - 2));
         }
+
         hero.setposX(startX);
         hero.setposY(startY);
     }
+
     return true;
 }
 
@@ -178,16 +200,21 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     run = false;
 
     if (RightKeyDown || UpKeyDown || DownKeyDown || LeftKeyDown) {
+
         if (LShiftKeyDown) {
+
             if (hero.getStamina() <= 0)
                 LShiftKeyDown = false;
+
             run = true;
         }
+
         if (LeftKeyDown) {
             state = 1;
         } else {
             state = 2;
         }
+
     }
 
     if (LeftKeyDown && isLegalMove(hero, -hero.getMovements(), 0, maps, &vectors.getBosses(), &vectors.getItems(),
@@ -196,18 +223,24 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         if (LShiftKeyDown &&
             isLegalMove(hero, -hero.getRunningMovement(), 0, maps, &vectors.getBosses(), &vectors.getItems(),
                         &vectors.getEnemies(), &vectors.getTeleports())) {
+
             staminaUsed = 1;
             hero.run(-hero.getRunningMovement(), 0);
+
         } else {
             hero.move(-hero.getMovements(), 0);
         }
 
     } else if (LeftKeyDown && isLegalMove(hero, -2 * decimalMove, 0, maps, &vectors.getBosses(), &vectors.getItems(),
                                           &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(-2 * decimalMove, 0);
+
     } else if (LeftKeyDown && isLegalMove(hero, -2 * decimalMove, 0, maps, &vectors.getBosses(), &vectors.getItems(),
                                           &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(-2 * decimalMove, 0);
+
     }
 
     if (RightKeyDown && isLegalMove(hero, hero.getMovements(), 0, maps, &vectors.getBosses(), &vectors.getItems(),
@@ -216,18 +249,24 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         if (LShiftKeyDown &&
             isLegalMove(hero, hero.getRunningMovement(), 0, maps, &vectors.getBosses(), &vectors.getItems(),
                         &vectors.getEnemies(), &vectors.getTeleports())) {
+
             staminaUsed = 1;
             hero.run(hero.getRunningMovement(), 0);
+
         } else {
             hero.move(hero.getMovements(), 0);
         }
 
     } else if (RightKeyDown && isLegalMove(hero, 2 * decimalMove, 0, maps, &vectors.getBosses(), &vectors.getItems(),
                                            &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(2 * decimalMove, 0);
+
     } else if (RightKeyDown && isLegalMove(hero, 2 * decimalMove, 0, maps, &vectors.getBosses(), &vectors.getItems(),
                                            &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(2 * decimalMove, 0);
+
     }
 
     if (UpKeyDown && isLegalMove(hero, 0, hero.getMovements(), maps, &vectors.getBosses(), &vectors.getItems(),
@@ -236,18 +275,24 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         if (LShiftKeyDown &&
             isLegalMove(hero, 0, hero.getRunningMovement(), maps, &vectors.getBosses(), &vectors.getItems(),
                         &vectors.getEnemies(), &vectors.getTeleports())) {
+
             staminaUsed = 1;
             hero.run(0, hero.getRunningMovement());
+
         } else {
             hero.move(0, hero.getMovements());
         }
 
     } else if (UpKeyDown && isLegalMove(hero, 0, 2 * decimalMove, maps, &vectors.getBosses(), &vectors.getItems(),
                                         &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(0, 2 * decimalMove);
+
     } else if (UpKeyDown && isLegalMove(hero, 0, 2 * decimalMove, maps, &vectors.getBosses(), &vectors.getItems(),
                                         &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(0, 2 * decimalMove);
+
     }
 
     if (DownKeyDown && isLegalMove(hero, 0, -hero.getMovements(), maps, &vectors.getBosses(), &vectors.getItems(),
@@ -256,17 +301,22 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         if (LShiftKeyDown &&
             isLegalMove(hero, 0, -hero.getRunningMovement(), maps, &vectors.getBosses(), &vectors.getItems(),
                         &vectors.getEnemies(), &vectors.getTeleports())) {
+
             staminaUsed = 1;
             hero.run(0, -hero.getRunningMovement());
+
         } else {
             hero.move(0, -hero.getMovements());
         }
 
     } else if (DownKeyDown && isLegalMove(hero, 0, -2 * decimalMove, maps, &vectors.getBosses(), &vectors.getItems(),
                                           &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(0, -2 * decimalMove);
+
     } else if (DownKeyDown && isLegalMove(hero, 0, -2 * decimalMove, maps, &vectors.getBosses(), &vectors.getItems(),
                                           &vectors.getEnemies(), &vectors.getTeleports())) {
+
         hero.move(0, -2 * decimalMove);
     }
 
@@ -277,10 +327,12 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
     if (hero.getHp() <= 0) {
 
         for (auto &gc: vectors.getSafezones()) {
+
             if (gc->isUsed()) {
                 found = true;
                 break;
             }
+
             count++;
         }
 
@@ -290,15 +342,20 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         } else {
             float startX = maps.getRand(0, (maps.getWidth() - 2));
             float startY = maps.getRand(0, (maps.getHeight() - 2));
+
             while (!(findFreeMapTile(startX, startY, maps, &vectors.getBosses(), &vectors.getItems(),
                                      &vectors.getEnemies(), &vectors.getSafezones()))) {
+
                 startX = maps.getRand(0, (maps.getWidth() - 2));
                 startY = maps.getRand(0, (maps.getHeight() - 2));
             }
+
             hero.setposX(startX);
             hero.setposY(startY);
         }
+
     }
+
     count = 0;
     int skillToErase[skillNumber];
 
@@ -306,15 +363,19 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         skillToErase[count] = 0;
         gl->setChecked(true);
         gl->targetSearch(vectors.getEnemies(), hero, &vectors.getBosses());
-        if (gl->isTargetLost() == false || gl->getHp() <= 0) {
 
+        if (gl->isTargetLost() == false || gl->getHp() <= 0) {
             gl->behaviour(*gl->getTarget());
+
             for (auto &gn: skill) {
+
                 if (!gn->isChecked() &&
                     l2Distance(*gn, gl->getposX() + gl->getDirectX(), gl->getposY() + gl->getDirectY()) <= 1) {
+
                     gn->receiveDamage(gl->getDamage());
                     gl->receiveDamage(gn->getDamage());
                 }
+
             }
 
             if (gl->getHp() > 0 &&
@@ -322,163 +383,228 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
                  0) &&
                 isLegalMove(*gl, gl->getDirectX(), gl->getDirectY(), maps, &vectors.getBosses(), &vectors.getItems(),
                             &vectors.getEnemies(), &vectors.getTeleports())) {
+
                 gl->move((gl->getDirectX()), gl->getDirectY());
+
             } else {
 
                 if (gl->isOstile()) {
-                    if (l2Distance(hero, gl->getposX() + gl->getDirectX(), gl->getposY() + gl->getDirectY()) <=
-                        gl->getRadius()) {
+
+                    if (l2Distance(hero, gl->getposX() + gl->getDirectX(), gl->getposY() + gl->getDirectY()) <= gl->getRadius()) {
                         hero.receiveDamage(gl->getDamage());
                     }
+
                 } else {
+
                     if ((!gl->isOstile()) && l2Distance(*gl->getTarget(), gl->getposX() + gl->getDirectX(),
                                                         gl->getposY() + gl->getDirectY()) <= gl->getRadius()) {
+
                         gl->getTarget()->receiveDamage(gl->getDamage());
                     }
+
                     for (auto &gb: vectors.getEnemies()) {
+
                         if ((!gl->isOstile()) && gb->isTarget() == false &&
                             l2Distance(*gb, gl->getposX() + gl->getDirectX(), gl->getposY() + gl->getDirectY()) <=
                             gl->getRadius()) {
+
                             gb->receiveDamage(gl->getDamage());
                         }
+
                     }
+
                     for (auto &gb: vectors.getBosses()) {
+
                         if ((!gl->isOstile()) && gb->isTarget() == false &&
                             l2Distance(*gb, gl->getposX() + gl->getDirectX(), gl->getposY() + gl->getDirectY()) <=
                             gl->getRadius()) {
+
                             gb->receiveDamage(gl->getDamage());
                         }
+
                     }
+
                 }
+
                 gl->getTarget()->setTarget(false);
                 skillToErase[count] = 1;
                 skillNumber--;
             }
+
         } else {
 
             if (gl->isTargetFound() == false && (!gl->isOstile()))
                 hero.setStamina(hero.getStamina() + gl->getStamConsumption());
+
             skillToErase[count] = 1;
             skillNumber--;
         }
+
         gl->setChecked(false);
         count++;
     }
+
     found = false;
     count = 0;
     int erased = 0;
+
     for (auto gd: skillToErase) {
+
         if (gd == 1) {
             skill.erase(skill.begin() + count - erased);
             erased++;
             newSkillCreated = true;
         }
+
         count++;
     }
 
     int enemyToErase[vectors.getMonsterNumber()];
     count = 0;
+
     for (auto &gp: vectors.getEnemies()) {
         enemyToErase[count] = 0;
+
         if (gp->getHp() != 0) {
             gp->behaviour(hero);
+
             if (gp->isActivated() == true) {
                 gp->setChecked(true);
+
                 if ((l2Distance(hero, gp->getposX() + gp->getDirectX(), gp->getposY() + gp->getDirectY()) >= 1) &&
                     isLegalMove(*gp, gp->getDirectX(), gp->getDirectY(), maps, &vectors.getBosses(),
                                 &vectors.getItems(), &vectors.getEnemies(), &vectors.getTeleports())) {
+
                     gp->move((gp->getDirectX()), gp->getDirectY());
+
                 } else if ((l2Distance(hero, gp->getposX() + gp->getDirectX(), gp->getposY()) >= 1) &&
                            isLegalMove(*gp, gp->getDirectX(), 0, maps, &vectors.getBosses(), &vectors.getItems(),
                                        &vectors.getEnemies(), &vectors.getTeleports())) {
+
                     gp->move((gp->getDirectX()), 0);
+
                 } else if ((l2Distance(hero, gp->getposX(), gp->getposY() + gp->getDirectY()) >= 1) &&
                            isLegalMove(*gp, 0, gp->getDirectY(), maps, &vectors.getBosses(), &vectors.getItems(),
                                        &vectors.getEnemies(), &vectors.getTeleports())) {
+
                     gp->move(0, gp->getDirectY());
                 }
+
                 gp->setChecked(false);
             }
+
         } else {
             enemyToErase[count] = 1;
         }
+
         count++;
     }
+
     count = 0;
     erased = 0;
+
     for (auto gd: enemyToErase) {
+
         if (gd == 1) {
             vectors.getEnemies().erase(vectors.getEnemies().begin() + count - erased);
             erased++;
             vectors.setMonsterNumber(-1);
         }
+
         count++;
     }
+
     int bossToErase[vectors.getBossNumber()];
     count = 0;
+
     for (auto &gp: vectors.getBosses()) {
         bossToErase[count] = 0;
+
         if (gp->getHp() != 0) {
             gp->behaviour(hero);
+
             if (gp->isAbilityUsed()) {
                 auto skillCreated = gp->skillUse();
+
                 if (skillCreated != nullptr) {
                     this->getSkill().reserve(this->getSkillNumber() + 1);
                     auto newSkill = this->getSkill().insert(this->getSkill().end(), std::move(skillCreated));
                     this->setSkillNumber(1);
                     this->setNewSkillCreated(true);
                 }
+
             } else if (gp->isActivated() == true) {
                 gp->setChecked(true);
+
                 if ((l2Distance(hero, gp->getposX() + gp->getDirectX(), gp->getposY() + gp->getDirectY()) >= 1) &&
                     isLegalMove(*gp, gp->getDirectX(), gp->getDirectY(), maps, &vectors.getBosses(),
                                 &vectors.getItems(), &vectors.getEnemies(), &vectors.getTeleports())) {
+
                     gp->move((gp->getDirectX()), gp->getDirectY());
+
                 } else if ((l2Distance(hero, gp->getposX() + gp->getDirectX(), gp->getposY()) >= 1) &&
                            isLegalMove(*gp, gp->getDirectX(), 0, maps, &vectors.getBosses(), &vectors.getItems(),
                                        &vectors.getEnemies(), &vectors.getTeleports())) {
+
                     gp->move((gp->getDirectX()), 0);
+
                 } else if ((l2Distance(hero, gp->getposX(), gp->getposY() + gp->getDirectY()) >= 1) &&
                            isLegalMove(*gp, 0, gp->getDirectY(), maps, &vectors.getBosses(), &vectors.getItems(),
                                        &vectors.getEnemies(), &vectors.getTeleports())) {
+
                     gp->move(0, gp->getDirectY());
+
                 }
+
                 gp->setChecked(false);
             }
+
         } else {
             bossToErase[count] = 1;
         }
+
         count++;
     }
+
     count = 0;
     erased = 0;
     Teleport *unlockable;
     float minDistance = 1000;
+
     for (auto gd: bossToErase) {
+
         if (gd == 1) {
+
             if (!(vectors.getTeleports().empty())) {
+
                 for (auto &gc: vectors.getTeleports()) {
 
                     if (minDistance > l2Distance(*vectors.getBosses()[count - erased], gc->getposX(), gc->getposY()) &&
                         !(gc->isActivated())) {
+
                         minDistance = l2Distance(*vectors.getBosses()[count - erased], gc->getposX(), gc->getposY());
                         unlockable = &(*gc);
                     }
+
                 }
+
                 unlockable->setActivated(true);
             }
+
             hero.statIncrease(vectors.getBosses()[count - erased]->getStatIncrease());
             vectors.getBosses().erase(vectors.getBosses().begin() + count - erased);
             death.blackBox(view1.getCenter().x - (view1.getSize().x / 2), view1.getCenter().y - (view1.getSize().y / 2),
-                           " BOSS SLAIN", "", &window,
-                           true);
+                           " BOSS SLAIN", "", &window,true);
+
             window.display();
             sleep(3);
             erased++;
             vectors.setBossNumber(-1);
         }
+
         count++;
     }
+
     return staminaUsed;
 }
 
@@ -488,29 +614,33 @@ bool World::initialize(Mario &hero, int &mapIndex, bool &tutorialItem, bool &tut
                        sf::Texture &playerTexture, float tilesetResolution, std::unique_ptr<Dungeonarea> *maps,
                        std::unique_ptr<Spawner> *vectors) {
 
-
     if (!playerTexture.loadFromFile("assets/mario.png")) {
         return false;
     }
+
     playerTexture.setSmooth(false);
     player.setTexture(&playerTexture);
-    //hero.setHp(50); //per testare cure
     player.setPosition(hero.getposX() * tilesetResolution, hero.getposY() * tilesetResolution);
     player.setOrigin(1, 7);
     player.setScale(1.2, 1.7);
     view1.setCenter(player.getPosition());
+
     if (!(hud.hudSetter(hero, tilesetResolution, HudBarsHeigth))) {
         return false;
     }
+
     if (!teleport.loadTexture("assets/portalRings1.png")) {
         return false;
     }
+
     if (!safezone.loadTexture("assets/pixelSet.png")) {
         return false;
     }
+
     if (!object.loadTexture("assets/potions.png")) {
         return false;
     }
+
     return true;
 }
 

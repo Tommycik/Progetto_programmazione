@@ -8,7 +8,6 @@
 #include "Entity.h"
 
 class Obstacle : public Entity {
-
 public:
 
     virtual ~Obstacle();
@@ -25,6 +24,5 @@ protected:
 
     bool fixed = true;
 };
-
 
 #endif //MAIN_OBSTACLE_H

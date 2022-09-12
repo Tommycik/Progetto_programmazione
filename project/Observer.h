@@ -10,7 +10,6 @@
 class Subject;
 
 class Observer {
-
 public:
 
     Observer() {};
@@ -19,6 +18,5 @@ public:
 
     virtual void update(Subject *subjectChange) = 0;
 };
-
 
 #endif //MAIN_OBSERVER_H

@@ -8,7 +8,6 @@
 #include <iostream>
 
 class Object {
-
 public:
 
     virtual ~Object() {}

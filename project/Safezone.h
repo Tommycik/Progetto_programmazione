@@ -8,7 +8,6 @@
 #include "Object.h"
 
 class Safezone : public virtual Object {
-
 public:
 
     Safezone(int posX, int posY);
@@ -21,6 +20,5 @@ private:
 
     bool used = false;
 };
-
 
 #endif //MAIN_SAFEZONE_H

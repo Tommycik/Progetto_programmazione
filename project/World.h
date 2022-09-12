@@ -16,7 +16,6 @@
 #include "Skills.h"
 
 class World : public Subject {
-
 public:
 
     void savePlayer(int map, Mario &player, bool tutorialItem, bool tutorialSafezone,

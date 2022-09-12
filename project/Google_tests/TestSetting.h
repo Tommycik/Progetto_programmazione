@@ -12,9 +12,7 @@
 #include "../Achievements.h"
 #include "../SkillManager.h"
 
-
 class TheClassTest : public ::testing::Test {
-
 public:
 
     TheClassTest();
@@ -27,38 +25,37 @@ public:
               TileMap &map, TileMap &object, TileMap &teleport, TileMap &safezone, TileMap &obstacles, TileMap &skill,
               TileMap &boss);
 
-    bool creation(std::unique_ptr<Spawner> *vectors = nullptr, std::unique_ptr<Dungeonarea> *maps = nullptr);
-
 protected:
 
-    int monsterNumber = 2;
-    int objectNumber = 5;
+    int monsterNumber = 15;
+    int objectNumber = 20;
     int safezoneNumber = 3;
-    int bossNumber = 3;
+    int bossNumber = 1;
     int numberMap = 2;
     int mapIndex = 0;
-    int minRoomsNumber = (bossNumber + monsterNumber + objectNumber + safezoneNumber) / 2 + bossNumber;
+    int minRoomsNumber = 0;
     bool playerReboot = false;
     long oldseed = 0;
     const unsigned int tilesetResolution = 16;
     const float viewHeigth = 300;
-    std::ifstream in;
-    sf::RenderWindow window;
-    sf::Music Game;
-    World game;
     bool tutorialItem = false, tutorialSafezone = false, tutorialTeleport = false;
-    std::unique_ptr<Mario> hero;
-    sf::Texture playerTexture;
     int HudBarsHeigth = 14;
     int state = 0;
     bool run = false;
     float staminaUsed = 0;
     bool makeText = false, teleportText = false, itemText = false, safezoneText = false;
-    sf::Clock clock;
     float deltaTime = 0.0f;
     int eventControl = 0;
-    sf::Event Happen;
+    float previousHp =0;
     bool cancel = false;
+    std::ifstream in;
+    sf::RenderWindow window;
+    sf::Music Game;
+    World game;
+    std::unique_ptr<Mario> hero;
+    sf::Texture playerTexture;
+    sf::Clock clock;
+    sf::Event Happen;
     Events events;
 
     std::string saves[6] = {
@@ -88,6 +85,7 @@ protected:
             "6",
 
     };
+
 };
 
 #endif //MAIN_TESTSETTING_H

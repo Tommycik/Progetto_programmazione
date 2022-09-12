@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(main)
 
 set(CMAKE_CXX_STANDARD 20)
-add_executable(main main.cpp Object.cpp Object.h Entity.cpp Entity.h Item.cpp Item.h Obstacle.cpp Obstacle.h Skills.cpp Skills.h Boss.cpp Boss.h Mario.cpp Mario.h World.cpp World.h Tile.cpp Tile.h Dungeonarea.cpp Dungeonarea.h Fireball.cpp Fireball.h Dice.cpp Dice.h Utilities.h Hud.cpp Hud.h Animation.cpp Animation.h Teleport.h Teleport.cpp GameFileException.cpp GameFileException.h Spawner.cpp Spawner.h Textviewer.cpp Textviewer.h Loader.cpp Loader.h Menu.cpp Menu.h Safezone.cpp Safezone.h Events.cpp Events.h Observer.h Subject.h Subject.cpp Achievements.cpp Achievements.h StaticDanger.cpp StaticDanger.h FollowingEnemies.cpp FollowingEnemies.h SkillManager.cpp SkillManager.h Dreadgen.cpp Dreadgen.h  CrystalWall.cpp CrystalWall.h)
+add_executable(main main.cpp Object.h Entity.cpp Entity.h Item.cpp Item.h Obstacle.cpp Obstacle.h Skills.cpp Skills.h Boss.cpp Boss.h Mario.cpp Mario.h World.cpp World.h Tile.cpp Tile.h Dungeonarea.cpp Dungeonarea.h Fireball.cpp Fireball.h Dice.cpp Dice.h Utilities.h Hud.cpp Hud.h Animation.cpp Animation.h Teleport.h Teleport.cpp GameFileException.cpp GameFileException.h Spawner.cpp Spawner.h Textviewer.cpp Textviewer.h Loader.cpp Loader.h Menu.cpp Menu.h Safezone.cpp Safezone.h Events.cpp Events.h Observer.h Subject.h Subject.cpp Achievements.cpp Achievements.h StaticDanger.cpp StaticDanger.h FollowingEnemies.cpp FollowingEnemies.h SkillManager.cpp SkillManager.h Dreadgen.cpp Dreadgen.h  CrystalWall.cpp CrystalWall.h)
 
 if (WIN32)
     set(SFML_STATIC_LIBRARIES TRUE)

@@ -4,12 +4,13 @@
 
 #include "Events.h"
 
-int Events::event(sf::RenderWindow *window, std::string *names, std::string *savesVec, Mario &hero, bool &tutorialItem,
-                  bool &tutorialSafezone, bool &tutorialTeleport,
-                  int &mapIndex, int numberMap, World &game, sf::Music &Game, TileMap &map, TileMap &object,
+int Events::event(sf::RenderWindow *window, std::string *names, std::string *savesVec, Mario &hero,
+                  bool &tutorialItem, bool &tutorialSafezone, bool &tutorialTeleport, int &mapIndex,
+                  int numberMap, World &game, sf::Music &Game, TileMap &map, TileMap &object,
                   TileMap &teleport, TileMap &safezone, std::unique_ptr<Spawner> *vectors) {
 
     game.setNewSkillCreated(false);
+
     while (window->pollEvent(Happen)) {
         cancel = false;
 
@@ -20,25 +21,26 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
                 break;
 
             case sf::Event::KeyPressed:
-
                 if (Happen.key.code == sf::Keyboard::Escape) {
                     cancel = true;
                     break;
                 }
 
                 if (Happen.key.code == sf::Keyboard::B) {
+
                     if (hero.getPotionNum() != 0)
                         hero.recoverHp(1);
+
                 }
+
                 break;
 
             case sf::Event::KeyReleased:
-
                 if (Happen.key.code == sf::Keyboard::R) {
 
                     for (auto &gc: vectors[mapIndex]->getItems()) {
 
-                        if (l2Distance(*gc, hero.getposX(), hero.getposY()) <= 1 && !(gc->isTaken())) {
+                        if (l2Distance(*gc, hero.getposX(), hero.getposY()) <= 1.5 && !(gc->isTaken())) {
 
                             switch (gc->getEffect()) {
 
@@ -60,7 +62,9 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
 
                                 default:
                                     break;
+
                             }
+
                             tutorialItem = true;
                             hero.setPotionTaken(hero.getPotionTaken() + 1);
                         }
@@ -73,7 +77,7 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
 
                     for (auto &gc: vectors[mapIndex]->getSafezones()) {
 
-                        if (l2Distance(*gc, hero.getposX(), hero.getposY()) <= 1) {
+                        if (l2Distance(*gc, hero.getposX(), hero.getposY()) <= 1.5) {
                             hero.recoverHp(0);
                             gc->setUsed(true);
                             tutorialSafezone = true;
@@ -119,6 +123,7 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
                                 }
 
                             }
+
                             hero.setTeleported(hero.getTeleported() + 1);
                             return 2;
                         }
@@ -141,6 +146,7 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
             } catch (std::ios_base::failure &e) {}
 
             game.savePlayer(mapIndex, hero, tutorialItem, tutorialSafezone, tutorialTeleport);
+
             for (int i = 0; i < numberMap; i++) {
 
                 try {
@@ -158,6 +164,8 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
             Game.stop();
             return 1;
         }
+
     }
+
     return 0;
 }

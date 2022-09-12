@@ -15,12 +15,14 @@ void Subject::detach(Observer *newObserver) {
         if (_observers[i] == newObserver)
             break;
     }
+
     if (i < count)
         _observers.erase(_observers.begin() + i);
 }
 
 void Subject::notify() {
     int count = _observers.size();
+
     for (int i = 0; i < count; i++)
         (_observers[i])->update(this);
 }

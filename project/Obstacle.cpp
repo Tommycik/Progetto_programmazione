@@ -12,7 +12,6 @@ void Obstacle::setFixed(bool fixed) {
     Obstacle::fixed = fixed;
 }
 
-
 void Obstacle::run(float x, float y) {}
 
 Obstacle::~Obstacle() {}

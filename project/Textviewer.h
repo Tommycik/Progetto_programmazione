@@ -11,7 +11,6 @@
 #include "Spawner.h"
 
 class Textviewer {
-
 public:
 
     Textviewer(int textDimension, float xDimension, float yDimension, int alphaOfColor);
@@ -38,6 +37,5 @@ private:
     sf::Text textOne;
     sf::Text textTwo;
 };
-
 
 #endif //MAIN_TEXTVIEWER_H

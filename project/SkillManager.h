@@ -10,7 +10,6 @@
 #include "Loader.h"
 
 class SkillManager : public Observer {
-
 public:
 
     SkillManager(World &game, TileMap &skills);
@@ -27,6 +26,5 @@ private:
     TileMap *skills;
     int skillNumber = 0;
 };
-
 
 #endif //MAIN_SKILLMANAGER_H
