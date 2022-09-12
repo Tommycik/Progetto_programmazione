@@ -96,10 +96,10 @@ bool World::creation(Mario &hero, int monsterNumber, int objectNumber, int safez
                      std::unique_ptr<Spawner> *vectors, std::unique_ptr<Dungeonarea> *maps) {
 
     bool playerReboot = false;
-    const int maxRoomX = 45;
-    const int maxRoomY = 45;
-    const int minRoomX = 30;
-    const int minRoomY = 30;
+    const int maxRoomX = 40;
+    const int maxRoomY = 40;
+    const int minRoomX = 20;
+    const int minRoomY = 20;
 
     try {
 
