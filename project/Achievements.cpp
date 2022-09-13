@@ -28,96 +28,6 @@ void Achievements::draw() {
     Textviewer death(512, view->getSize().x, view->getSize().y, 255);
     Textviewer Achievement(128, view->getSize().x / 2, view->getSize().y / 6, 128);
 
-    if (_subject->getMaxHp() >= 1000 && (!immortal)) {
-        immortal = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Immortal",
-                             "Reach 1000 health", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getMaxStam() >= 200 && (!sonic)) {
-        sonic = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Sonic",
-                             "Reach 200 stamina", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getBossKilled() >= 3 && (!godSlayer)) {
-        godSlayer = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,GodSlayer",
-                             "Kill 3 or more bosses", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getGameTime() > 600 && (!oldMan)) {
-        oldMan = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,OldMan",
-                             "You have played for quite a while", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getTeleported() >= 30 && (!rickSanchez)) {
-        rickSanchez = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,RickSanchez",
-                             "Teleport 30 or more times", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getPotionTaken() >= 30 && (!cargo)) {
-        cargo = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Cargo",
-                             "Pick-up 30 or more potion", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getDistanceWalked() >= 1000 && (!wanderer)) {
-        wanderer = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Wanderer",
-                             "Walk more than 1000 meters ", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getSafezoneUsed() >= 20 && (!lionheart)) {
-        lionheart = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Lionheart",
-                             "Use a safezone 20 or more times", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
-    if (_subject->getDeaths() >= 100 && (!undead)) {
-        undead = true;
-        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
-                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Undead",
-                             "Die 100 or more times,you must be having fun", window,
-                             false);
-        window->display();
-        sleep(5);
-    }
-
     if (_subject->getHp() == 0) {
         _subject->recoverHp(0);
         _subject->setDeaths(1);
@@ -126,6 +36,87 @@ void Achievements::draw() {
                        true);
         window->display();
         sleep(3);
+
+    } else if (_subject->getMaxHp() >= 1000 && (!immortal)) {
+        immortal = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Immortal",
+                             "Reach 1000 health", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getMaxStam() >= 200 && (!sonic)) {
+        sonic = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Sonic",
+                             "Reach 200 stamina", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getBossKilled() >= 3 && (!godSlayer)) {
+        godSlayer = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,GodSlayer",
+                             "Kill 3 or more bosses", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getGameTime() > 600 && (!oldMan)) {
+        oldMan = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,OldMan",
+                             "You have played for quite a while", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getTeleported() >= 30 && (!rickSanchez)) {
+        rickSanchez = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,RickSanchez",
+                             "Teleport 30 or more times", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getPotionTaken() >= 30 && (!cargo)) {
+        cargo = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Cargo",
+                             "Pick-up 30 or more potion", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getDistanceWalked() >= 1000 && (!wanderer)) {
+        wanderer = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Wanderer",
+                             "Walk more than 1000 meters ", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getSafezoneUsed() >= 20 && (!lionheart)) {
+        lionheart = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Lionheart",
+                             "Use a safezone 20 or more times", window,
+                             false);
+        window->display();
+        sleep(5);
+
+    } else if (_subject->getDeaths() >= 100 && (!undead)) {
+        undead = true;
+        Achievement.blackBox(view->getCenter().x - (view->getSize().x / 4),
+                             view->getCenter().y + (view->getSize().y / 6), "Achievement unlocked,Undead",
+                             "Die 100 or more times,you must be having fun", window,
+                             false);
+        window->display();
+        sleep(5);
     }
 
     this->saveAchievements();
