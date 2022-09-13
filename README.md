@@ -1,23 +1,23 @@
 # Elaborato di programmazione
-### Ciccotti Tommaso
-Versione 1.4.
-
+#### Ciccotti Tommaso.
+###### Versione 1.4.
 
 ## Galleria
-![This is an image](/Screenshots/Screenshot(44).jpg)
-![This is an image](/Screenshots/Screenshot(21).jpg)
-![This is an image](/Screenshots/Screenshot(25).jpg)
-![This is an image](/Screenshots/Screenshot(26).jpg)
-![This is an image](/Screenshots/Screenshot(28).jpg)
-![This is an image](/Screenshots/Screenshot(29).jpg)
-![This is an image](/Screenshots/Screenshot(30).jpg)
-![This is an image](/Screenshots/Screenshot(32).jpg)
-![This is an image](/Screenshots/Screenshot(33).jpg)
-![This is an image](/Screenshots/Screenshot(35).jpg)
-![This is an image](/Screenshots/Screenshot(36).jpg)
-![This is an image](/Screenshots/Screenshot(37).jpg)
-![This is an image](/Screenshots/Screenshot(38).jpg)
-![This is an image](/Screenshots/Screenshot(43).jpg)
-![This is an image](/Screenshots/Screenshot(39).jpg)
-![This is an image](/Screenshots/Screenshot(40).jpg)
-![This is an image](/Screenshots/Screenshot(42).jpg)
+
+![](/Screenshots/Screenshot(44).jpg)
+![](/Screenshots/Screenshot(21).jpg)
+![](/Screenshots/Screenshot(25).jpg)
+![](/Screenshots/Screenshot(26).jpg)
+![](/Screenshots/Screenshot(28).jpg)
+![](/Screenshots/Screenshot(29).jpg)
+![](/Screenshots/Screenshot(30).jpg)
+![](/Screenshots/Screenshot(32).jpg)
+![](/Screenshots/Screenshot(33).jpg)
+![](/Screenshots/Screenshot(35).jpg)
+![](/Screenshots/Screenshot(36).jpg)
+![](/Screenshots/Screenshot(37).jpg)
+![](/Screenshots/Screenshot(38).jpg)
+![](/Screenshots/Screenshot(43).jpg)
+![](/Screenshots/Screenshot(39).jpg)
+![](/Screenshots/Screenshot(40).jpg)
+![](/Screenshots/Screenshot(42).jpg)
