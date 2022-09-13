@@ -4,22 +4,23 @@
 
 #ifndef MAIN_TELEPORT_H
 #define MAIN_TELEPORT_H
+
 #include "Mario.h"
 
-class Teleport:public virtual Object {
-
+class Teleport : public virtual Object {
 public:
 
-    Teleport( int posX, int posY);
+    Teleport(int posX, int posY);
 
-    void teleportation(Mario &hero,int finalX,int finalY);
+    void teleportation(Mario &hero);
+
     bool isActivated() const;
+
     void setActivated(bool activated);
 
 private:
 
-    bool activated= false;//todo poi da mettere false
+    bool activated = false;
 };
-
 
 #endif //MAIN_TELEPORT_H

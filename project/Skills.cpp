@@ -4,30 +4,21 @@
 
 #include "Skills.h"
 
-void Skills::tracking(Entity &target) {
+void Skills::tracking(Entity &target) {}
 
-}
+void Skills::behaviour(Entity &target) {}
 
-void Skills::behaviour(Entity &target) {
-
-}
-
-void Skills::move(float x, float y) {
-
-}
+void Skills::move(float x, float y) {}
 
 bool Skills::isOstile() const {
     return ostile;
 }
 
 bool Skills::isOutOfRange(int posX, int posY, int initialX, int initialY) {
-
-    if (abs(posX - startX) +(abs(posY - startY) >= this->range))
+    if (abs(posX - startX) + (abs(posY - startY) >= this->range))
         return true;
-
     return false;
 }
-
 
 void Skills::run(float x, float y) {}
 
