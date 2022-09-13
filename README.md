@@ -4,7 +4,7 @@ Versione 1.4.
 
 
 ## Galleria
-![This is an image](/Screenshots/Screenshot(20).jpg)
+![This is an image](/Screenshots/Screenshot(44).jpg)
 ![This is an image](/Screenshots/Screenshot(21).jpg)
 ![This is an image](/Screenshots/Screenshot(25).jpg)
 ![This is an image](/Screenshots/Screenshot(26).jpg)
