@@ -524,18 +524,20 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         if (gp->getHp() != 0) {
             gp->behaviour(hero);
 
-            if (gp->isAbilityUsed()) {
-                auto skillCreated = gp->skillUse();
-
-                if (skillCreated != nullptr) {
-                    this->getSkill().reserve(this->getSkillNumber() + 1);
-                    auto newSkill = this->getSkill().insert(this->getSkill().end(), std::move(skillCreated));
-                    this->setSkillNumber(1);
-                    this->setNewSkillCreated(true);
-                }
-
-            } else if (gp->isActivated() == true) {
+            if (gp->isActivated()) {
                 gp->setChecked(true);
+
+                if (gp->isAbilityUsed() && this->skill.size() <= 10) {
+                    auto skillCreated = gp->skillUse();
+
+                    if (skillCreated != nullptr) {
+                        this->getSkill().reserve(this->getSkillNumber() + 1);
+                        auto newSkill = this->getSkill().insert(this->getSkill().end(), std::move(skillCreated));
+                        this->setSkillNumber(1);
+                        this->setNewSkillCreated(true);
+                    }
+
+                }
 
                 if ((l2Distance(hero, gp->getposX() + gp->getDirectX(), gp->getposY() + gp->getDirectY()) >= 1) &&
                     isLegalMove(*gp, gp->getDirectX(), gp->getDirectY(), maps, &vectors.getBosses(),

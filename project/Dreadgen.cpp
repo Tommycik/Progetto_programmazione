@@ -15,7 +15,7 @@ Dreadgen::Dreadgen(int posX, int posY, int dungeonType) {
     this->statIncrease = 1;
     this->textureMultiplier = 2;
     this->activated = false;
-    this->contactDamage = 30 + 20 * dungeonType;
+    this->contactDamage = 20 + 20 * dungeonType;
     this->textureFile = "assets/enemies.png";
     this->killable = true;
     this->type = 1;
