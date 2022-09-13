@@ -1,5 +1,9 @@
 # Elaborato di programmazione
 ### Ciccotti Tommaso
+Versione1.4.
+
+
+## Galleria
 ![This is an image](/Screenshots/Screenshot(20).jpg)
 ![This is an image](/Screenshots/Screenshot(21).jpg)
 ![This is an image](/Screenshots/Screenshot(25).jpg)
