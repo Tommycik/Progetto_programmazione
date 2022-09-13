@@ -1,6 +1,6 @@
 # Elaborato di programmazione
 ### Ciccotti Tommaso
-Versione1.4.
+Versione 1.4.
 
 
 ## Galleria
