@@ -5,7 +5,7 @@
 #include "Dreadgen.h"
 
 Dreadgen::Dreadgen(int posX, int posY, int dungeonType) {
-    this->hp = 150 + 30 * dungeonType;
+    this->hp = 120 + 30 * dungeonType;
     this->maxStam = 100;
     this->stamina = this->maxStam / 2;
     this->dungeonNumber = dungeonType;

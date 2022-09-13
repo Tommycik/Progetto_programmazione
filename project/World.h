@@ -48,6 +48,10 @@ public:
 
     void setNewSkillCreated(bool newSkillCreated);
 
+    bool isMapChange() const;
+
+    void setMapChange(bool mapChange);
+
 private:
 
     std::ifstream of;
@@ -56,6 +60,7 @@ private:
     std::vector<std::unique_ptr<Skills>> skill;
     int skillNumber = 0;
     bool newSkillCreated = false;
+    bool mapChange =false;
 };
 
 #endif //MAIN_WORLD_H

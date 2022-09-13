@@ -20,7 +20,7 @@ CrystalWall::CrystalWall(int posX, int posY, int damageMultiplier) {
     this->textureMultiplier = 2;
     damage = 15 + 15 * damageMultiplier;
     radius = 1;
-    range = 100;
+    range = 30;
     int random = 1;
     int n = 0;
     int i = 0;

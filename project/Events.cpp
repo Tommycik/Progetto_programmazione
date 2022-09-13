@@ -124,6 +124,7 @@ int Events::event(sf::RenderWindow *window, std::string *names, std::string *sav
 
                             }
 
+                            game.setMapChange(true);
                             hero.setTeleported(hero.getTeleported() + 1);
                             return 2;
                         }

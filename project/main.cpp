@@ -14,24 +14,28 @@ int main() {
 
     const int viewHeigth = 300;
     int numberMap = 6;
+
     if (numberMap < 1)
         numberMap = 1;
 
+    if (numberMap > 6)
+        numberMap = 6;
+
     int monsterNumber = 15;
-    if(monsterNumber<5)
-         monsterNumber=5;
+    if (monsterNumber < 10)
+        monsterNumber = 10;
 
     int objectNumber = 20;
-    if(objectNumber<10)
-         objectNumber=10;
+    if (objectNumber < 10)
+        objectNumber = 10;
 
     int safezoneNumber = 2;
     if (safezoneNumber < 2)
         safezoneNumber = 2;
 
     int bossNumber = 1;
-    if(bossNumber!=1)
-         bossNumber=1;
+    if (bossNumber != 1)
+        bossNumber = 1;
 
     int minRoomsNumber = (bossNumber + safezoneNumber + objectNumber + monsterNumber) / 2 + bossNumber;
 
@@ -74,7 +78,8 @@ int main() {
             "6",
     };
 
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height),"try");
+    sf::RenderWindow window(
+            sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "try");
     window.setFramerateLimit(60);
     sf::Music Game;
 

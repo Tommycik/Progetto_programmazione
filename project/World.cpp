@@ -450,7 +450,7 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
 
     for (auto gd: skillToErase) {
 
-        if (gd == 1) {
+        if (gd == 1 || this->mapChange) {
             skill.erase(skill.begin() + count - erased);
             erased++;
             newSkillCreated = true;
@@ -459,6 +459,7 @@ float World::Updater(Mario &hero, Dungeonarea &maps, Spawner &vectors, sf::Recta
         count++;
     }
 
+    this->mapChange = false;
     int enemyToErase[vectors.getMonsterNumber()];
     count = 0;
 
@@ -662,4 +663,12 @@ bool World::isNewSkillCreated() const {
 
 void World::setNewSkillCreated(bool newSkillCreated) {
     World::newSkillCreated = newSkillCreated;
+}
+
+bool World::isMapChange() const {
+    return mapChange;
+}
+
+void World::setMapChange(bool mapChange) {
+    World::mapChange = mapChange;
 }
