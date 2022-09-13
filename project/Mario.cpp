@@ -4,17 +4,16 @@
 
 #include "Mario.h"
 
-Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum,int bossKill):potionNum(potioNum){
-
-    this->maxHp=hp;
-    this->maxStam=stamina;
-    this->stamina=stamina;
-    this->hp=hp;
-    this->movements=1;
-    this->runningMovement=1.25,
-    this->posX=posX;
-    this->posY=posY;
-    this->bossKilled=bossKill;
+Mario::Mario(int hp, int movements, int posX, int posY, int stamina, int potioNum, int bossKill) : potionNum(potioNum) {
+    this->maxHp = hp;
+    this->maxStam = stamina;
+    this->stamina = stamina;
+    this->hp = hp;
+    this->movements = 1;
+    this->runningMovement = 1.25;
+    this->posX = posX;
+    this->posY = posY;
+    this->bossKilled = bossKill;
 }
 
 float Mario::getStamina() const {
@@ -42,19 +41,23 @@ void Mario::setPotionNum(int potionNum) {
 }
 
 bool Mario::recoverHp(int potionUsed) {
+    if (potionUsed != 0) {
 
-    if(potionUsed!=0){
-        if(Mario::hp<Mario::maxHp){
-            if(Mario::hp<=Mario::maxHp-Mario::maxHp/5){
-                Mario::hp+=(Mario::maxHp/5);
-            }else{
-                Mario::hp=Mario::maxHp;
+        if (Mario::hp<Mario::maxHp) {
+
+            if (Mario::hp <= Mario::maxHp - Mario::maxHp / 5) {
+                Mario::hp += (Mario::maxHp / 5);
+            } else {
+                Mario::hp = Mario::maxHp;
             }
 
-            Mario::potionNum-=potionUsed;}
+            Mario::potionNum -= potionUsed;
+        }
 
-    }else{
-        Mario::hp=Mario::getMaxHp();}
+    } else {
+        Mario::hp = Mario::getMaxHp();
+    }
+
     return true;
 }
 
@@ -71,15 +74,15 @@ void Mario::setStamina(float stamina) {
 }
 
 void Mario::potionNumSave(int potionNum) {
-    Mario::potionNum=potionNum;
+    Mario::potionNum = potionNum;
 }
 
 void Mario::maxStamSave(int maxStam) {
-    Mario::maxStam=maxStam;
+    Mario::maxStam = maxStam;
 }
 
 void Mario::maxHpSave(int maxHp) {
-    Mario::maxHp=maxHp;
+    Mario::maxHp = maxHp;
 }
 
 int Mario::getBossKilled() const {
@@ -91,30 +94,35 @@ void Mario::setBossKilled(int bossKilled) {
 }
 
 void Mario::run(float x, float y) {
-   if (x > runningMovement ||x<-runningMovement)
+    if (x > runningMovement || x < -runningMovement)
         x = runningMovement;
-    if (y > runningMovement||y<-runningMovement)
+
+    if (y > runningMovement || y < -runningMovement)
         y = runningMovement;
-    posX +=x;
-    if(x!=0)
-    distanceWalked+=x;
-    posY +=y;
-    if(y!=0)
-    distanceWalked+=y;
+
+    posX += x;
+    if (x != 0)
+        distanceWalked += x;
+
+    posY += y;
+    if (y != 0)
+        distanceWalked += y;
 }
 
 void Mario::move(float x, float y) {
-    //float speed=1;
-    if (x > movements ||x<-movements)
+    if (x > movements || x < -movements)
         x = movements;
-    if (y > movements||y<-movements)
+
+    if (y > movements || y < -movements)
         y = movements;
+
     posX += x;
-    if(x!=0)
-    distanceWalked+=x;
+    if (x != 0)
+        distanceWalked += x;
+
     posY += y;
-    if(y!=0)
-    distanceWalked+=y;
+    if (y != 0)
+        distanceWalked += y;
 }
 
 void Mario::behaviour(Entity &target) {}
@@ -174,37 +182,32 @@ float Mario::getRunningMovement() const {
 }
 
 std::unique_ptr<Skills> Mario::skillUse() {
+    auto newSkill = std::make_unique<Fireball>(this->getposX(), this->getposY(), this->bossKilled);
 
-    auto newSkill = std::make_unique<Fireball>(this->getposX(),this->getposY(),this->bossKilled);
-    //auto newSkill = std::make_unique<CrystalWall>(this->getposX()+1, this->getposY(), bossKilled);
-    if(this->stamina>=newSkill->getStamConsumption()){
-        skillUsed=1;
-        this->stamina-=newSkill->getStamConsumption();
-    }else{
-        skillUsed=0;
-        newSkill= nullptr;
+    if (this->stamina >= newSkill->getStamConsumption()) {
+        skillUsed = 1;
+        this->stamina -= newSkill->getStamConsumption();
+    } else {
+        skillUsed = 0;
+        newSkill = nullptr;
     }
 
     return newSkill;
 }
 
 void Mario::statIncrease(int stat) {
-
-    switch(stat){
+    switch (stat) {
 
         case 1:
-
-            this->hp+=hp/4;
+            this->hp += hp / 4;
             break;
 
         case 2:
-
-            this->stamina+=stamina/4;
+            this->stamina += stamina / 4;
             break;
 
         default:
-
-            this->hp+=hp/4;
+            this->hp += hp / 4;
             break;
     }
 }

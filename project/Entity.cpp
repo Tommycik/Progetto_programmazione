@@ -9,13 +9,13 @@ float Entity::getHp() const {
 }
 
 void Entity::setHp(float hp) {
-   this->hp = hp;
+    this->hp = hp;
 }
 
 void Entity::receiveDamage(int damage) {
-this->hp-=damage;
-if(hp<0)
-    this->hp=0;
+    this->hp -= damage;
+    if (hp < 0)
+        this->hp = 0;
 }
 
 int Entity::getTextureMultiplier() const {
@@ -37,12 +37,13 @@ bool Entity::isChecked() const {
 void Entity::setChecked(bool checked) {
     Entity::checked = checked;
 }
-float Entity::getTimeSinceDamage() const {
+
+double Entity::getTimeSinceDamage() const {
     return timeSinceDamage;
 }
 
-void Entity::setTimeSinceDamage(float timeSinceDamage) {
-    Entity::timeSinceDamage += timeSinceDamage;
+void Entity::setTimeSinceDamage(double timeDamage) {
+    this->timeSinceDamage = timeDamage;
 }
 
 int Entity::getType() const {
@@ -54,7 +55,7 @@ int Entity::getSkillUsed() const {
 }
 
 bool Entity::isKillable() const {
-        return killable;
+    return killable;
 }
 
 bool Entity::isActivated() const {
@@ -86,6 +87,14 @@ void Entity::setAbilityUsed(bool abilityUsed) {
 }
 
 void Entity::recoverStam() {
-    if(this->stamina<=this->maxStam-(this->maxStam/80))
-        this->stamina += (this->maxStam/80);
+    if (this->stamina <= this->maxStam - (this->maxStam / 80))
+        this->stamina += (this->maxStam / 80);
+}
+
+float Entity::getInvulnerabilityFrame() const {
+    return invulnerabilityFrame;
+}
+
+void Entity::setInvulnerabilityFrame(float invulnerabilityFrame) {
+    Entity::invulnerabilityFrame = invulnerabilityFrame;
 }

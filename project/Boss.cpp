@@ -4,7 +4,7 @@
 
 #include "Boss.h"
 
-int Boss::getStatIncrease()const{
+int Boss::getStatIncrease() const {
     return statIncrease;
 }
 

@@ -4,21 +4,19 @@
 
 #ifndef MAIN_FOLLOWINGENEMIES_H
 #define MAIN_FOLLOWINGENEMIES_H
+
 #include "Obstacle.h"
 
-class FollowingEnemies: public Obstacle{
-
+class FollowingEnemies : public Obstacle {
 public:
 
-    FollowingEnemies(int posX,int posY,int dungeonType);
+    FollowingEnemies(int posX, int posY, int dungeonType);
 
-     void behaviour(Entity &target) override;
-     void tracking(Entity &target) override;
-     void move(float x, float y) override;
+    void behaviour(Entity &target) override;
 
-private:
+    void tracking(Entity &target) override;
 
+    void move(float x, float y) override;
 };
-
 
 #endif //MAIN_FOLLOWINGENEMIES_H

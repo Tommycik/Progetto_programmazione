@@ -12,19 +12,18 @@
 #include "World.h"
 
 class Events {
-
 public:
 
-    int event(sf::RenderWindow *window,std::string *names,std::string *savesVec,Mario &hero,bool &tutorialItem,
-              bool &tutorialSafezone,bool &tutorialTeleport,int &mapIndex,int numberMap,World &game,
-              sf::Music &Game,TileMap &map,TileMap &object,TileMap &teleport,TileMap &safezone,std::unique_ptr<Spawner> *vectors=nullptr);
+    int event(sf::RenderWindow *window, std::string *names, std::string *savesVec, Mario &hero, bool &tutorialItem,
+              bool &tutorialSafezone, bool &tutorialTeleport, int &mapIndex, int numberMap, World &game,
+              sf::Music &Game, TileMap &map, TileMap &object, TileMap &teleport, TileMap &safezone,
+              std::unique_ptr<Spawner> *vectors = nullptr);
 
 private:
 
     sf::Event Happen;
     std::ifstream is;
-    bool cancel=false;
+    bool cancel = false;
 };
-
 
 #endif //MAIN_EVENTS_H
